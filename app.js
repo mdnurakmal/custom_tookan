@@ -12,7 +12,7 @@ const axios = require('axios')
 
 router.post('/webhook',(request,response) => {
 
-  console.log(response.data);
+  console.log(request.body["job_state"]);
   response.status(200);
   response.send("ok");
 });
