@@ -29,7 +29,7 @@ axios
     job_pickup_name: "7 Eleven Store",
     job_pickup_email: "",
     job_pickup_address: "Pasir Ris 510561",
-    job_pickup_datetime: "2021-12-31 22:00:00",
+    job_pickup_datetime: "2022-01-06 08:00:00",
     pickup_custom_field_template: "Template_1",
     pickup_meta_data: [
       {
