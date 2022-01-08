@@ -121,7 +121,6 @@ router.post('/edit_order',(request,response) => {
         "layout_type": "1",
         "tracking_link": 1,
         "timezone": "-330",
-        "api_key": "2b997be77e2cc22becfd4c66426ef504",
         "job_id": 353600460,
         "notify": 1
       })
