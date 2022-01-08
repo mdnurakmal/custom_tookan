@@ -5,7 +5,7 @@
 sudo TOOKAN_API_KEY=<YOUR-TOOKAN-API-KEY> GOOGLE_API_KEY=<YOUR-GOOGLE-API-KEY> node app.js
 ```
 
-# New Order API
+# New Order API (1 Pickup to X Delivery)
 http://api.courrio.com/new_order
 
 ```
