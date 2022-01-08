@@ -354,7 +354,7 @@ router.post('/new_order', async (request, response) => {
       for (let i = 0; i < delivery_orders.length; i++) {
         destinationSet.push(delivery_orders[i]["address"]);
       }
-      calculateDistance([pickup_orders[0]["address"]],destinationSet);
+      sortDistance([pickup_orders[0]["address"]],destinationSet);
     }
     // n pickup to 1 delivery
     else 
@@ -364,7 +364,7 @@ router.post('/new_order', async (request, response) => {
       for (let i = 0; i < pickup_orders.length; i++) {
         destinationSet.push(pickup_orders[i]["address"]);
       }
-      calculateDistance([delivery_orders[0]["address"]],destinationSet);
+      sortDistance([delivery_orders[0]["address"]],destinationSet);
     }
     response.send("ok");
   }) .catch(error => {
