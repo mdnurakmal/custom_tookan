@@ -4,6 +4,7 @@ const http = require('http');
 const express = require("express");
 const bodyParser = require("body-parser");
 const res = require("express/lib/response");
+const Promise = require('promise');
 const router = express.Router();
 const app = express();
 
@@ -16,18 +17,7 @@ var con = mysql.createConnection({
   database: "courrio"
 });
 
-con.connect(function(err) {
-  if (err) throw err;
-  console.log("Connected!");
-  var insert_sql = "INSERT INTO orders (order_ids) VALUES (0)";
-  con.query(insert_sql, function (err, result) {
-    if (err) throw err;
-    console.log("1 order inserted");
-    console.log(result.insertId);
-  });
 
-
-});
 
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -222,83 +212,123 @@ router.post('/new_order',(request,response) => {
   console.log("Received new order: " + startDate.format());
 
   // format pickup orders from customers
+  var promiseList = []
   var pickup_orders = []
   for (let i = 0; i < request.body["pickup_address"].length; i++) {
-    pickup_orders.push(
-      {
-        "address": request.body["pickup_address"][i]["street"] +" "+ request.body["pickup_address"][i]["suburb"] +" "+ request.body["pickup_address"][i]["state"] +" "+ request.body["pickup_address"][i]["post_code"] +" "+ 
-        request.body["pickup_address"][i]["country"],
-        "time": "2022-01-08 17:24:00",
-        "phone": request.body["pickup_address"][i]["phone"],
-        "name": request.body["pickup_address"][i]["name"],
-        "email":  request.body["pickup_address"][i]["pickup_email"],
-        "order_id": request.body["pickup_address"][i]["order_number"]
-      }
-    )
+
+    var promise = new Promise(function (resolve, reject) {
+      con.connect(function(err) {
+        if (err) reject(err);
+        console.log("Connected!");
+        var insert_sql = "INSERT INTO orders (order_ids) VALUES (0)";
+        con.query(insert_sql, function (err, result) {
+          if (err) reject(err);
+          console.log("1 order inserted");
+          console.log(result.insertId);
+  
+          pickup_orders.push(
+            {
+              "address": request.body["pickup_address"][i]["street"] +" "+ request.body["pickup_address"][i]["suburb"] +" "+ request.body["pickup_address"][i]["state"] +" "+ request.body["pickup_address"][i]["post_code"] +" "+ 
+              request.body["pickup_address"][i]["country"],
+              "time": "2022-01-08 17:24:00",
+              "phone": request.body["pickup_address"][i]["phone"],
+              "name": request.body["pickup_address"][i]["name"],
+              "email":  request.body["pickup_address"][i]["pickup_email"],
+              "order_id": request.body["pickup_address"][i]["order_number"]
+            }
+          )
+            resolve();
+        });
+      });
+    });
+    promiseList.push(promise);
   }
 
   // format delivery orders from customers
   var delivery_orders = []
   for (let i = 0; i < request.body["delivery_address"].length; i++) {
-    delivery_orders.push(
-      {
-        "address": request.body["delivery_address"][i]["street"] +" "+ request.body["delivery_address"][i]["suburb"] +" "+ request.body["delivery_address"][i]["state"] +" "+ request.body["delivery_address"][i]["post_code"] +" "+ 
-        request.body["delivery_address"][i]["country"],
-        "time": "2022-01-08 17:24:00",
-        "phone": request.body["delivery_address"][i]["phone"],
-        "name": request.body["delivery_address"][i]["name"],
-        "email":  request.body["delivery_address"][i]["pickup_email"],
-        "order_id": request.body["delivery_address"][i]["order_number"]
-      }
-    )
+
+    var promise = new Promise(function (resolve, reject) {
+      con.connect(function(err) {
+        if (err) reject(err);
+        console.log("Connected!");
+        var insert_sql = "INSERT INTO orders (order_ids) VALUES (0)";
+        con.query(insert_sql, function (err, result) {
+          if (err) reject(err);
+          console.log("1 order inserted");
+          console.log(result.insertId);
+  
+          delivery_orders.push(
+            {
+              "address": request.body["delivery_address"][i]["street"] +" "+ request.body["delivery_address"][i]["suburb"] +" "+ request.body["delivery_address"][i]["state"] +" "+ request.body["delivery_address"][i]["post_code"] +" "+ 
+              request.body["delivery_address"][i]["country"],
+              "time": "2022-01-08 17:24:00",
+              "phone": request.body["delivery_address"][i]["phone"],
+              "name": request.body["delivery_address"][i]["name"],
+              "email":  request.body["delivery_address"][i]["pickup_email"],
+              "order_id": request.body["delivery_address"][i]["order_number"]
+            }
+          )
+
+            resolve();
+        });
+      });
+    });
+
+
+    promiseList.push(promise);
   }
 
-// call create_multiple_tasks tookan api 
-axios
-  .post('https://api.tookanapp.com/v2/create_multiple_tasks', {
-    //api_key: process.env.API_KEY,
-    api_key: request.body["tookan_api_key"],
-    fleet_id: 19750,
-    timezone: -660,
-    has_pickup: 1,
-    has_delivery: 1,
-    layout_type: 0,
-    geofence: 0,
-    team_id: "",
-    auto_assignment: 0,
-    tags: "",
-    pickups: pickup_orders,
-    deliveries:delivery_orders
-  })
-  .then(res => {
-    var endDate = moment(); 
-    var secondsDiff = endDate.diff(startDate,"seconds")
-    console.log(secondsDiff + " seconds")
-    console.log(`statusCode: ${res.status}`)
+  Promise.all(promiseList)
+    .then(results => {
+        console.log("All promised completed");
 
-    if(res.data["status"] == "101")
-    {
-      response.status(res.status);
-      response.send(res.data["message"]);
-    }
-    else if(res.data["status"] == "201")
-    {
-      response.status(res.status);
-      response.send(res.data["message"]);
-    }
-    else
-    {
-      response.status(res.status);
-      response.send(res.data["message"]);
-    }
+       // call create_multiple_tasks tookan api 
+        axios
+        .post('https://api.tookanapp.com/v2/create_multiple_tasks', {
+          //api_key: process.env.API_KEY,
+          api_key: request.body["tookan_api_key"],
+          fleet_id: 19750,
+          timezone: -660,
+          has_pickup: 1,
+          has_delivery: 1,
+          layout_type: 0,
+          geofence: 0,
+          team_id: "",
+          auto_assignment: 0,
+          tags: "",
+          pickups: pickup_orders,
+          deliveries:delivery_orders
+        })
+        .then(res => {
+          var endDate = moment(); 
+          var secondsDiff = endDate.diff(startDate,"seconds")
+          console.log(secondsDiff + " seconds")
+          console.log(`statusCode: ${res.status}`)
 
-  })
-  .catch(error => {
-    console.error(error)
-    response.statusCode = 401;
-    response.send(error);
-  })
+          if(res.data["status"] == "101")
+          {
+            response.status(res.status);
+            response.send(res.data["message"]);
+          }
+          else if(res.data["status"] == "201")
+          {
+            response.status(res.status);
+            response.send(res.data["message"]);
+          }
+          else
+          {
+            response.status(res.status);
+            response.send(res.data["message"]);
+          }
 
+        })
+        .catch(error => {
+          console.error(error)
+          response.statusCode = 401;
+          response.send(error);
+        })
+    });
 });
 
 app.use("/", router);
