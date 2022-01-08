@@ -69,7 +69,7 @@ function calculateDistance(origins,destinations){
               if (distances.rows[0].elements[j].status == 'OK') {
                   var distance = distances.rows[i].elements[j].distance.text;
                   console.log('Distance from ' + origin + ' to ' + destination + ' is ' + distance);
-                  calculatedDistance.push({j:distance.split(" ")[0]});
+                  calculatedDistance.push({"distance":distance.split(" ")[0]});
               } else {
                   //console.log(destination + ' is not reachable by land from ' + origin);
               }
@@ -77,9 +77,9 @@ function calculateDistance(origins,destinations){
       }
     }
 
-    // json.sort(function(a, b){
-    //   return a.id - b.id;
-    // });
+    calculatedDistance.sort(function(a, b){
+      return a.distance - b.distance;
+    });
     console.log(calculatedDistance);
   });
 }
