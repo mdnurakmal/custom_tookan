@@ -304,6 +304,10 @@ router.post('/new_order', async (request, response) => {
           calculateDistance(delivery_orders[0]["address"],pickup_orders[i]["address"]);
       }
     }
+  }) .catch(error => {
+        console.error(error)
+        response.statusCode = 401;
+      response.send(error);
   });
     
     response.send("ok");
