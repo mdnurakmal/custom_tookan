@@ -51,8 +51,7 @@ router.post('/set_webhookurl', (request, response) => {
 });
 
 function calculateDistance(ori,des){
-  distance.key(process.env.GOOGLE_API_KEY);
-  console.log(process.env.GOOGLE_API_KEY);
+
   var origins = [ori];
   var destinations = [des];
   distance.matrix([origins], [destinations], function (err, distances) {

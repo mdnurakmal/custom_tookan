@@ -1,4 +1,9 @@
 # custom_tookan
+*Instructions*
+
+```
+sudo GOOGLE_API_KEY=<YOUR-GOOGLE-API-KEY> node app.js
+```
 
 Params for creating delivery task
 
