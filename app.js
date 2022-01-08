@@ -114,8 +114,8 @@ router.post('/edit_order',(request,response) => {
         "layout_type": "0",
         "time":"2022-01-08 23:24:00",
 
-        "address":"xxx",
-
+        "job_pickup_address":"he11llo",
+        "customer_address": "hey1",
         "job_id":"353609637"
 
       })
