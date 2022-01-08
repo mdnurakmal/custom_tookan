@@ -5,6 +5,9 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const res = require("express/lib/response");
 const Promise = require('promise');
+const distance = require('distance-matrix-api');
+distance.key(process.env.MAP_API_KEY);
+
 const router = express.Router();
 const app = express();
 
@@ -46,6 +49,17 @@ router.post('/set_webhookurl', (request, response) => {
     // set webhook url in db
 
 });
+
+function calculateDistance(ori,des){
+
+  var origins = [ori];
+  var destinations = [des];
+
+  distance.matrix(origins, destinations, function (err, distances) {
+    if (!err)
+        console.log("From : " + ori + " To : " + des + " : " + distances);
+  })
+}
 
 router.get('/rate', (request, response) => {
 
@@ -224,7 +238,7 @@ router.post('/new_order', async (request, response) => {
                     "email": request.body["pickup_address"][i]["pickup_email"],
                     "order_id":  result.insertId
                 })
-                resolve("ok");
+                resolve();
             });
 
         }).catch(function(rej) {
@@ -257,7 +271,7 @@ router.post('/new_order', async (request, response) => {
                     "order_id": result.insertId
                 })
 
-                resolve("ok");
+                resolve();
             });
 
         }).catch(function(rej) {
@@ -268,51 +282,66 @@ router.post('/new_order', async (request, response) => {
         promiseList.push(promise);
     }
 
+    // 1 pickup to n delivery
+    if (delivery_orders.length > pickup_orders.length)
+    {
+      for (let i = 0; i < delivery_orders.length; i++) {
+          calculateDistance(pickup_orders[0]["address"],delivery_orders[i]["address"]);
+      }
+    }
+    // n pickup to 1 delivery
+    else 
+    {
+      for (let i = 0; i < pickup_orders.length; i++) {
+        pickup_orders[i]["price"] = calculateDistance(delivery_orders[0]["address"],pickup_orders[i]["address"]);
+      }
+    }
+
     console.log(promiseList.length + "Waiting for orders to be processed..");
     await Promise.all(promiseList)
         .then(async results => {
             console.log("All promised completed");
 
             // call create_multiple_tasks tookan api 
-            await axios
-                .post('https://api.tookanapp.com/v2/create_multiple_tasks', {
-                    //api_key: process.env.API_KEY,
-                    api_key: request.body["tookan_api_key"],
-                    fleet_id: 19750,
-                    timezone: -660,
-                    has_pickup: 1,
-                    has_delivery: 1,
-                    layout_type: 0,
-                    geofence: 0,
-                    team_id: "",
-                    auto_assignment: 0,
-                    tags: "",
-                    pickups: pickup_orders,
-                    deliveries: delivery_orders
-                })
-                .then(res => {
-                    var endDate = moment();
-                    var secondsDiff = endDate.diff(startDate, "seconds")
-                    console.log(secondsDiff + " seconds")
-                    console.log(`statusCode: ${res.status}`)
+            // await axios
+            //     .post('https://api.tookanapp.com/v2/create_multiple_tasks', {
+            //         //api_key: process.env.API_KEY,
+            //         api_key: request.body["tookan_api_key"],
+            //         fleet_id: 19750,
+            //         timezone: -660,
+            //         has_pickup: 1,
+            //         has_delivery: 1,
+            //         layout_type: 0,
+            //         geofence: 0,
+            //         team_id: "",
+            //         auto_assignment: 0,
+            //         tags: "",
+            //         pickups: pickup_orders,
+            //         deliveries: delivery_orders
+            //     })
+            //     .then(res => {
+            //         var endDate = moment();
+            //         var secondsDiff = endDate.diff(startDate, "seconds")
+            //         console.log(secondsDiff + " seconds")
+            //         console.log(`statusCode: ${res.status}`)
 
-                    if (res.data["status"] == "101") {
-                        response.status(res.status);
-                        response.send(res.data["message"]);
-                    } else if (res.data["status"] == "201") {
-                        response.status(res.status);
-                        response.send(res.data["message"]);
-                    } else {
-                        response.status(res.status);
-                        response.send(res.data["message"]);
-                    }
+            //         if (res.data["status"] == "101") {
+            //             response.status(res.status);
+            //             response.send(res.data["message"]);
+            //         } else if (res.data["status"] == "201") {
+            //             response.status(res.status);
+            //             response.send(res.data["message"]);
+            //         } else {
+            //             response.status(res.status);
+            //             response.send(res.data["message"]);
+            //         }
 
-                })
-                .catch(error => {
-                    console.error(error)
-                    response.statusCode = 401;
-                    response.send(error);
-                })
+            //     })
+            //     .catch(error => {
+            //         console.error(error)
+            //         response.statusCode = 401;
+            //         response.send(error);
+            //     })
         });
 });
 
