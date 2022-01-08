@@ -285,7 +285,7 @@ router.post('/new_order',(request,response) => {
   }
 
   console.log(promiseList.length + "waiting for promise");
-  return Promise.all(promiseList)
+  await Promise.all(promiseList)
     .then(results => {
         console.log("All promised completed");
 
