@@ -366,60 +366,60 @@ router.post('/new_order', async (request, response) => {
       }
       sortDistance([delivery_orders[0]["address"]],destinationSet);
     }
-    response.send("ok");
+    //response.send("ok");
   }) .catch(error => {
         console.error(error)
-        response.statusCode = 401;
-      response.send(error);
+        //response.statusCode = 401;
+      //response.send(error);
   });
     
 
     console.log(promiseList.length + "Waiting for orders to be processed..");
-//     await Promise.all(promiseList)
-//         .then(async results => {
-//             console.log("All promised completed");
+    await Promise.all(promiseList)
+        .then(async results => {
+            console.log("All promised completed");
 
-//             //call create_multiple_tasks tookan api 
-//             await axios
-//                 .post('https://api.tookanapp.com/v2/create_multiple_tasks', {
-//                     //api_key: process.env.API_KEY,
-//                     api_key: request.body["tookan_api_key"],
-//                     fleet_id: 19750,
-//                     timezone: -660,
-//                     has_pickup: 1,
-//                     has_delivery: 1,
-//                     layout_type: 0,
-//                     geofence: 0,
-//                     team_id: "",
-//                     auto_assignment: 0,
-//                     tags: "",
-//                     pickups: pickup_orders,
-//                     deliveries: delivery_orders
-//                 })
-//                 .then(res => {
-//                     var endDate = moment();
-//                     var secondsDiff = endDate.diff(startDate, "seconds")
-//                     console.log(secondsDiff + " seconds")
-//                     console.log(`statusCode: ${res.status}`)
+            //call create_multiple_tasks tookan api 
+            await axios
+                .post('https://api.tookanapp.com/v2/create_multiple_tasks', {
+                    //api_key: process.env.API_KEY,
+                    api_key: request.body["tookan_api_key"],
+                    fleet_id: 19750,
+                    timezone: -660,
+                    has_pickup: 1,
+                    has_delivery: 1,
+                    layout_type: 0,
+                    geofence: 0,
+                    team_id: "",
+                    auto_assignment: 0,
+                    tags: "",
+                    pickups: pickup_orders,
+                    deliveries: delivery_orders
+                })
+                .then(res => {
+                    var endDate = moment();
+                    var secondsDiff = endDate.diff(startDate, "seconds")
+                    console.log(secondsDiff + " seconds")
+                    console.log(`statusCode: ${res.status}`)
 
-//                     if (res.data["status"] == "101") {
-//                         response.status(res.status);
-//                         response.send(res.data["message"]);
-//                     } else if (res.data["status"] == "201") {
-//                         response.status(res.status);
-//                         response.send(res.data["message"]);
-//                     } else {
-//                         response.status(res.status);
-//                         response.send(res.data["message"]);
-//                     }
+                    if (res.data["status"] == "101") {
+                        response.status(res.status);
+                        response.send(res.data["message"]);
+                    } else if (res.data["status"] == "201") {
+                        response.status(res.status);
+                        response.send(res.data["message"]);
+                    } else {
+                        response.status(res.status);
+                        response.send(res.data["message"]);
+                    }
 
-//                 })
-//                 .catch(error => {
-//                     console.error(error)
-//                     response.statusCode = 401;
-//                     response.send(error);
-//                 })
-//         });
+                })
+                .catch(error => {
+                    console.error(error)
+                    response.statusCode = 401;
+                    response.send(error);
+                })
+        });
  });
 
 app.use("/", router);
