@@ -28,7 +28,7 @@ con.connect(function(err) {
   var query_sql = "SELECT last_insert_id();";
   con.query(query_sql, function (err, result) {
     if (err) throw err;
-    console.log("result" + result.insertId);
+    console.log("result" + result["last_insert_id()"]);
   });
 });
 
