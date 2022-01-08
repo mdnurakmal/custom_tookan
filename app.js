@@ -50,12 +50,9 @@ router.post('/set_webhookurl', (request, response) => {
 
 });
 
-function calculateDistance(ori,des){
+function calculateDistance(origins,des){
 
-  var origins = [ori];
-  var destinations = [des];
-
-  distance.matrix(origins, destinations, function (err, distances) {
+  distance.matrix(origins, des, function (err, distances) {
     if (!err)
         console.log("From : " + ori + " To : " + des + " : " + distances);
   })
