@@ -5,7 +5,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const res = require("express/lib/response");
 const Promise = require('promise');
-const distance = require('distance-matrix-api');
+const distance = require('google-distance-matrix');
 
 const router = express.Router();
 const app = express();
@@ -59,21 +59,8 @@ function calculateDistance(origins,destinations){
         return console.log('no distances');
     }
 
-    if (distances.status == 'OK') {
-      console.log("distance ok");
-      for (var i=0; i < origins.length; i++) {
-          for (var j = 0; j < destinations.length; j++) {
-              var origin = distances.origin_addresses[i];
-              var destination = distances.destination_addresses[j];
-              if (distances.rows[0].elements[j].status == 'OK') {
-                  var distance = distances.rows[i].elements[j].distance.text;
-                  console.log('Distance from ' + origin + ' to ' + destination + ' is ' + distance);
-              } else {
-                  console.log(destination + ' is not reachable by land from ' + origin);
-              }
-          }
-      }
-  }
+    if (!err)
+      console.log(distances);
   });
 }
 
