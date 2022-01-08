@@ -237,7 +237,7 @@ router.post('/new_order',(request,response) => {
               "order_id": request.body["pickup_address"][i]["order_number"]
             }
           )
-            resolve();
+            resolve("ok");
         });
       });
     });
@@ -270,7 +270,7 @@ router.post('/new_order',(request,response) => {
             }
           )
 
-            resolve();
+            resolve("ok");
         });
       });
     });
@@ -279,6 +279,7 @@ router.post('/new_order',(request,response) => {
     promiseList.push(promise);
   }
 
+  console.log(promoiseList.length + "waiting for promise");
   Promise.all(promiseList)
     .then(results => {
         console.log("All promised completed");
