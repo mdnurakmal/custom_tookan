@@ -107,8 +107,16 @@ router.post('/edit_order',(request,response) => {
     axios
       .post('https://api.tookanapp.com/v2/edit_task', {
         api_key: request.body["tookan_api_key"],
-        "job_pickup_datetime": "2022-09-30 16:00:00",
-        "job_id": 353600458,
+        "fleet_id": "19750",
+        "timezone": "-660",
+        "has_pickup": "1",
+        "has_delivery": "1",
+        "layout_type": "0",
+        "job_pickup_datetime":"2022-08-14 21:00:00",
+        "job_delivery_datetime":"2022-08-14 21:00:00",
+        "job_pickup_address":"he11llo",
+        "customer_address": "hey1",
+        "job_id":"353602743"
 
       })
       .then(res => {
@@ -131,7 +139,7 @@ router.post('/edit_order',(request,response) => {
         else
         {
           response.status(res.status);
-          response.send(res.data["data"]);
+          response.send(res.data["message"]);
         }
     
       })
@@ -177,7 +185,7 @@ var startDate = moment();
       else
       {
         response.status(res.status);
-        response.send(res.data["data"]);
+        response.send(res.data["message"]);
       }
   
     })
