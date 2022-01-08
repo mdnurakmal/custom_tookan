@@ -285,6 +285,7 @@ router.post('/new_order', async (request, response) => {
     // 1 pickup to n delivery
     if (delivery_orders.length > pickup_orders.length)
     {
+      console.log("1 pickup to n delivery");
       for (let i = 0; i < delivery_orders.length; i++) {
           calculateDistance(pickup_orders[0]["address"],delivery_orders[i]["address"]);
       }
@@ -292,8 +293,9 @@ router.post('/new_order', async (request, response) => {
     // n pickup to 1 delivery
     else 
     {
+      console.log("n pickup to 1 delivery");
       for (let i = 0; i < pickup_orders.length; i++) {
-        pickup_orders[i]["price"] = calculateDistance(delivery_orders[0]["address"],pickup_orders[i]["address"]);
+          calculateDistance(delivery_orders[0]["address"],pickup_orders[i]["address"]);
       }
     }
 
