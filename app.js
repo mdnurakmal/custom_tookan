@@ -32,6 +32,7 @@ app.use(bodyParser.json());
 
 const axios = require('axios');
 const req = require("express/lib/request");
+const { Console } = require('console');
 
 router.post('/webhook', (request, response) => {
     console.log(request.body["job_state"]);
@@ -51,6 +52,7 @@ router.post('/set_webhookurl', (request, response) => {
 
 function calculateDistance(origins,destinations){
   distance.key(process.env.GOOGLE_API_KEY);
+  console.log(process.env.GOOGLE_API_KEY);
   distance.matrix([origins], [destinations], function (err, distances) {
     if (err) {
         return console.log(err);
@@ -59,8 +61,20 @@ function calculateDistance(origins,destinations){
         return console.log('no distances');
     }
 
-    if (!err)
-      console.log(distances);
+    if (distances.status == 'OK') {
+      for (var i=0; i < origins.length; i++) {
+          for (var j = 0; j < destinations.length; j++) {
+              var origin = distances.origin_addresses[i];
+              var destination = distances.destination_addresses[j];
+              if (distances.rows[0].elements[j].status == 'OK') {
+                  var distance = distances.rows[i].elements[j].distance.text;
+                  console.log('Distance from ' + origin + ' to ' + destination + ' is ' + distance);
+              } else {
+                  console.log(destination + ' is not reachable by land from ' + origin);
+              }
+          }
+      }
+  }
   });
 }
 
