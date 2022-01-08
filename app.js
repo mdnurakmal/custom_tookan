@@ -200,6 +200,8 @@ router.post('/new_order', async (request, response) => {
     // add total packages 2
     console.log("Received new order: " + startDate.format());
 
+    var deliveryDate = moment(startdate, "YYYY-MM-DD").add(1, 'days').format("YYYY-MM-DD");
+    console.log(deliveryDate);
     // format pickup orders from customers
     var promiseList = []
     var pickup_orders = []
@@ -216,7 +218,7 @@ router.post('/new_order', async (request, response) => {
                 pickup_orders.push({
                     "address": request.body["pickup_address"][i]["street"] + " " + request.body["pickup_address"][i]["suburb"] + " " + request.body["pickup_address"][i]["state"] + " " + request.body["pickup_address"][i]["post_code"] + " " +
                         request.body["pickup_address"][i]["country"],
-                    "time": "2022-01-08 17:24:00",
+                    "time": "2022-01-08 17:00:00",
                     "phone": request.body["pickup_address"][i]["phone"],
                     "name": request.body["pickup_address"][i]["name"],
                     "email": request.body["pickup_address"][i]["pickup_email"],
@@ -247,7 +249,7 @@ router.post('/new_order', async (request, response) => {
                 delivery_orders.push({
                     "address": request.body["delivery_address"][i]["street"] + " " + request.body["delivery_address"][i]["suburb"] + " " + request.body["delivery_address"][i]["state"] + " " + request.body["delivery_address"][i]["post_code"] + " " +
                         request.body["delivery_address"][i]["country"],
-                    "time": "2022-01-08 17:24:00",
+                    "time": "2022-01-08 17:00:00",
                     "phone": request.body["delivery_address"][i]["phone"],
                     "name": request.body["delivery_address"][i]["name"],
                     "email": request.body["delivery_address"][i]["pickup_email"],
