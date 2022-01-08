@@ -221,7 +221,7 @@ router.post('/new_order', async (request, response) => {
                     "phone": request.body["pickup_address"][i]["phone"],
                     "name": request.body["pickup_address"][i]["name"],
                     "email": request.body["pickup_address"][i]["pickup_email"],
-                    "order_id": request.body["pickup_address"][i]["order_number"]
+                    "order_id":  result.insertId
                 })
                 resolve("ok");
             });
@@ -253,7 +253,7 @@ router.post('/new_order', async (request, response) => {
                     "phone": request.body["delivery_address"][i]["phone"],
                     "name": request.body["delivery_address"][i]["name"],
                     "email": request.body["delivery_address"][i]["pickup_email"],
-                    "order_id": request.body["delivery_address"][i]["order_number"]
+                    "order_id": result.insertId
                 })
 
                 resolve("ok");
@@ -268,7 +268,7 @@ router.post('/new_order', async (request, response) => {
         promiseList.push(promise);
     }
 
-    console.log(promiseList.length + "waiting for promise");
+    console.log(promiseList.length + "Waiting for orders to be processed..");
     await Promise.all(promiseList)
         .then(results => {
             console.log("All promised completed");
