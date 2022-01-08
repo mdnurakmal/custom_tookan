@@ -53,6 +53,7 @@ router.post('/set_webhookurl', (request, response) => {
 function calculateDistance(origins,destinations){
   console.log(origins + destinations);
   distance.matrix(origins, destinations, function (err, distances) {
+  var calculatedDistance = [];
     if (err) {
         return console.log(err);
     }
@@ -68,12 +69,18 @@ function calculateDistance(origins,destinations){
               if (distances.rows[0].elements[j].status == 'OK') {
                   var distance = distances.rows[i].elements[j].distance.text;
                   console.log('Distance from ' + origin + ' to ' + destination + ' is ' + distance);
+                  calculatedDistance[j].push({j:distance.split(" ")[0]})
               } else {
                   //console.log(destination + ' is not reachable by land from ' + origin);
               }
           }
       }
-  }
+    }
+
+    // json.sort(function(a, b){
+    //   return a.id - b.id;
+    // });
+    console.log(calculatedDistance);
   });
 }
 
