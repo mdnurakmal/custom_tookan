@@ -84,6 +84,7 @@ function sortDistance(origins,destinations){
       return a.distance - b.distance;
     });
 
+    console.log(calculatedDistance)
     return calculateDistance(calculatedDistance);
   });
 }
