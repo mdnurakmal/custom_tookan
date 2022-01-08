@@ -60,6 +60,7 @@ function calculateDistance(origins,destinations){
     }
 
     if (distances.status == 'OK') {
+      console.log("distance ok");
       for (var i=0; i < origins.length; i++) {
           for (var j = 0; j < destinations.length; j++) {
               var origin = distances.origin_addresses[i];
