@@ -107,22 +107,10 @@ router.post('/edit_order',(request,response) => {
     axios
       .post('https://api.tookanapp.com/v2/edit_task', {
         api_key: request.body["tookan_api_key"],
-        "customer_email": "john@example.com",
-        "customer_username": "John Doe",
-        "customer_phone": "+919999999999",
-        "customer_address": "Powai Lake, Powai, Mumbai, Maharashtra, India",
-        "latitude": "28.5494489",
-        "longitude": "77.2001368",
-        "job_description": "Beauty services",
-        "job_pickup_datetime": "2016-09-30 16:00:00",
-        "job_delivery_datetime": "2016-09-30 17:00:00",
-        "has_pickup": "0",
-        "has_delivery": "0",
-        "layout_type": "1",
-        "tracking_link": 1,
-        "timezone": "-330",
-        "job_id": 353600460,
-        "notify": 1
+        "job_pickup_datetime": "2022-09-30 16:00:00",
+        "job_delivery_datetime": "2022-09-30 17:00:00",
+        "job_id": 353600459,
+
       })
       .then(res => {
         var endDate = moment(); 
