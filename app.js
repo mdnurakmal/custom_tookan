@@ -207,7 +207,6 @@ router.post('/new_order', async (request, response) => {
 
         var promise = new Promise(function(resolve, reject) {
 
-            console.log("Connected!");
             var insert_sql = "INSERT INTO orders (order_ids) VALUES (0)";
 
             con.query(insert_sql, function(err, result) {
