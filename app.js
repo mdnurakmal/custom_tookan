@@ -109,7 +109,7 @@ function calculateDistance(destinations){
 
                   if (distances.rows[0].elements[j].status == 'OK') {
                       var distance = distances.rows[0].elements[0].distance.text;
-                 
+                      console.log(distance);
                       totalDistance += parseFloat(distance.split(" ")[0]);
                   } 
               }
