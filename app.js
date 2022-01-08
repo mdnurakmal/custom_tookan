@@ -345,7 +345,7 @@ router.post('/new_order', async (request, response) => {
 //                     response.send(error);
 //                 })
 //         });
-// });
+ });
 
 app.use("/", router);
 
