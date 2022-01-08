@@ -17,7 +17,10 @@ var con = mysql.createConnection({
   database: "courrio"
 });
 
-
+con.connect(function(err) {
+  if (err) reject(err);
+  console.log("Connected!");
+});
 
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -217,8 +220,6 @@ router.post('/new_order',async (request,response) => {
   for (let i = 0; i < request.body["pickup_address"].length; i++) {
 
     var promise = new Promise(function (resolve, reject) {
-      con.connect(function(err) {
-        if (err) reject(err);
 
         console.log("Connected!");
         var insert_sql = "INSERT INTO orders (order_ids) VALUES (0)";
@@ -241,7 +242,7 @@ router.post('/new_order',async (request,response) => {
           )
             resolve("ok");
         });
-      });
+
     }).catch(function(rej) {
       //here when you reject the promise
       console.log(rej);
@@ -254,10 +255,7 @@ router.post('/new_order',async (request,response) => {
   for (let i = 0; i < request.body["delivery_address"].length; i++) {
 
     var promise = new Promise(function (resolve, reject) {
-      con.connect(function(err) {
-        if (err) reject(err);
-        console.log("Connected!");
-
+   
         var insert_sql = "INSERT INTO orders (order_ids) VALUES (0)";
         con.query(insert_sql, function (err, result) {
 
@@ -280,7 +278,7 @@ router.post('/new_order',async (request,response) => {
 
             resolve("ok");
         });
-      });
+
     }).catch(function(rej) {
       //here when you reject the promise
       console.log(rej);
