@@ -213,7 +213,7 @@ router.post('/new_order', async (request, response) => {
 
             con.query(insert_sql, function(err, result) {
                 if (err) reject(err);
-                console.log("Order addded");
+                console.log("Order addded: " + result.insertId);
 
                 pickup_orders.push({
                     "address": request.body["pickup_address"][i]["street"] + " " + request.body["pickup_address"][i]["suburb"] + " " + request.body["pickup_address"][i]["state"] + " " + request.body["pickup_address"][i]["post_code"] + " " +
@@ -244,7 +244,7 @@ router.post('/new_order', async (request, response) => {
 
                 if (err) reject(err);
 
-                console.log("Order addded");
+                console.log("Order addded: " + result.insertId);
 
                 delivery_orders.push({
                     "address": request.body["delivery_address"][i]["street"] + " " + request.body["delivery_address"][i]["suburb"] + " " + request.body["delivery_address"][i]["state"] + " " + request.body["delivery_address"][i]["post_code"] + " " +
