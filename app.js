@@ -242,7 +242,10 @@ router.post('/new_order',async (request,response) => {
             resolve("ok");
         });
       });
-    });
+    }).catch(function(rej) {
+      //here when you reject the promise
+      console.log(rej);
+    });;
     promiseList.push(promise);
   }
 
@@ -278,7 +281,10 @@ router.post('/new_order',async (request,response) => {
             resolve("ok");
         });
       });
-    });
+    }).catch(function(rej) {
+      //here when you reject the promise
+      console.log(rej);
+    });;
 
 
     promiseList.push(promise);
