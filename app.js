@@ -50,10 +50,8 @@ router.post('/set_webhookurl', (request, response) => {
 
 });
 
-function calculateDistance(ori,des){
+function calculateDistance(origins,destinations){
 
-  var origins = [ori];
-  var destinations = [des];
   distance.matrix([origins], [destinations], function (err, distances) {
     if (err) {
         return console.log(err);
@@ -70,8 +68,9 @@ function calculateDistance(ori,des){
               if (distances.rows[0].elements[j].status == 'OK') {
                   var distance = distances.rows[i].elements[j].distance.text;
                   console.log('Distance from ' + origin + ' to ' + destination + ' is ' + distance);
+                  return distance;
               } else {
-                  console.log(destination + ' is not reachable by land from ' + origin);
+                  //console.log(destination + ' is not reachable by land from ' + origin);
               }
           }
       }
@@ -314,9 +313,11 @@ router.post('/new_order', async (request, response) => {
     else 
     {
       console.log("n pickup to 1 delivery");
+      var destinationSet = []
       for (let i = 0; i < pickup_orders.length; i++) {
-          calculateDistance(delivery_orders[0]["address"],pickup_orders[i]["address"]);
+        destinationSet.push(pickup_orders[i]["address"]);
       }
+      calculateDistance([delivery_orders[0]["address"]],destinationSet);
     }
     response.send("ok");
   }) .catch(error => {
