@@ -163,7 +163,7 @@ var startDate = moment();
   axios
     .post('https://api.tookanapp.com/v2/delete_task', {
       api_key: request.body["tookan_api_key"],
-      "job_id": "2755"
+      "job_id": request.body["order_ids"]
     })
     .then(res => {
       var endDate = moment(); 
