@@ -94,7 +94,7 @@ function calculateDistance(destinations){
   var totalDistance = 0;
   for (var j = 0; j < destinations.length-1; j++) {
 
-    distance.matrix([destinations[j]], [destinations[j+1]], function (err, distances) {
+    distance.matrix([destinations[j]["address"]], [destinations[j+1]["address"]], function (err, distances) {
 
         if (err) {
             return console.log(err);
