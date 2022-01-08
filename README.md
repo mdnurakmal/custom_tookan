@@ -2,12 +2,13 @@
 # Instructions
 
 ```
-sudo TOOKAN_API_KEY=<YOUR-TOOKAN-API-KEY> GOOGLE_API_KEY=<YOUR-GOOGLE-API-KEY> node app.js
+sudo GOOGLE_API_KEY=<YOUR-GOOGLE-API-KEY> node app.js
 ```
 
 # New Order API (1 Pickup to X Delivery)
 http://api.courrio.com/new_order
 
+Request Body
 ```
 {
    "tookan_api_key":"<YOUR-TOOKAN-API-KEY>",
@@ -68,10 +69,14 @@ http://api.courrio.com/new_order
    ]
 }
 ```
-
+Result
+```
+Successful
+```
 # Edit Order API
 http://api.courrio.com/edit_order
 
+Request Body
 ```
 {
     "tookan_api_key":"<YOUR-TOOKAN-API-KEY>",
@@ -82,10 +87,15 @@ http://api.courrio.com/edit_order
 }
 ```
 
+Result
+```
+The task has been updated
+```
 
 # Order Status API
 http://api.courrio.com/order_status
 
+Request Body
 ```
 {
     "tookan_api_key":"<YOUR-TOOKAN-API-KEY>",
@@ -94,13 +104,24 @@ http://api.courrio.com/order_status
 }
 ```
 
+Result
+```
+
+```
+
 # Delete Order API
 http://api.courrio.com/delete_order
 
+Request Body
 ```
 {
     "tookan_api_key":"<YOUR-TOOKAN-API-KEY>",
     "api_key":"<CUSTOMER-API-KEY>",
     "order_ids": "xxxx"
 }
+```
+
+Result
+```
+The task has been deleted
 ```
