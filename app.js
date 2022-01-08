@@ -304,10 +304,12 @@ router.post('/new_order', async (request, response) => {
     // 1 pickup to n delivery
     if (delivery_orders.length > pickup_orders.length)
     {
+      var destinationSet = []
       console.log("1 pickup to n delivery");
       for (let i = 0; i < delivery_orders.length; i++) {
-          calculateDistance(pickup_orders[0]["address"],delivery_orders[i]["address"]);
+        destinationSet.push(delivery_orders[i]["address"]);
       }
+      calculateDistance([pickup_orders[0]["address"]],destinationSet);
     }
     // n pickup to 1 delivery
     else 
