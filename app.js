@@ -103,7 +103,7 @@ router.post('/edit_order',(request,response) => {
     console.log("editing order: " +  request.body["order_ids"]);
   
     // fetch job id from order id from courrio DB
-  
+    // fetch whether its a pickup or delivery and change time accordingly
     axios
       .post('https://api.tookanapp.com/v2/edit_task', {
         api_key: request.body["tookan_api_key"],
@@ -112,7 +112,7 @@ router.post('/edit_order',(request,response) => {
         "has_pickup": "1",
         "has_delivery": "1",
         "layout_type": "0",
-        "time":"2022-01-08 23:24:00",
+        "job_pickup_time":"2022-01-08 23:24:00",
 
         "job_pickup_address":"he11llo",
         "customer_address": "hey1",
