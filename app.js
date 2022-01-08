@@ -202,7 +202,7 @@ router.post('/order_status',(request,response) => {
 });
 
 // courrio bulk order API
-router.post('/new_order',(request,response) => {
+router.post('/new_order',async (request,response) => {
 
   var startDate = moment(); 
   // add order date to sql
