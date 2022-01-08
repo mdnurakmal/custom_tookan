@@ -69,7 +69,7 @@ function calculateDistance(origins,destinations){
               if (distances.rows[0].elements[j].status == 'OK') {
                   var distance = distances.rows[i].elements[j].distance.text;
                   console.log('Distance from ' + origin + ' to ' + destination + ' is ' + distance);
-                  calculatedDistance[j].push({j:distance.split(" ")[0]})
+                  calculatedDistance.push({j:distance.split(" ")[0]});
               } else {
                   //console.log(destination + ' is not reachable by land from ' + origin);
               }
