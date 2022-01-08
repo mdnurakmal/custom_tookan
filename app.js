@@ -287,7 +287,7 @@ router.post('/new_order', async (request, response) => {
     }
 
     await Promise.all(promiseList)
-         .then(async results => {
+         .then(results => {
     // 1 pickup to n delivery
     if (delivery_orders.length > pickup_orders.length)
     {
