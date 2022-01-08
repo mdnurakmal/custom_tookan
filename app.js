@@ -270,11 +270,11 @@ router.post('/new_order', async (request, response) => {
 
     console.log(promiseList.length + "Waiting for orders to be processed..");
     await Promise.all(promiseList)
-        .then(results => {
+        .then(async results => {
             console.log("All promised completed");
 
             // call create_multiple_tasks tookan api 
-            axios
+            await axios
                 .post('https://api.tookanapp.com/v2/create_multiple_tasks', {
                     //api_key: process.env.API_KEY,
                     api_key: request.body["tookan_api_key"],
