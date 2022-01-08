@@ -108,8 +108,7 @@ router.post('/edit_order',(request,response) => {
       .post('https://api.tookanapp.com/v2/edit_task', {
         api_key: request.body["tookan_api_key"],
         "job_pickup_datetime": "2022-09-30 16:00:00",
-        "job_delivery_datetime": "2022-09-30 17:00:00",
-        "job_id": 353600459,
+        "job_id": 353600458,
 
       })
       .then(res => {
