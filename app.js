@@ -89,11 +89,11 @@ function sortDistance(origins,destinations){
 }
 
 function calculateDistance(destinations){
-  console.log(origins + destinations);
+
   var totalDistance = 0;
   for (var j = 0; j < destinations.length-1; j++) {
 
-    distance.matrix(destinations[j], [j+1], function (err, distances) {
+    distance.matrix([destinations[j]], [destinations[j+1]], function (err, distances) {
 
         if (err) {
             return console.log(err);
@@ -103,18 +103,14 @@ function calculateDistance(destinations){
         }
     
         if (distances.status == 'OK') {
-          for (var i=0; i < origins.length; i++) {
-              for (var j = 0; j < destinations.length; j++) {
-                  var origin = distances.origin_addresses[i];
-                  var destination = distances.destination_addresses[j];
-                  if (distances.rows[0].elements[j].status == 'OK') {
-                      var distance = distances.rows[i].elements[j].distance.text;
-                      console.log('Distance from ' + origin + ' to ' + destination + ' is ' + distance);
-                      totalDistance += parseFloat(distance.split(" ")[0]);
-                  } else {
+          for (var i=0; i < 1; i++) {
+              for (var j = 0; j < 1; j++) {
 
-                      console.log(destination + ' is not reachable by land from ' + origin);
-                  }
+                  if (distances.rows[0].elements[j].status == 'OK') {
+                      var distance = distances.rows[0].elements[0].distance.text;
+                 
+                      totalDistance += parseFloat(distance.split(" ")[0]);
+                  } 
               }
           }
         }
