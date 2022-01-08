@@ -22,14 +22,14 @@ con.connect(function(err) {
   var insert_sql = "INSERT INTO orders (order_ids) VALUES (0)";
   con.query(insert_sql, function (err, result) {
     if (err) throw err;
-    console.log("1 record inserted");
+    console.log("1 order inserted");
   });
 
   var query_sql = "SELECT last_insert_id();";
   con.query(query_sql, function (err, result) {
     if (err) throw err;
-    console.log("1 record inserted");
-    console.log("result" + result);
+    console.log("1 order inserted");
+    console.log("result" + result.insertId);
   });
 });
 
