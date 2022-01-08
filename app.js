@@ -146,7 +146,7 @@ var startDate = moment();
 router.post('/order',(request,response) => {
 var startDate = moment(); 
 // add order date to sql
-console.log(new Date(new Date().toUTCString()));
+console.log("Received new order: " + startDate.format());
 
 // format pickup orders from customers
 var pickup_orders = []
