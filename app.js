@@ -219,8 +219,10 @@ router.post('/new_order',(request,response) => {
     var promise = new Promise(function (resolve, reject) {
       con.connect(function(err) {
         if (err) reject(err);
+
         console.log("Connected!");
         var insert_sql = "INSERT INTO orders (order_ids) VALUES (0)";
+
         con.query(insert_sql, function (err, result) {
           if (err) reject(err);
           console.log("1 order inserted");
@@ -252,9 +254,12 @@ router.post('/new_order',(request,response) => {
       con.connect(function(err) {
         if (err) reject(err);
         console.log("Connected!");
+
         var insert_sql = "INSERT INTO orders (order_ids) VALUES (0)";
         con.query(insert_sql, function (err, result) {
+
           if (err) reject(err);
+
           console.log("1 order inserted");
           console.log(result.insertId);
   
@@ -280,7 +285,7 @@ router.post('/new_order',(request,response) => {
   }
 
   console.log(promiseList.length + "waiting for promise");
-  Promise.all(promiseList)
+  return Promise.all(promiseList)
     .then(results => {
         console.log("All promised completed");
 
