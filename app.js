@@ -95,14 +95,123 @@ router.post('/webhook',(request,response) => {
 //   });
 
 
-//courrio get order API
-router.post('/order_status',(request,response) => {
-  //code to perform particular action.
-  //To access POST variable use req.body()methods.
+//courrio edit order API
+router.post('/edit_order',(request,response) => {
+
+  var startDate = moment(); 
+  
+    console.log("editing order: " +  request.body["order_ids"]);
+  
+    // fetch job id from order id from courrio DB
+  
+    axios
+      .post('https://api.tookanapp.com/v2/edit_task', {
+        api_key: request.body["tookan_api_key"],
+        "customer_email": "john@example.com",
+        "customer_username": "John Doe",
+        "customer_phone": "+919999999999",
+        "customer_address": "Powai Lake, Powai, Mumbai, Maharashtra, India",
+        "latitude": "28.5494489",
+        "longitude": "77.2001368",
+        "job_description": "Beauty services",
+        "job_pickup_datetime": "2016-09-30 16:00:00",
+        "job_delivery_datetime": "2016-09-30 17:00:00",
+        "has_pickup": "0",
+        "has_delivery": "0",
+        "layout_type": "1",
+        "tracking_link": 1,
+        "timezone": "-330",
+        "api_key": "2b997be77e2cc22becfd4c66426ef504",
+        "job_id": 353600460,
+        "notify": 1
+      })
+      .then(res => {
+        var endDate = moment(); 
+        var secondsDiff = endDate.diff(startDate,"seconds")
+        console.log(secondsDiff + " seconds")
+  
+        console.log(`statusCode: ${res.status}`)
+    
+        if(res.data["status"] == "101")
+        {
+          response.status(res.status);
+          response.send(res.data["message"]);
+        }
+        else if(res.data["status"] == "201")
+        {
+          response.status(res.status);
+          response.send(res.data["message"]);
+        }
+        else
+        {
+          response.status(res.status);
+          response.send(res.data["data"]);
+        }
+    
+      })
+      .catch(error => {
+        console.error(error)
+        response.statusCode = 401;
+        response.send(error);
+      })
+    
+  });
+
+//courrio delete order API
+router.post('/delete_order',(request,response) => {
 
 var startDate = moment(); 
 
+  console.log("delete order: " +  request.body["order_ids"]);
+
+  // fetch job id from order id from courrio DB
+
+  axios
+    .post('https://api.tookanapp.com/v2/delete_task', {
+      api_key: request.body["tookan_api_key"],
+      "job_id": "2755"
+    })
+    .then(res => {
+      var endDate = moment(); 
+      var secondsDiff = endDate.diff(startDate,"seconds")
+      console.log(secondsDiff + " seconds")
+
+      console.log(`statusCode: ${res.status}`)
+  
+      if(res.data["status"] == "101")
+      {
+        response.status(res.status);
+        response.send(res.data["message"]);
+      }
+      else if(res.data["status"] == "201")
+      {
+        response.status(res.status);
+        response.send(res.data["message"]);
+      }
+      else
+      {
+        response.status(res.status);
+        response.send(res.data["data"]);
+      }
+  
+    })
+    .catch(error => {
+      console.error(error)
+      response.statusCode = 401;
+      response.send(error);
+    })
+  
+});
+
+//courrio get order API
+router.post('/order_status',(request,response) => {
+
+var startDate = moment(); 
+
+  // fetch rate card from db
+
   console.log("requesting for order: " +  request.body["order_ids"]);
+
   axios
     .post('https://api.tookanapp.com/v2/get_job_details_by_order_id', {
       api_key: request.body["tookan_api_key"],
@@ -140,10 +249,11 @@ var startDate = moment();
       response.send(error);
     })
   
-  });
+});
 
 // courrio bulk order API
-router.post('/order',(request,response) => {
+router.post('/new_order',(request,response) => {
+
 var startDate = moment(); 
 // add order date to sql
 console.log("Received new order: " + startDate.format());
