@@ -1,11 +1,11 @@
-# custom_tookan
-*Instructions*
+
+**Instructions**
 
 ```
 sudo TOOKAN_API_KEY=<YOUR-TOOKAN-API-KEY> GOOGLE_API_KEY=<YOUR-GOOGLE-API-KEY> node app.js
 ```
 
-*New Order API*
+**New Order API**
 http://api.courrio.com/new_order
 
 ```
@@ -69,7 +69,7 @@ http://api.courrio.com/new_order
 }
 ```
 
-*Edit Order API*
+**Edit Order API**
 http://api.courrio.com/edit_order
 
 ```
@@ -83,7 +83,7 @@ http://api.courrio.com/edit_order
 ```
 
 
-*Order Status API*
+**Order Status API**
 http://api.courrio.com/order_status
 
 ```
@@ -94,7 +94,7 @@ http://api.courrio.com/order_status
 }
 ```
 
-*Delete Order API*
+**Delete Order API**
 http://api.courrio.com/delete_order
 
 ```
