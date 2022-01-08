@@ -304,13 +304,14 @@ router.post('/new_order', async (request, response) => {
           calculateDistance(delivery_orders[0]["address"],pickup_orders[i]["address"]);
       }
     }
+    response.send("ok");
   }) .catch(error => {
         console.error(error)
         response.statusCode = 401;
       response.send(error);
   });
     
-    response.send("ok");
+
     console.log(promiseList.length + "Waiting for orders to be processed..");
 //     await Promise.all(promiseList)
 //         .then(async results => {
