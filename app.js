@@ -112,11 +112,11 @@ router.post('/edit_order',(request,response) => {
         "has_pickup": "1",
         "has_delivery": "1",
         "layout_type": "0",
-        "job_pickup_datetime":"2022-01-09 13:24:00",
-        "job_delivery_datetime":"2022-01-09 13:24:00",
+        "job_pickup_datetime":"2022-01-08 24:24:00",
+        "job_delivery_datetime":"2022-01-08 24:24:00",
         "job_pickup_address":"he11llo",
         "customer_address": "hey1",
-        "job_id":"353607469"
+        "job_id":"353609640"
 
       })
       .then(res => {
