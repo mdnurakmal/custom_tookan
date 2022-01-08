@@ -18,7 +18,7 @@ var con = mysql.createConnection({
 });
 
 con.connect(function(err) {
-    if (err) reject(err);
+    if (err) throw err;
     console.log("Connected!");
 });
 
@@ -233,7 +233,7 @@ router.post('/new_order', async (request, response) => {
         promiseList.push(promise);
     }
 
-    
+
     // format delivery orders from customers
     var delivery_orders = []
     for (let i = 0; i < request.body["delivery_address"].length; i++) {
