@@ -279,7 +279,7 @@ router.post('/new_order',(request,response) => {
     promiseList.push(promise);
   }
 
-  console.log(promoiseList.length + "waiting for promise");
+  console.log(promiseList.length + "waiting for promise");
   Promise.all(promiseList)
     .then(results => {
         console.log("All promised completed");
