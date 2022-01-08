@@ -6,7 +6,6 @@ const bodyParser = require("body-parser");
 const res = require("express/lib/response");
 const Promise = require('promise');
 const distance = require('distance-matrix-api');
-distance.key(process.env.MAP_API_KEY);
 
 const router = express.Router();
 const app = express();
