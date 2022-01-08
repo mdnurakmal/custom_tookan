@@ -60,7 +60,7 @@ function calculateDistance(origins,des){
     }
 
     if (!err)
-        console.log("From : " + ori + " To : " + des + " : " + distances);
+        console.log("From : " + origins + " To : " + des + " : " + distances);
     
   })
 }
