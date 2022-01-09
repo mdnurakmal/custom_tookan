@@ -77,7 +77,7 @@ function checkAPIKey(key){
     const snapshot = await customersRef.where('api_key', '==', key.toString()).get();
     if (snapshot.empty) {
 
-      return reject('No matching API KEY.');
+      return reject(new Error('No matching API KEY.'));
       
     }  
     
