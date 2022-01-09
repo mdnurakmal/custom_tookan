@@ -419,9 +419,10 @@ router.post('/new_order', async (request, response) => {
                 .then(res => {
                     var endDate = moment();
                     var secondsDiff = endDate.diff(startDate, "seconds")
-                    console.log(secondsDiff + " seconds")
-                    console.log(`statusCode: ${res.status}`)
-
+                    console.log(secondsDiff + " seconds");
+                    console.log(`statusCode: ${res.status}`);
+                    console.log(res.body);
+                    
                     if (res.data["status"] == "101") {
                         response.status(res.status);
                         response.send(res.data["message"]);
