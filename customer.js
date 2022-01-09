@@ -78,18 +78,16 @@ function checkAPIKey(key){
     if (snapshot.empty) {
 
       reject('No matching API KEY.');
-      throw 'No matching API KEY.'
       return;
     }  
     
     snapshot.forEach(async doc => {
       console.log(doc.id, '=>', doc.data());
-      resolve("key found");
-    });
 
+    });
+    resolve("key found");
   }) .catch(error => {
     console.error(error)
-
 });
 
   return promise;
