@@ -6,11 +6,25 @@ const bodyParser = require("body-parser");
 const res = require("express/lib/response");
 const Promise = require('promise');
 const distance = require('google-distance-matrix');
-
+const customer = require('./customer.js');
+var srs = require('secure-random-string');
 const router = express.Router();
 const app = express();
 
 var mysql = require('mysql');
+
+// for(var i = 0 ; i < 1000; i++)
+// {
+//     customer.createCustomer("test"+i.toString(),i);
+// }
+
+
+var result = srs({length: 56,alphanumeric: true});
+
+console.log(result);
+
+
+customer.getCustomer("999");
 
 var con = mysql.createConnection({
     host: "35.189.56.73",
@@ -32,7 +46,9 @@ app.use(bodyParser.json());
 
 const axios = require('axios');
 const req = require("express/lib/request");
-const { Console } = require('console');
+const {
+    Console
+} = require('console');
 
 router.post('/webhook', (request, response) => {
     console.log(request.body["job_state"]);
@@ -50,77 +66,83 @@ router.post('/set_webhookurl', (request, response) => {
 
 });
 
-function sortDistance(origins,destinations){
-  console.log(origins + destinations);
-  distance.matrix(origins, destinations, function (err, distances) {
-  var calculatedDistance = [];
-    if (err) {
-        return console.log(err);
-    }
-    if(!distances) {
-        return console.log('no distances');
-    }
-
-    if (distances.status == 'OK') {
-      for (var i=0; i < origins.length; i++) {
-          calculatedDistance.push({"distance":0,"address":origins[i]});
-          for (var j = 0; j < destinations.length; j++) {
-              var origin = distances.origin_addresses[i];
-              var destination = distances.destination_addresses[j];
-
-              if (distances.rows[0].elements[j].status == 'OK') {
-                  var distance = distances.rows[i].elements[j].distance.text;
-                  console.log('Distance from ' + origin + ' to ' + destination + ' is ' + distance);
-
-                  calculatedDistance.push({"distance":distance.split(" ")[0],"address":destinations[j]});
-              } else {
-                  console.log(destination + ' is not reachable by land from ' + origin);
-              }
-          }
-      }
-    }
-
-    calculatedDistance.sort(function(a, b){
-      return a.distance - b.distance;
-    });
-
-    console.log(calculatedDistance)
-    return calculateDistance(calculatedDistance);
-  });
-}
-
-function calculateDistance(destinations){
-
-  var totalDistance = 0;
-  for (var j = 0; j < destinations.length-1; j++) {
-
-    distance.matrix([destinations[j]["address"]], [destinations[j+1]["address"]], function (err, distances) {
-
+function sortDistance(origins, destinations) {
+    console.log(origins + destinations);
+    distance.matrix(origins, destinations, function(err, distances) {
+        var calculatedDistance = [];
         if (err) {
             return console.log(err);
         }
-        if(!distances) {
+        if (!distances) {
             return console.log('no distances');
         }
-    
+
         if (distances.status == 'OK') {
-          for (var i=0; i < 1; i++) {
-              for (var j = 0; j < 1; j++) {
+            for (var i = 0; i < origins.length; i++) {
+                calculatedDistance.push({
+                    "distance": 0,
+                    "address": origins[i]
+                });
+                for (var j = 0; j < destinations.length; j++) {
+                    var origin = distances.origin_addresses[i];
+                    var destination = distances.destination_addresses[j];
 
-                  if (distances.rows[0].elements[j].status == 'OK') {
-                      var distance = distances.rows[0].elements[0].distance.text;
-                      console.log(distance);
-                      totalDistance += parseFloat(distance.split(" ")[0]);
-                  } 
-              }
-          }
+                    if (distances.rows[0].elements[j].status == 'OK') {
+                        var distance = distances.rows[i].elements[j].distance.text;
+                        console.log('Distance from ' + origin + ' to ' + destination + ' is ' + distance);
+
+                        calculatedDistance.push({
+                            "distance": distance.split(" ")[0],
+                            "address": destinations[j]
+                        });
+                    } else {
+                        console.log(destination + ' is not reachable by land from ' + origin);
+                    }
+                }
+            }
         }
-    
 
-        console.log("Total distance = " + totalDistance);
-        return totalDistance;
-      });
-  }
+        calculatedDistance.sort(function(a, b) {
+            return a.distance - b.distance;
+        });
+
+        console.log(calculatedDistance)
+        return calculateDistance(calculatedDistance);
+    });
+}
+
+function calculateDistance(destinations) {
+
+    var totalDistance = 0;
+    for (var j = 0; j < destinations.length - 1; j++) {
+
+        distance.matrix([destinations[j]["address"]], [destinations[j + 1]["address"]], function(err, distances) {
+
+            if (err) {
+                return console.log(err);
+            }
+            if (!distances) {
+                return console.log('no distances');
+            }
+
+            if (distances.status == 'OK') {
+                for (var i = 0; i < 1; i++) {
+                    for (var j = 0; j < 1; j++) {
+
+                        if (distances.rows[0].elements[j].status == 'OK') {
+                            var distance = distances.rows[0].elements[0].distance.text;
+                            console.log(distance);
+                            totalDistance += parseFloat(distance.split(" ")[0]);
+                        }
+                    }
+                }
+            }
+
+
+            console.log("Total distance = " + totalDistance);
+            return totalDistance;
+        });
+    }
 }
 
 router.get('/rate', (request, response) => {
@@ -298,7 +320,7 @@ router.post('/new_order', async (request, response) => {
                     "phone": request.body["pickup_address"][i]["phone"],
                     "name": request.body["pickup_address"][i]["name"],
                     "email": request.body["pickup_address"][i]["pickup_email"],
-                    "order_id":  result.insertId
+                    "order_id": result.insertId
                 })
                 resolve();
             });
@@ -345,34 +367,32 @@ router.post('/new_order', async (request, response) => {
     }
 
     await Promise.all(promiseList)
-         .then(results => {
-    // 1 pickup to n delivery
-    if (delivery_orders.length > pickup_orders.length)
-    {
-      var destinationSet = []
-      console.log("1 pickup to n delivery");
-      for (let i = 0; i < delivery_orders.length; i++) {
-        destinationSet.push(delivery_orders[i]["address"]);
-      }
-      sortDistance([pickup_orders[0]["address"]],destinationSet);
-    }
-    // n pickup to 1 delivery
-    else 
-    {
-      console.log("n pickup to 1 delivery");
-      var destinationSet = []
-      for (let i = 0; i < pickup_orders.length; i++) {
-        destinationSet.push(pickup_orders[i]["address"]);
-      }
-      sortDistance([delivery_orders[0]["address"]],destinationSet);
-    }
-    //response.send("ok");
-  }) .catch(error => {
-        console.error(error)
-        //response.statusCode = 401;
-      //response.send(error);
-  });
-    
+        .then(results => {
+            // 1 pickup to n delivery
+            if (delivery_orders.length > pickup_orders.length) {
+                var destinationSet = []
+                console.log("1 pickup to n delivery");
+                for (let i = 0; i < delivery_orders.length; i++) {
+                    destinationSet.push(delivery_orders[i]["address"]);
+                }
+                sortDistance([pickup_orders[0]["address"]], destinationSet);
+            }
+            // n pickup to 1 delivery
+            else {
+                console.log("n pickup to 1 delivery");
+                var destinationSet = []
+                for (let i = 0; i < pickup_orders.length; i++) {
+                    destinationSet.push(pickup_orders[i]["address"]);
+                }
+                sortDistance([delivery_orders[0]["address"]], destinationSet);
+            }
+            //response.send("ok");
+        }).catch(error => {
+            console.error(error)
+            //response.statusCode = 401;
+            //response.send(error);
+        });
+
 
     console.log(promiseList.length + "Waiting for orders to be processed..");
     await Promise.all(promiseList)
@@ -420,7 +440,7 @@ router.post('/new_order', async (request, response) => {
                     response.send(error);
                 })
         });
- });
+});
 
 app.use("/", router);
 

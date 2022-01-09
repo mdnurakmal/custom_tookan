@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "courrio-api",
+  "private_key_id": "3562e8411515e56ff7b0eec3eafe17aee9544aab",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC1AP/j3fRWM3Xq\nRWBLtA8EyAowly/isuMPvpGfWlkDESFqj2KofsEh5Awb+r+HX60z6gljFmyYcIa1\nOfqhAhVFCf0FPShgB4wveyLK8lH8hjkwg+9lsHDBuHsD0dAUMRdVhbzEv6oqZ0bn\nQWkBUeyc2N65hUA+VqSejsuBz8meiGpYQlMM63E5pviSUCydo9VacJsuoGRNbVNQ\n7SO1s7KViy560RyEO8aPw/xvz82vY60mTFgCXR21+xi9cA15ixbzLiI7xw8T8amh\n0ZeII4n4bgI67zbidS1JIuyAegWS1AfmzVeeL2UyggQC+7ofed2jhjWbV7FU7wVE\n/N2dCGP9AgMBAAECggEAPCGU4RJ/dZOq/KUHlJ7AzonWOMZBNkLPhA9/OT0+jPJH\n86qmz+ssJiIok7L9pe93DuQVMkHk2c+oMNSOGqcigckLsY3bt+tJ+wwhRuKxsf61\nSRTLlzDChNjQpTgytEKKyfKf/4zc7zFYMMNeKv4YaRLzCxblfNAz6CjwGrP4+x0v\nkDYB5RNXmXVEdkpp8OfowpFbE6k5rdmrOzr7CSEw9DdedJX1GPIiON3V+x75Xd3k\nOzsA6ktxwya/BDbi6shdPJKYC1wkNodEXGftcMddLkZM8emzJH/aY/YSWVsSAy+k\ntijxzpLNPZ8UaZ0bNUGJMqCA2jWpNmJ5iZcVDUiwUQKBgQDYV5wWYOayybUmR0nx\nodWEsxp36KWvzrml2PNsp6JM5RWZTFyIJpxlVW/tiwpQB0fezOUryMy46JOynUmj\nmM6IaN3kwwfK9djLzSdDQBvhauGOaPaBbQ0bJRlZM9udQJpjCLXin69ZcCY9IDhy\niujyyiOOnyMdhY9A3GJ/mABvawKBgQDWLw1nAyfqo4eNNPqoV9PYaJHZp6m+5mrD\nkEP0DijLi8UVfNq3FsDIbgRNz/jAPs+Kg73aRz8SvxmUv1WA847jPEmx/wYaRiDU\nATO808FSOnKX8F7mHJ7IfUzmOZnOQw+lFN2PVpXrHQi9bI0ila+l5aQUxmrQJxgX\nC2xunjJcNwKBgQDHaupsDmJZB2k9oZTdcKmaqmWJhh/EELA72eF4lIUckEX6itL4\nhW7AUaLcub+FyVBMZV4RoARlpa0PhcCtVlt6jf+LsOLsCPYP1kmMyflpLdZAKSyg\nXN8p2GanPRAAwd4Nz6epADzoGmKFEcA2hSj5M67W9oWt3sEPrpX0uy4bhQKBgAVx\n2MNfnyol0hJS4HRbFzWPIvYHfxctQFWMW03e9kaGXRI4xE6XM3tk4JMh0E8Cyb/Z\nrX/ZA890MDBJ1OCcUGuSYsU1mHAejEMXbLtGHsn6VmNqZt8upxKtrMDFghVuOv2V\nVDSKnPEHIeu+0K+qYnazKcKlcJ2uALzFO5JsTxdtAoGAATGPPMO4J/re0Mo+8Kpe\nQIUMq1XSFuiOKiMMNyWGvpzSmUvRxxkkElsDmUoKAOQi3CeYOT6sfPM4XQFBsX40\nSOmReCu060QZxgA6T8tWbdVYyoR4e172t7985IQjfjwfJhv+KIsUGPOyyaZ2VOI2\nd2qB78EpBfTnlSDVzVfEYTY=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firestore-sa@courrio-api.iam.gserviceaccount.com",
+  "client_id": "118268377504736864054",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firestore-sa%40courrio-api.iam.gserviceaccount.com"
+}
