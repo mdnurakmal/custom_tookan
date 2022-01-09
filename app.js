@@ -246,7 +246,7 @@ router.post('/delete_order', (request, response) => {
 router.post('/order_status', async (request, response) => {
     var checkAPIPromise = customer.checkAPIKey(request.body["api_key"]);
 
-    await Promise.all([checkAPIPromise])
+    await Promise.all(checkAPIPromise)
         .then(async results => {
 
             var startDate = moment();
