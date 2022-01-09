@@ -19,6 +19,7 @@
     "forever": "^4.0.1",
     "google-distance-matrix": "^1.1.1",
     "moment": "^2.29.1",
+    "moment-timezone": "^0.5.34",
     "mysql": "^2.18.1",
     "promise": "^8.1.0",
     "promise-mysql": "^5.0.4",

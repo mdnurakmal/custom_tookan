@@ -17,6 +17,8 @@ const req = require("express/lib/request");
 const {
     Console
 } = require('console');
+var moment = require('moment-timezone');
+moment().tz("Australia/Sydney").format();
 
 
 var mysql = require('mysql');
@@ -353,15 +355,15 @@ router.post('/new_order', async (request, response) => {
         .then(async results => {
 
             // measure latency from the moment courrio receive api request until receive respond from tookan
-            var startDate = moment.utc();
+            var startDate = moment();
             // add order date to sql
             // get customer number from api
             // add signature required to db
             // add total packages 2
             console.log("Received new order: " + startDate.format());
 
-            var deliveryDate = moment.utc(startDate, "YYYY-MM-DD").add(1, 'days').format("YYYY-MM-DD");
-            console.log(deliveryDate);
+            var deliveryDate = moment(startDate, "YYYY-MM-DD").add(1, 'days').format("YYYY-MM-DD");
+            //console.log(deliveryDate);
             // format pickup orders from customers
             var promiseList = []
             var pickup_orders = []
