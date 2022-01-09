@@ -361,7 +361,7 @@ router.post('/new_order', async (request, response) => {
             // add total packages 2
             console.log("Received new order: " + startDate.format());
 
-            var deliveryDate = moment(startDate, "YYYY-MM-DD").tz("Australia/Sydney").add({hours:17,days:1}).format("YYYY-MM-DD");
+            var deliveryDate = moment(startDate, "YYYY-MM-DD").tz("Australia/Sydney").add({hours:17,days:1}).format("YYYY-MM-DD hh:mm:ss");
             //console.log(deliveryDate);
             // format pickup orders from customers
             var promiseList = []
@@ -380,7 +380,7 @@ router.post('/new_order', async (request, response) => {
                         pickup_orders.push({
                             "address": request.body["pickup_address"][i]["street"] + " " + request.body["pickup_address"][i]["suburb"] + " " + request.body["pickup_address"][i]["state"] + " " + request.body["pickup_address"][i]["post_code"] + " " +
                                 request.body["pickup_address"][i]["country"],
-                            "time": deliveryDate + "17:00:00",
+                            "time": deliveryDate,
                             "phone": request.body["pickup_address"][i]["phone"],
                             "name": request.body["pickup_address"][i]["name"],
                             "email": request.body["pickup_address"][i]["pickup_email"],
