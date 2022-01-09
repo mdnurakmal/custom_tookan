@@ -171,8 +171,8 @@ router.post('/edit_order', (request, response) => {
             "job_pickup_datetime": request.body["datetime"],
 
             "job_pickup_address": request.body["address"],
-            "customer_address": request.body["job_pickup_address"],
-            "job_id": request.body["order_ids"]
+            "customer_address": request.body["address"],
+            "job_id": request.body["job_id"]
 
         })
         .then(res => {
