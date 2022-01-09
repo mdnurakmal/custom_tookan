@@ -10,6 +10,7 @@ const customer = require('./customer.js');
 var srs = require('secure-random-string');
 const router = express.Router();
 const app = express();
+require('dotenv').config()
 
 var mysql = require('mysql');
 
@@ -53,12 +54,25 @@ router.post('/webhook', (request, response) => {
 });
 
 // courrio set webhook url API
-router.post('/set_webhookurl', (request, response) => {
+router.post('/set_webhookurl', async (request, response) => {
+    var promise = customer.checkAPIKey(request.body["api_key"]);
 
-    console.log("set webhook url: " + request.body["order_ids"]);
+    await Promise.all([promise])
+        .then(async results => {
 
-    // fetch customer id from api key
-    // set webhook url in db
+            console.log("set webhook url: " + request.body["order_ids"]);
+
+            // fetch customer id from api key
+            // set webhook url in db
+
+        })
+        .catch(function(err) {
+            console.log(err);
+            response.statusCode = 200;
+            response.send(err.toString());
+            return;
+        });
+
 
 });
 
