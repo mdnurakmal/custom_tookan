@@ -361,7 +361,7 @@ router.post('/new_order', async (request, response) => {
             console.log("Received new order: " + startDate.format());
 
             var deliveryDate = moment(startDate, "YYYY-MM-DD").add(1, 'days').format("YYYY-MM-DD");
-
+            console.log(deliveryDate);
             // format pickup orders from customers
             var promiseList = []
             var pickup_orders = []
