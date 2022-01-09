@@ -49,8 +49,8 @@ const {
 } = require('console');
 
 router.post('/webhook', (request, response) => {
-    console.log(request.body["job_state"]);
-    pub.publish(request.body["job_state"]);
+    console.log(request.body);
+    pub.publish(request.body);
     response.status(200);
     response.send("ok");
 });
