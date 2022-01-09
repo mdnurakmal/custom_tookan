@@ -422,7 +422,7 @@ router.post('/new_order', async (request, response) => {
                     console.log(secondsDiff + " seconds");
                     console.log(`statusCode: ${res.status}`);
                     console.log(res.body);
-                    
+
                     if (res.data["status"] == "101") {
                         response.status(res.status);
                         response.send(res.data["message"]);
@@ -433,8 +433,8 @@ router.post('/new_order', async (request, response) => {
                         console.log("sending respond");
                         var message = {
                             "order_number":request.body["order_number"],
-                            "pickups":res.body["data"]["pickups"],
-                            "delivery":res.body["data"]["delivery"]
+                            "pickups":res.data["data"]["pickups"],
+                            "delivery":res.data["data"]["delivery"]
                         }
                         response.status(res.status);
                         response.send(message);
