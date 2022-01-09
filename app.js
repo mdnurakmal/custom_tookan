@@ -177,7 +177,7 @@ router.post('/edit_order', async (request, response) => {
 
             var startDate = moment();
 
-            console.log("editing order: " + request.body["order_ids"]);
+            console.log("Editing order: " + request.body["job_id"]);
 
             // fetch job id from order id from courrio DB
             // fetch whether its a pickup or delivery and change time accordingly
@@ -242,7 +242,7 @@ router.post('/delete_order', async (request, response) => {
 
             var startDate = moment();
 
-            console.log("delete order: " + request.body["order_ids"]);
+            console.log("Delete order: " + request.body["order_ids"]);
 
             // fetch job id from order id from courrio DB
 
@@ -486,7 +486,7 @@ router.post('/new_order', async (request, response) => {
             //     });
 
 
-            console.log(promiseList.length + "Waiting for orders to be processed..");
+            console.log("Waiting for orders to be processed..");
             await Promise.all(promiseList)
                 .then(async results => {
                     console.log("All promised completed");
