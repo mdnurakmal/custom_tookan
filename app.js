@@ -421,7 +421,6 @@ router.post('/new_order', async (request, response) => {
                     var secondsDiff = endDate.diff(startDate, "seconds")
                     console.log(secondsDiff + " seconds");
                     console.log(`statusCode: ${res.status}`);
-                    console.log(res.body);
 
                     if (res.data["status"] == "101") {
                         response.status(res.status);
@@ -434,7 +433,7 @@ router.post('/new_order', async (request, response) => {
                         var message = {
                             "order_number":request.body["order_number"],
                             "pickups":res.data["data"]["pickups"],
-                            "delivery":res.data["data"]["delivery"]
+                            "delivery":res.data["data"]["deliveries"]
                         }
                         response.status(res.status);
                         response.send(message);
