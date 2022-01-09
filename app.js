@@ -201,8 +201,6 @@ router.post('/edit_order', async (request, response) => {
                     var secondsDiff = endDate.diff(startDate, "seconds")
                     console.log(secondsDiff + " seconds")
 
-                    console.log(`statusCode: ${res.status}`)
-
                     if (res.data["status"] == "101") {
                         response.status(res.status);
                         response.send(res.data["message"]);
@@ -256,8 +254,6 @@ router.post('/delete_order', async (request, response) => {
                     var secondsDiff = endDate.diff(startDate, "seconds")
                     console.log(secondsDiff + " seconds")
 
-                    console.log(`statusCode: ${res.status}`)
-
                     if (res.data["status"] == "101") {
                         response.status(res.status);
                         response.send(res.data["message"]);
@@ -310,8 +306,6 @@ router.post('/order_status', async (request, response) => {
                     var endDate = moment();
                     var secondsDiff = endDate.diff(startDate, "seconds")
                     console.log(secondsDiff + " seconds")
-
-                    console.log(`statusCode: ${res.status}`)
 
                     if (res.data["status"] == "101") {
                         response.status(res.status);
