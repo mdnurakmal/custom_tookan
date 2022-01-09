@@ -318,6 +318,13 @@ router.post('/new_order', async (request, response) => {
                     "phone": request.body["pickup_address"][i]["phone"],
                     "name": request.body["pickup_address"][i]["name"],
                     "email": request.body["pickup_address"][i]["pickup_email"],
+                    "pickup_custom_field_template":"Tyroola Pickup",
+                    "pickup_meta_data":{
+                        "Pickup After":request.body["pickup_address"][i]["pickup_after"],
+                        "Pickup Reference":request.body["pickup_address"][i]["pickup_reference"],
+                        "Business Hours":request.body["pickup_address"][i]["pickup_email"],
+                        "Comment":request.body["pickup_address"][i]["pickup_email"],
+                    },
                     "tracking_link":1,
                     "order_id": result.insertId
                 })
@@ -351,6 +358,11 @@ router.post('/new_order', async (request, response) => {
                     "phone": request.body["delivery_address"][i]["phone"],
                     "name": request.body["delivery_address"][i]["name"],
                     "email": request.body["delivery_address"][i]["pickup_email"],
+                    "custom_field_template":"Tyroola Delivery",
+                    "meta_data":{
+                        "Authority To Leave":request.body["delivery_address"][i]["authority_to_leave"],
+                        "Delivery Instructions":request.body["delivery_address"][i]["delivery_instructions"],
+                    },
                     "tracking_link":1,
                     "order_id": result.insertId
                 })
@@ -420,7 +432,6 @@ router.post('/new_order', async (request, response) => {
                     var endDate = moment();
                     var secondsDiff = endDate.diff(startDate, "seconds")
                     console.log(secondsDiff + " seconds");
-                    console.log(`statusCode: ${res.status}`);
 
                     if (res.data["status"] == "101") {
                         response.status(res.status);
