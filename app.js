@@ -318,8 +318,8 @@ router.post('/new_order', async (request, response) => {
                     "phone": request.body["pickup_address"][i]["phone"],
                     "name": request.body["pickup_address"][i]["name"],
                     "email": request.body["pickup_address"][i]["pickup_email"],
-                    "pickup_custom_field_template":"Tyroola_Pickup",
-                    "pickup_meta_data":[{"label":"Pickup After","data":request.body["pickup_address"][i]["pickup_after"]},
+                    "template_name":"Tyroola_Pickup",
+                    "template_data":[{"label":"Pickup After","data":request.body["pickup_address"][i]["pickup_after"]},
                     {"label":"Pickup Reference","data":request.body["pickup_address"][i]["pickup_reference"]},
                     {"label":"Business Hours","data":request.body["pickup_address"][i]["pickup_email"]},
                     {"label":"Comment","data":request.body["pickup_address"][i]["pickup_email"]}
@@ -357,8 +357,8 @@ router.post('/new_order', async (request, response) => {
                     "phone": request.body["delivery_address"][i]["phone"],
                     "name": request.body["delivery_address"][i]["name"],
                     "email": request.body["delivery_address"][i]["pickup_email"],
-                    "custom_field_template":"Tyroola_Delivery",
-                    "meta_data":[{"label":"Authority To Leave","data":request.body["delivery_address"][i]["authority_to_leave"]},
+                    "template_name":"Tyroola_Delivery",
+                    "template_data":[{"label":"Authority To Leave","data":request.body["delivery_address"][i]["authority_to_leave"]},
                     {"label":"Delivery Instructions","data":request.body["delivery_address"][i]["delivery_instructions"]}
                     ],
                     "tracking_link":1,
