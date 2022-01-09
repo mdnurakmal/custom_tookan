@@ -353,14 +353,14 @@ router.post('/new_order', async (request, response) => {
         .then(async results => {
 
             // measure latency from the moment courrio receive api request until receive respond from tookan
-            var startDate = moment();
+            var startDate = moment.utc();
             // add order date to sql
             // get customer number from api
             // add signature required to db
             // add total packages 2
             console.log("Received new order: " + startDate.format());
 
-            var deliveryDate = moment(startDate, "YYYY-MM-DD").add(1, 'days').format("YYYY-MM-DD");
+            var deliveryDate = moment.utc(startDate, "YYYY-MM-DD").add(1, 'days').format("YYYY-MM-DD");
             console.log(deliveryDate);
             // format pickup orders from customers
             var promiseList = []
