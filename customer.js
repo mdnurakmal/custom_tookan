@@ -89,7 +89,7 @@ function checkAPIKey(key){
 
   }) .catch(error => {
     console.error(error)
-    throw error
+
 });
 
   return promise;
