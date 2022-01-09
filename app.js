@@ -246,7 +246,11 @@ router.post('/delete_order', (request, response) => {
 router.post('/order_status', async (request, response) => {
     var checkAPIPromise = customer.checkAPIKey(request.body["api_key"]);
 
-    await Promise.all(checkAPIPromise)
+    await Promise.all([checkAPIPromise])
+    .catch(function(err) {
+        // log that I have an error, return the entire array;
+        console.log('A promise failed to resolve', err);
+    })
         .then(async results => {
 
             var startDate = moment();
@@ -286,11 +290,8 @@ router.post('/order_status', async (request, response) => {
                     response.send(error);
                 })
 
-        })          
-    .catch(function(err) {
-        // log that I have an error, return the entire array;
-        console.log('A promise failed to resolve', err);
-    });
+        })   ;       
+
 
 
 });
