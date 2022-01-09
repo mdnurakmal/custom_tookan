@@ -300,6 +300,7 @@ router.post('/new_order', async (request, response) => {
     // format pickup orders from customers
     var promiseList = []
     var pickup_orders = []
+    var job_ids = []
     for (let i = 0; i < request.body["pickup_address"].length; i++) {
 
         var promise = new Promise(function(resolve, reject) {
@@ -309,7 +310,7 @@ router.post('/new_order', async (request, response) => {
             con.query(insert_sql, function(err, result) {
                 if (err) reject(err);
                 console.log("Order addded: " + result.insertId);
-
+                job_ids.push(result.insertId);
                 pickup_orders.push({
                     "address": request.body["pickup_address"][i]["street"] + " " + request.body["pickup_address"][i]["suburb"] + " " + request.body["pickup_address"][i]["state"] + " " + request.body["pickup_address"][i]["post_code"] + " " +
                         request.body["pickup_address"][i]["country"],
@@ -317,6 +318,7 @@ router.post('/new_order', async (request, response) => {
                     "phone": request.body["pickup_address"][i]["phone"],
                     "name": request.body["pickup_address"][i]["name"],
                     "email": request.body["pickup_address"][i]["pickup_email"],
+                    "tracking_link":1,
                     "order_id": result.insertId
                 })
                 resolve();
@@ -341,7 +343,7 @@ router.post('/new_order', async (request, response) => {
                 if (err) reject(err);
 
                 console.log("Order addded: " + result.insertId);
-
+                job_ids.push(result.insertId);
                 delivery_orders.push({
                     "address": request.body["delivery_address"][i]["street"] + " " + request.body["delivery_address"][i]["suburb"] + " " + request.body["delivery_address"][i]["state"] + " " + request.body["delivery_address"][i]["post_code"] + " " +
                         request.body["delivery_address"][i]["country"],
@@ -349,6 +351,7 @@ router.post('/new_order', async (request, response) => {
                     "phone": request.body["delivery_address"][i]["phone"],
                     "name": request.body["delivery_address"][i]["name"],
                     "email": request.body["delivery_address"][i]["pickup_email"],
+                    "tracking_link":1,
                     "order_id": result.insertId
                 })
 
@@ -426,8 +429,13 @@ router.post('/new_order', async (request, response) => {
                         response.status(res.status);
                         response.send(res.data["message"]);
                     } else {
+
+                        var message = {
+                            "order_number":request.body["pickup_address"][i]["pickup_email"],
+                            "job_id":job_ids,
+                        }
                         response.status(res.status);
-                        response.send(res.data["message"]);
+                        response.send(res.data["data"]);
                     }
 
                 })
