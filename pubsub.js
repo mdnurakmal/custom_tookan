@@ -1,5 +1,5 @@
 function publish(msg) {
-    topicName = 'Tookan',
+    topicName = 'projects/courrio-api/topics/Tookan',
     data = JSON.stringify({message: msg})
     // [START pubsub_publish_with_error_handler]
     // [START pubsub_quickstart_publisher]
