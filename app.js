@@ -362,7 +362,7 @@ router.post('/new_order', async (request, response) => {
             console.log("Received new order: " + startDate.format());
 
             var deliveryDate = moment(startDate, "YYYY-MM-DD").tz("Australia/Sydney").add({hours:17,days:1}).format("YYYY-MM-DD hh:mm:ss");
-            //console.log(deliveryDate);
+            console.log(deliveryDate);
             // format pickup orders from customers
             var promiseList = []
             var pickup_orders = []
