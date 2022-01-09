@@ -354,14 +354,14 @@ router.post('/new_order', async (request, response) => {
         .then(async results => {
 
             // measure latency from the moment courrio receive api request until receive respond from tookan
-            var startDate = moment().tz("Australia/Sydney");
+
             // add order date to sql
             // get customer number from api
             // add signature required to db
             // add total packages 2
             console.log("Received new order: " + startDate.format());
-
-            var deliveryDate = moment(startDate, "YYYY-MM-DD").tz("Australia/Sydney").add(2, 'days').format("YYYY-MM-DD");
+            var startDate = moment().tz("Australia/Sydney");
+            var deliveryDate = moment(startDate, "YYYY-MM-DD").tz("Australia/Sydney").add(1, 'days').add(17,'h').format("YYYY-MM-DD");
             //console.log(deliveryDate);
             // format pickup orders from customers
             var promiseList = []
