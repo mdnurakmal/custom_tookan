@@ -431,7 +431,7 @@ router.post('/new_order', async (request, response) => {
                         delivery_orders.push({
                             "address": request.body["delivery_address"][i]["street"] + " " + request.body["delivery_address"][i]["suburb"] + " " + request.body["delivery_address"][i]["state"] + " " + request.body["delivery_address"][i]["post_code"] + " " +
                                 request.body["delivery_address"][i]["country"],
-                            "time": deliveryDate + "17:00:00",
+                            "time": deliveryDate,
                             "phone": request.body["delivery_address"][i]["phone"],
                             "name": request.body["delivery_address"][i]["name"],
                             "email": request.body["delivery_address"][i]["pickup_email"],
