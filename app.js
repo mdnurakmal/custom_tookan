@@ -20,11 +20,8 @@ var mysql = require('mysql');
 
 
 var result = srs({length: 56,alphanumeric: true});
-
 console.log(result);
-
-
-customer.getCustomer("999");
+// customer.getCustomer("999");
 
 var con = mysql.createConnection({
     host: "35.189.56.73",
@@ -366,32 +363,32 @@ router.post('/new_order', async (request, response) => {
         promiseList.push(promise);
     }
 
-    await Promise.all(promiseList)
-        .then(results => {
-            // 1 pickup to n delivery
-            if (delivery_orders.length > pickup_orders.length) {
-                var destinationSet = []
-                console.log("1 pickup to n delivery");
-                for (let i = 0; i < delivery_orders.length; i++) {
-                    destinationSet.push(delivery_orders[i]["address"]);
-                }
-                sortDistance([pickup_orders[0]["address"]], destinationSet);
-            }
-            // n pickup to 1 delivery
-            else {
-                console.log("n pickup to 1 delivery");
-                var destinationSet = []
-                for (let i = 0; i < pickup_orders.length; i++) {
-                    destinationSet.push(pickup_orders[i]["address"]);
-                }
-                sortDistance([delivery_orders[0]["address"]], destinationSet);
-            }
-            //response.send("ok");
-        }).catch(error => {
-            console.error(error)
-            //response.statusCode = 401;
-            //response.send(error);
-        });
+    // await Promise.all(promiseList)
+    //     .then(results => {
+    //         // 1 pickup to n delivery
+    //         if (delivery_orders.length > pickup_orders.length) {
+    //             var destinationSet = []
+    //             console.log("1 pickup to n delivery");
+    //             for (let i = 0; i < delivery_orders.length; i++) {
+    //                 destinationSet.push(delivery_orders[i]["address"]);
+    //             }
+    //             sortDistance([pickup_orders[0]["address"]], destinationSet);
+    //         }
+    //         // n pickup to 1 delivery
+    //         else {
+    //             console.log("n pickup to 1 delivery");
+    //             var destinationSet = []
+    //             for (let i = 0; i < pickup_orders.length; i++) {
+    //                 destinationSet.push(pickup_orders[i]["address"]);
+    //             }
+    //             sortDistance([delivery_orders[0]["address"]], destinationSet);
+    //         }
+    //         //response.send("ok");
+    //     }).catch(error => {
+    //         console.error(error)
+    //         //response.statusCode = 401;
+    //         //response.send(error);
+    //     });
 
 
     console.log(promiseList.length + "Waiting for orders to be processed..");
