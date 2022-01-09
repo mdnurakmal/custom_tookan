@@ -78,6 +78,7 @@ function checkAPIKey(key){
     if (snapshot.empty) {
 
       reject('No matching API KEY.');
+      throw 'No matching API KEY.'
       return;
     }  
     
@@ -88,7 +89,7 @@ function checkAPIKey(key){
 
   }) .catch(error => {
     console.error(error)
-
+    throw error
 });
 
   return promise;
