@@ -76,13 +76,12 @@ function checkAPIKey(key){
     const customersRef = firestore.collection('customers');
     const snapshot = await customersRef.where('api_key', '==', key.toString()).get();
     if (snapshot.empty) {
-      console.log('No matching API KEY.');
+
       reject('No matching API KEY.');
       return;
     }  
     
     snapshot.forEach(async doc => {
-      console.log("key found");
       console.log(doc.id, '=>', doc.data());
       resolve("key found");
     });
