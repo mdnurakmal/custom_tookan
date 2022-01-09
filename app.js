@@ -12,6 +12,12 @@ var srs = require('secure-random-string');
 const router = express.Router();
 const app = express();
 require('dotenv').config()
+const axios = require('axios');
+const req = require("express/lib/request");
+const {
+    Console
+} = require('console');
+
 
 var mysql = require('mysql');
 
@@ -24,6 +30,7 @@ var mysql = require('mysql');
 // console.log(result);
 // customer.getCustomer("999");
 
+// setup connection to Cloud SQL
 var con = mysql.createConnection({
     host: "35.189.56.73",
     user: "root",
@@ -31,6 +38,7 @@ var con = mysql.createConnection({
     database: "courrio"
 });
 
+// connect to Cloud SQL
 con.connect(function(err) {
     if (err) throw err;
     console.log("Connected!");
@@ -42,12 +50,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
-const axios = require('axios');
-const req = require("express/lib/request");
-const {
-    Console
-} = require('console');
-
+// Listen to notification sent from Tookan and distribute to client's webhook
 router.post('/webhook', (request, response) => {
     console.log("receive webhook");
     console.log(request.body);
@@ -79,6 +82,7 @@ router.post('/set_webhookurl', async (request, response) => {
 
 });
 
+// sort destination by distance closest to origin
 function sortDistance(origins, destinations) {
     console.log(origins + destinations);
     distance.matrix(origins, destinations, function(err, distances) {
@@ -124,6 +128,7 @@ function sortDistance(origins, destinations) {
     });
 }
 
+// sum up distance between all destinations
 function calculateDistance(destinations) {
 
     var totalDistance = 0;
@@ -158,6 +163,7 @@ function calculateDistance(destinations) {
     }
 }
 
+// courrio rate API
 router.get('/rate', (request, response) => {
 
     console.log("set webhook url: " + request.body["order_ids"]);
@@ -174,7 +180,7 @@ router.post('/edit_order', async (request, response) => {
     await Promise.all([promise])
         .then(async results => {
 
-
+            // measure latency from the moment courrio receive api request until receive respond from tookan
             var startDate = moment();
 
             console.log("Editing order: " + request.body["job_id"]);
@@ -237,7 +243,7 @@ router.post('/delete_order', async (request, response) => {
     await Promise.all([promise])
         .then(async results => {
 
-
+            // measure latency from the moment courrio receive api request until receive respond from tookan
             var startDate = moment();
 
             console.log("Delete order: " + request.body["order_ids"]);
@@ -290,6 +296,7 @@ router.post('/order_status', async (request, response) => {
     await Promise.all([promise])
         .then(async results => {
 
+            // measure latency from the moment courrio receive api request until receive respond from tookan
             var startDate = moment();
 
             // fetch rate card from db
@@ -345,7 +352,7 @@ router.post('/new_order', async (request, response) => {
     await Promise.all([promise])
         .then(async results => {
 
-
+            // measure latency from the moment courrio receive api request until receive respond from tookan
             var startDate = moment();
             // add order date to sql
             // get customer number from api
@@ -481,8 +488,10 @@ router.post('/new_order', async (request, response) => {
 
 
             console.log("Waiting for orders to be processed..");
+
             await Promise.all(promiseList)
                 .then(async results => {
+
                     console.log("All promised completed");
 
                     //call create_multiple_tasks tookan api 
