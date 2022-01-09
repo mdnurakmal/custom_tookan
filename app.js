@@ -244,17 +244,17 @@ router.post('/delete_order', (request, response) => {
 
 //courrio get order API
 router.post('/order_status', async (request, response) => {
-    var checkAPIPromise = customer.checkAPIKey(request.body["api_key"]);
+    var promise = customer.checkAPIKey(request.body["api_key"]);
 
-    await Promise.all([checkAPIPromise])
+    await Promise.all([promise])
         .then(async results => {
 
             var startDate = moment();
 
             // fetch rate card from db
-        
-            console.log("requesting for order: " + request.body["order_ids"]);
-        
+
+            console.log("Requesting for order: " + request.body["order_ids"]);
+
             axios
                 .post('https://api.tookanapp.com/v2/get_job_details_by_order_id', {
                     api_key: request.body["tookan_api_key"],
@@ -265,9 +265,9 @@ router.post('/order_status', async (request, response) => {
                     var endDate = moment();
                     var secondsDiff = endDate.diff(startDate, "seconds")
                     console.log(secondsDiff + " seconds")
-        
+
                     console.log(`statusCode: ${res.status}`)
-        
+
                     if (res.data["status"] == "101") {
                         response.status(res.status);
                         response.send(res.data["message"]);
@@ -278,7 +278,7 @@ router.post('/order_status', async (request, response) => {
                         response.status(res.status);
                         response.send(res.data["data"]);
                     }
-        
+
                 })
                 .catch(error => {
                     console.error(error)
@@ -289,11 +289,11 @@ router.post('/order_status', async (request, response) => {
         })
         .catch(function(err) {
             // log that I have an error, return the entire array;
-            console.log('A promise failed to resolve', err);
-            response.statusCode=200;
+            console.log(err);
+            response.statusCode = 200;
             response.send(err.toString());
             return;
-        });      
+        });
 
 
 
@@ -332,13 +332,25 @@ router.post('/new_order', async (request, response) => {
                     "phone": request.body["pickup_address"][i]["phone"],
                     "name": request.body["pickup_address"][i]["name"],
                     "email": request.body["pickup_address"][i]["pickup_email"],
-                    "template_name":"Tyroola_Pickup",
-                    "template_data":[{"label":"Pickup_After","data":request.body["pickup_address"][i]["pickup_after"]},
-                    {"label":"Pickup_Reference","data":request.body["pickup_address"][i]["pickup_reference"]},
-                    {"label":"Business_Hours","data":request.body["pickup_address"][i]["pickup_email"]},
-                    {"label":"Comment","data":request.body["pickup_address"][i]["pickup_email"]}
+                    "template_name": "Tyroola_Pickup",
+                    "template_data": [{
+                            "label": "Pickup_After",
+                            "data": request.body["pickup_address"][i]["pickup_after"]
+                        },
+                        {
+                            "label": "Pickup_Reference",
+                            "data": request.body["pickup_address"][i]["pickup_reference"]
+                        },
+                        {
+                            "label": "Business_Hours",
+                            "data": request.body["pickup_address"][i]["pickup_email"]
+                        },
+                        {
+                            "label": "Comment",
+                            "data": request.body["pickup_address"][i]["pickup_email"]
+                        }
                     ],
-                    "tracking_link":1,
+                    "tracking_link": 1,
                     "order_id": result.insertId
                 })
                 resolve();
@@ -371,11 +383,17 @@ router.post('/new_order', async (request, response) => {
                     "phone": request.body["delivery_address"][i]["phone"],
                     "name": request.body["delivery_address"][i]["name"],
                     "email": request.body["delivery_address"][i]["pickup_email"],
-                    "template_name":"Tyroola_Delivery",
-                    "template_data":[{"label":"Authority_To_Leave","data":request.body["delivery_address"][i]["authority_to_leave"]},
-                    {"label":"Delivery_Instructions","data":request.body["delivery_address"][i]["delivery_instructions"]}
+                    "template_name": "Tyroola_Delivery",
+                    "template_data": [{
+                            "label": "Authority_To_Leave",
+                            "data": request.body["delivery_address"][i]["authority_to_leave"]
+                        },
+                        {
+                            "label": "Delivery_Instructions",
+                            "data": request.body["delivery_address"][i]["delivery_instructions"]
+                        }
                     ],
-                    "tracking_link":1,
+                    "tracking_link": 1,
                     "order_id": result.insertId
                 })
 
@@ -454,9 +472,9 @@ router.post('/new_order', async (request, response) => {
                     } else {
 
                         var message = {
-                            "order_number":request.body["order_number"],
-                            "pickups":res.data["data"]["pickups"],
-                            "delivery":res.data["data"]["deliveries"]
+                            "order_number": request.body["order_number"],
+                            "pickups": res.data["data"]["pickups"],
+                            "delivery": res.data["data"]["deliveries"]
                         }
                         response.status(res.status);
                         response.send(message);
