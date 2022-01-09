@@ -354,7 +354,7 @@ router.post('/new_order', async (request, response) => {
         .then(async results => {
 
             // measure latency from the moment courrio receive api request until receive respond from tookan
-            var startDate = moment().tz("Australia/Sydney");
+            var startDate = moment().tz("Australia/Sydney").set({"hour": 17, "minute": 0});
             // add order date to sql
             // get customer number from api
             // add signature required to db
