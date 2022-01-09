@@ -250,6 +250,9 @@ router.post('/order_status', async (request, response) => {
     .catch(function(err) {
         // log that I have an error, return the entire array;
         console.log('A promise failed to resolve', err);
+        response.status(200);
+        response.send(err);
+        return;
     })
         .then(async results => {
 
