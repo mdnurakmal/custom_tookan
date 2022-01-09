@@ -431,7 +431,7 @@ router.post('/new_order', async (request, response) => {
                     } else {
                         console.log("sending respond");
                         var message = {
-                            "order_number":request.body["pickup_address"][i]["pickup_email"],
+                            "order_number":request.body["order_number"],
                             "pickups":res.body["pickups"],
                             "delivery":res.body["delivery"]
                         }
