@@ -2,7 +2,7 @@
 # Instructions
 
 ```
-export GOOGLE_APPLICATION_CREDENTIALS="KEY_PATH"
+GOOGLE_APPLICATION_CREDENTIALS=./key.json
 sudo GOOGLE_API_KEY=<YOUR-GOOGLE-API-KEY> node app.js
 ```
 
