@@ -4,6 +4,7 @@
 ```
 GOOGLE_APPLICATION_CREDENTIALS=./key.json
 sudo GOOGLE_API_KEY=<YOUR-GOOGLE-API-KEY> node app.js
+sudo forever start app.js
 ```
 
 # New Order API (1 Pickup to X Delivery)

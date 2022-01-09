@@ -7,6 +7,7 @@ const res = require("express/lib/response");
 const Promise = require('promise');
 const distance = require('google-distance-matrix');
 const customer = require('./customer.js');
+const pub = require('./pubsub.js');
 var srs = require('secure-random-string');
 const router = express.Router();
 const app = express();
@@ -49,6 +50,7 @@ const {
 
 router.post('/webhook', (request, response) => {
     console.log(request.body["job_state"]);
+    pub.publish(request.body["job_state"]);
     response.status(200);
     response.send("ok");
 });
