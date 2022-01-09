@@ -49,6 +49,7 @@ const {
 } = require('console');
 
 router.post('/webhook', (request, response) => {
+    console.log("receive webhook");
     console.log(request.body);
     pub.publish(request.body);
     response.status(200);
