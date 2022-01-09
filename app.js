@@ -13,14 +13,13 @@ const app = express();
 
 var mysql = require('mysql');
 
-// for(var i = 0 ; i < 1000; i++)
+// for(var i = 0 ; i < 10; i++)
 // {
 //     customer.createCustomer("test"+i.toString(),i);
 // }
 
-
-var result = srs({length: 56,alphanumeric: true});
-console.log(result);
+// var result = srs({length: 56,alphanumeric: true});
+// console.log(result);
 // customer.getCustomer("999");
 
 var con = mysql.createConnection({
@@ -245,43 +244,50 @@ router.post('/delete_order', (request, response) => {
 
 //courrio get order API
 router.post('/order_status', (request, response) => {
+    var checkAPIPromise = customer.checkAPIKey(request.body["api_key"]);
 
-    var startDate = moment();
+    await Promise.all([checkAPIPromise])
+        .then(async results => {
 
-    // fetch rate card from db
+            var startDate = moment();
 
-    console.log("requesting for order: " + request.body["order_ids"]);
+            // fetch rate card from db
+        
+            console.log("requesting for order: " + request.body["order_ids"]);
+        
+            axios
+                .post('https://api.tookanapp.com/v2/get_job_details_by_order_id', {
+                    api_key: request.body["tookan_api_key"],
+                    "order_ids": [request.body["order_ids"]],
+                    "include_task_history": 0
+                })
+                .then(res => {
+                    var endDate = moment();
+                    var secondsDiff = endDate.diff(startDate, "seconds")
+                    console.log(secondsDiff + " seconds")
+        
+                    console.log(`statusCode: ${res.status}`)
+        
+                    if (res.data["status"] == "101") {
+                        response.status(res.status);
+                        response.send(res.data["message"]);
+                    } else if (res.data["status"] == "201") {
+                        response.status(res.status);
+                        response.send(res.data["message"]);
+                    } else {
+                        response.status(res.status);
+                        response.send(res.data["data"]);
+                    }
+        
+                })
+                .catch(error => {
+                    console.error(error)
+                    response.statusCode = 401;
+                    response.send(error);
+                })
 
-    axios
-        .post('https://api.tookanapp.com/v2/get_job_details_by_order_id', {
-            api_key: request.body["tookan_api_key"],
-            "order_ids": [request.body["order_ids"]],
-            "include_task_history": 0
-        })
-        .then(res => {
-            var endDate = moment();
-            var secondsDiff = endDate.diff(startDate, "seconds")
-            console.log(secondsDiff + " seconds")
+        });
 
-            console.log(`statusCode: ${res.status}`)
-
-            if (res.data["status"] == "101") {
-                response.status(res.status);
-                response.send(res.data["message"]);
-            } else if (res.data["status"] == "201") {
-                response.status(res.status);
-                response.send(res.data["message"]);
-            } else {
-                response.status(res.status);
-                response.send(res.data["data"]);
-            }
-
-        })
-        .catch(error => {
-            console.error(error)
-            response.statusCode = 401;
-            response.send(error);
-        })
 
 });
 

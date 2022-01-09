@@ -6,7 +6,7 @@ const firestore = new Firestore();
 async function createCustomer(name,customer_number) {
 
     const res = await firestore.collection('customers').add({
-        "customer_number": customer_number.toString(),
+        "api_key":  "haSeIpOUgKAp63HZAQ2GZgu5tlGZDF3nNW9S4MhQrwlKZEI9TyvizBcD",
       });
 
     const detailRef = firestore.collection('customers');
@@ -15,13 +15,10 @@ async function createCustomer(name,customer_number) {
     "val": 'webhook_url'+customer_number.toString(),
     });
 
-    await detailRef.doc(res.id).collection('details').doc("api_url").set({
-        "val": 'api_url'+customer_number.toString(),
+    await detailRef.doc(res.id).collection('details').doc("customer_number").set({
+        "val": "haSeIpOUgKAp63HZAQ2GZgu5tlGZDF3nNW9S4MhQrwlKZEI9TyvizBcD",
     });
 
-    await detailRef.doc(res.id).collection('details').doc("api_key").set({
-        "val": 'api_key'+customer_number.toString(),
-    });
 
    // Obtain a document reference.
    //const document = firestore.doc('customers/');
@@ -73,6 +70,28 @@ async function getDetails(detailCollection){
     });
 }
 
+function checkAPIKey(key){
+  var promise = new Promise(async function(resolve, reject) {
+
+    const customersRef = firestore.collection('customers');
+    const snapshot = await customersRef.where('api_key', '==', key.toString()).get();
+    if (snapshot.empty) {
+      console.log('No matching API KEY.');
+      reject();
+      return;
+    }  
+    
+    snapshot.forEach(async doc => {
+      console.log("key found");
+      console.log(doc.id, '=>', doc.data());
+      resolve();
+    });
+
+  });
+
+  return promise;
+}
 
 
-module.exports = { createCustomer , getCustomer};
+
+module.exports = { createCustomer , getCustomer,checkAPIKey};
