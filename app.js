@@ -361,7 +361,7 @@ router.post('/new_order', async (request, response) => {
             // add total packages 2
             console.log("Received new order: " + startDate.format());
 
-            var deliveryDate = moment(startDate, "YYYY-MM-DD").tz("Australia/Sydney").add(1, 'days').add(17,'h').format("YYYY-MM-DD");
+            var deliveryDate = moment(startDate, "YYYY-MM-DD").tz("Australia/Sydney").add({hours:17,days:1}).format("YYYY-MM-DD");
             //console.log(deliveryDate);
             // format pickup orders from customers
             var promiseList = []
