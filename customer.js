@@ -86,9 +86,7 @@ function checkAPIKey(key){
 
     });
     resolve("key found");
-  }) .catch(error => {
-    console.error(error)
-});
+  });
 
   return promise;
 }
