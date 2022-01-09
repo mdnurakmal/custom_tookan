@@ -72,7 +72,7 @@ async function getDetails(detailCollection){
 
 function checkAPIKey(key){
   var promise = new Promise(async function(resolve, reject) {
-
+    const firestore = new Firestore();
     const customersRef = firestore.collection('customers');
     const snapshot = await customersRef.where('api_key', '==', key.toString()).get();
     if (snapshot.empty) {
