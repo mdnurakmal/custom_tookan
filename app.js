@@ -291,7 +291,7 @@ router.post('/order_status', async (request, response) => {
             // log that I have an error, return the entire array;
             console.log('A promise failed to resolve', err);
             response.statusCode=200;
-            response.send({"Error":err});
+            response.send(err.toString());
             return;
         });      
 
