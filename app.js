@@ -243,7 +243,7 @@ router.post('/delete_order', (request, response) => {
 });
 
 //courrio get order API
-router.post('/order_status', (request, response) => {
+router.post('/order_status', async (request, response) => {
     var checkAPIPromise = customer.checkAPIKey(request.body["api_key"]);
 
     await Promise.all([checkAPIPromise])
