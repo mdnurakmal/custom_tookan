@@ -3,9 +3,13 @@
 
 ```
 GOOGLE_APPLICATION_CREDENTIALS=./key.json
-sudo GOOGLE_API_KEY=<YOUR-GOOGLE-API-KEY> node app.js
-sudo forever start app.js
+add API Key in .env
+```
+
+Delete existing forever node
 ```
 ps -ef | grep node
+sudo forever start app.js
+```
 
 https://courrio.docs.apiary.io/
