@@ -152,93 +152,121 @@ router.get('/rate', (request, response) => {
 
 // courrio edit order API
 router.post('/edit_order', (request, response) => {
+    var promise = customer.checkAPIKey(request.body["api_key"]);
 
-    var startDate = moment();
+    await Promise.all([promise])
+        .then(async results => {
 
-    console.log("editing order: " + request.body["order_ids"]);
 
-    // fetch job id from order id from courrio DB
-    // fetch whether its a pickup or delivery and change time accordingly
-    axios
-        .post('https://api.tookanapp.com/v2/edit_task', {
-            api_key: request.body["tookan_api_key"],
-            "fleet_id": "19750",
-            "timezone": "-660",
-            "has_pickup": "1",
-            "has_delivery": "1",
-            "layout_type": "0",
-            "job_pickup_datetime": request.body["datetime"],
+            var startDate = moment();
 
-            "job_pickup_address": request.body["address"],
-            "customer_address": request.body["address"],
-            "job_id": request.body["job_id"]
+            console.log("editing order: " + request.body["order_ids"]);
+
+            // fetch job id from order id from courrio DB
+            // fetch whether its a pickup or delivery and change time accordingly
+            axios
+                .post('https://api.tookanapp.com/v2/edit_task', {
+                    api_key: request.body["tookan_api_key"],
+                    "fleet_id": "19750",
+                    "timezone": "-660",
+                    "has_pickup": "1",
+                    "has_delivery": "1",
+                    "layout_type": "0",
+                    "job_pickup_datetime": request.body["datetime"],
+
+                    "job_pickup_address": request.body["address"],
+                    "customer_address": request.body["address"],
+                    "job_id": request.body["job_id"]
+
+                })
+                .then(res => {
+                    var endDate = moment();
+                    var secondsDiff = endDate.diff(startDate, "seconds")
+                    console.log(secondsDiff + " seconds")
+
+                    console.log(`statusCode: ${res.status}`)
+
+                    if (res.data["status"] == "101") {
+                        response.status(res.status);
+                        response.send(res.data["message"]);
+                    } else if (res.data["status"] == "201") {
+                        response.status(res.status);
+                        response.send(res.data["message"]);
+                    } else {
+                        response.status(res.status);
+                        response.send(res.data["message"]);
+                    }
+
+                })
+                .catch(error => {
+                    console.error(error)
+                    response.statusCode = 401;
+                    response.send(error);
+                })
+
 
         })
-        .then(res => {
-            var endDate = moment();
-            var secondsDiff = endDate.diff(startDate, "seconds")
-            console.log(secondsDiff + " seconds")
-
-            console.log(`statusCode: ${res.status}`)
-
-            if (res.data["status"] == "101") {
-                response.status(res.status);
-                response.send(res.data["message"]);
-            } else if (res.data["status"] == "201") {
-                response.status(res.status);
-                response.send(res.data["message"]);
-            } else {
-                response.status(res.status);
-                response.send(res.data["message"]);
-            }
-
-        })
-        .catch(error => {
-            console.error(error)
-            response.statusCode = 401;
-            response.send(error);
-        })
+        .catch(function(err) {
+            console.log(err);
+            response.statusCode = 200;
+            response.send(err.toString());
+            return;
+        });
 
 });
 
 //courrio delete order API
 router.post('/delete_order', (request, response) => {
+    var promise = customer.checkAPIKey(request.body["api_key"]);
 
-    var startDate = moment();
+    await Promise.all([promise])
+        .then(async results => {
 
-    console.log("delete order: " + request.body["order_ids"]);
 
-    // fetch job id from order id from courrio DB
+            var startDate = moment();
 
-    axios
-        .post('https://api.tookanapp.com/v2/delete_task', {
-            api_key: request.body["tookan_api_key"],
-            "job_id": request.body["job_id"]
+            console.log("delete order: " + request.body["order_ids"]);
+
+            // fetch job id from order id from courrio DB
+
+            axios
+                .post('https://api.tookanapp.com/v2/delete_task', {
+                    api_key: request.body["tookan_api_key"],
+                    "job_id": request.body["job_id"]
+                })
+                .then(res => {
+                    var endDate = moment();
+                    var secondsDiff = endDate.diff(startDate, "seconds")
+                    console.log(secondsDiff + " seconds")
+
+                    console.log(`statusCode: ${res.status}`)
+
+                    if (res.data["status"] == "101") {
+                        response.status(res.status);
+                        response.send(res.data["message"]);
+                    } else if (res.data["status"] == "201") {
+                        response.status(res.status);
+                        response.send(res.data["message"]);
+                    } else {
+                        response.status(res.status);
+                        response.send(res.data["message"]);
+                    }
+
+                })
+                .catch(error => {
+                    console.error(error)
+                    response.statusCode = 401;
+                    response.send(error);
+                })
+
         })
-        .then(res => {
-            var endDate = moment();
-            var secondsDiff = endDate.diff(startDate, "seconds")
-            console.log(secondsDiff + " seconds")
+        .catch(function(err) {
+            console.log(err);
+            response.statusCode = 200;
+            response.send(err.toString());
+            return;
+        });
 
-            console.log(`statusCode: ${res.status}`)
-
-            if (res.data["status"] == "101") {
-                response.status(res.status);
-                response.send(res.data["message"]);
-            } else if (res.data["status"] == "201") {
-                response.status(res.status);
-                response.send(res.data["message"]);
-            } else {
-                response.status(res.status);
-                response.send(res.data["message"]);
-            }
-
-        })
-        .catch(error => {
-            console.error(error)
-            response.statusCode = 401;
-            response.send(error);
-        })
 
 });
 
