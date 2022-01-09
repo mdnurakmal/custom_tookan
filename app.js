@@ -151,7 +151,7 @@ router.get('/rate', (request, response) => {
 });
 
 // courrio edit order API
-router.post('/edit_order', (request, response) => {
+router.post('/edit_order', async (request, response) => {
     var promise = customer.checkAPIKey(request.body["api_key"]);
 
     await Promise.all([promise])
@@ -216,7 +216,7 @@ router.post('/edit_order', (request, response) => {
 });
 
 //courrio delete order API
-router.post('/delete_order', (request, response) => {
+router.post('/delete_order', async (request, response) => {
     var promise = customer.checkAPIKey(request.body["api_key"]);
 
     await Promise.all([promise])
