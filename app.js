@@ -288,7 +288,7 @@ router.post('/order_status', async (request, response) => {
 
         })
         .catch(function(err) {
-            // log that I have an error, return the entire array;
+
             console.log(err);
             response.statusCode = 200;
             response.send(err.toString());
@@ -301,192 +301,206 @@ router.post('/order_status', async (request, response) => {
 
 // courrio bulk order API
 router.post('/new_order', async (request, response) => {
+    var promise = customer.checkAPIKey(request.body["api_key"]);
 
-    var startDate = moment();
-    // add order date to sql
-    // get customer number from api
-    // add signature required to db
-    // add total packages 2
-    console.log("Received new order: " + startDate.format());
-
-    var deliveryDate = moment(startDate, "YYYY-MM-DD").add(1, 'days').format("YYYY-MM-DD");
-
-    // format pickup orders from customers
-    var promiseList = []
-    var pickup_orders = []
-
-    for (let i = 0; i < request.body["pickup_address"].length; i++) {
-
-        var promise = new Promise(function(resolve, reject) {
-
-            var insert_sql = "INSERT INTO orders (order_ids) VALUES (0)";
-
-            con.query(insert_sql, function(err, result) {
-                if (err) reject(err);
-                console.log("Order addded: " + result.insertId);
-
-                pickup_orders.push({
-                    "address": request.body["pickup_address"][i]["street"] + " " + request.body["pickup_address"][i]["suburb"] + " " + request.body["pickup_address"][i]["state"] + " " + request.body["pickup_address"][i]["post_code"] + " " +
-                        request.body["pickup_address"][i]["country"],
-                    "time": deliveryDate + "17:00:00",
-                    "phone": request.body["pickup_address"][i]["phone"],
-                    "name": request.body["pickup_address"][i]["name"],
-                    "email": request.body["pickup_address"][i]["pickup_email"],
-                    "template_name": "Tyroola_Pickup",
-                    "template_data": [{
-                            "label": "Pickup_After",
-                            "data": request.body["pickup_address"][i]["pickup_after"]
-                        },
-                        {
-                            "label": "Pickup_Reference",
-                            "data": request.body["pickup_address"][i]["pickup_reference"]
-                        },
-                        {
-                            "label": "Business_Hours",
-                            "data": request.body["pickup_address"][i]["pickup_email"]
-                        },
-                        {
-                            "label": "Comment",
-                            "data": request.body["pickup_address"][i]["pickup_email"]
-                        }
-                    ],
-                    "tracking_link": 1,
-                    "order_id": result.insertId
-                })
-                resolve();
-            });
-
-        }).catch(function(rej) {
-            console.log(rej);
-        });;
-        promiseList.push(promise);
-    }
-
-
-    // format delivery orders from customers
-    var delivery_orders = []
-    for (let i = 0; i < request.body["delivery_address"].length; i++) {
-
-        var promise = new Promise(function(resolve, reject) {
-
-            var insert_sql = "INSERT INTO orders (order_ids) VALUES (0)";
-            con.query(insert_sql, function(err, result) {
-
-                if (err) reject(err);
-
-                console.log("Order addded: " + result.insertId);
-
-                delivery_orders.push({
-                    "address": request.body["delivery_address"][i]["street"] + " " + request.body["delivery_address"][i]["suburb"] + " " + request.body["delivery_address"][i]["state"] + " " + request.body["delivery_address"][i]["post_code"] + " " +
-                        request.body["delivery_address"][i]["country"],
-                    "time": deliveryDate + "17:00:00",
-                    "phone": request.body["delivery_address"][i]["phone"],
-                    "name": request.body["delivery_address"][i]["name"],
-                    "email": request.body["delivery_address"][i]["pickup_email"],
-                    "template_name": "Tyroola_Delivery",
-                    "template_data": [{
-                            "label": "Authority_To_Leave",
-                            "data": request.body["delivery_address"][i]["authority_to_leave"]
-                        },
-                        {
-                            "label": "Delivery_Instructions",
-                            "data": request.body["delivery_address"][i]["delivery_instructions"]
-                        }
-                    ],
-                    "tracking_link": 1,
-                    "order_id": result.insertId
-                })
-
-                resolve();
-            });
-
-        }).catch(function(rej) {
-            console.log(rej);
-        });;
-
-
-        promiseList.push(promise);
-    }
-
-    // await Promise.all(promiseList)
-    //     .then(results => {
-    //         // 1 pickup to n delivery
-    //         if (delivery_orders.length > pickup_orders.length) {
-    //             var destinationSet = []
-    //             console.log("1 pickup to n delivery");
-    //             for (let i = 0; i < delivery_orders.length; i++) {
-    //                 destinationSet.push(delivery_orders[i]["address"]);
-    //             }
-    //             sortDistance([pickup_orders[0]["address"]], destinationSet);
-    //         }
-    //         // n pickup to 1 delivery
-    //         else {
-    //             console.log("n pickup to 1 delivery");
-    //             var destinationSet = []
-    //             for (let i = 0; i < pickup_orders.length; i++) {
-    //                 destinationSet.push(pickup_orders[i]["address"]);
-    //             }
-    //             sortDistance([delivery_orders[0]["address"]], destinationSet);
-    //         }
-    //         //response.send("ok");
-    //     }).catch(error => {
-    //         console.error(error)
-    //         //response.statusCode = 401;
-    //         //response.send(error);
-    //     });
-
-
-    console.log(promiseList.length + "Waiting for orders to be processed..");
-    await Promise.all(promiseList)
+    await Promise.all([promise])
         .then(async results => {
-            console.log("All promised completed");
 
-            //call create_multiple_tasks tookan api 
-            await axios
-                .post('https://api.tookanapp.com/v2/create_multiple_tasks', {
-                    //api_key: process.env.API_KEY,
-                    api_key: request.body["tookan_api_key"],
-                    fleet_id: 19750,
-                    timezone: -660,
-                    has_pickup: 1,
-                    has_delivery: 1,
-                    layout_type: 0,
-                    geofence: 0,
-                    team_id: "",
-                    auto_assignment: 0,
-                    tags: "",
-                    pickups: pickup_orders,
-                    deliveries: delivery_orders
-                })
-                .then(res => {
-                    var endDate = moment();
-                    var secondsDiff = endDate.diff(startDate, "seconds")
-                    console.log(secondsDiff + " seconds");
 
-                    if (res.data["status"] == "101") {
-                        response.status(res.status);
-                        response.send(res.data["message"]);
-                    } else if (res.data["status"] == "201") {
-                        response.status(res.status);
-                        response.send(res.data["message"]);
-                    } else {
+            var startDate = moment();
+            // add order date to sql
+            // get customer number from api
+            // add signature required to db
+            // add total packages 2
+            console.log("Received new order: " + startDate.format());
 
-                        var message = {
-                            "order_number": request.body["order_number"],
-                            "pickups": res.data["data"]["pickups"],
-                            "delivery": res.data["data"]["deliveries"]
-                        }
-                        response.status(res.status);
-                        response.send(message);
-                    }
+            var deliveryDate = moment(startDate, "YYYY-MM-DD").add(1, 'days').format("YYYY-MM-DD");
 
-                })
-                .catch(error => {
-                    console.error(error)
-                    response.statusCode = 401;
-                    response.send(error);
-                })
+            // format pickup orders from customers
+            var promiseList = []
+            var pickup_orders = []
+
+            for (let i = 0; i < request.body["pickup_address"].length; i++) {
+
+                var promise = new Promise(function(resolve, reject) {
+
+                    var insert_sql = "INSERT INTO orders (order_ids) VALUES (0)";
+
+                    con.query(insert_sql, function(err, result) {
+                        if (err) reject(err);
+                        console.log("Order addded: " + result.insertId);
+
+                        pickup_orders.push({
+                            "address": request.body["pickup_address"][i]["street"] + " " + request.body["pickup_address"][i]["suburb"] + " " + request.body["pickup_address"][i]["state"] + " " + request.body["pickup_address"][i]["post_code"] + " " +
+                                request.body["pickup_address"][i]["country"],
+                            "time": deliveryDate + "17:00:00",
+                            "phone": request.body["pickup_address"][i]["phone"],
+                            "name": request.body["pickup_address"][i]["name"],
+                            "email": request.body["pickup_address"][i]["pickup_email"],
+                            "template_name": "Tyroola_Pickup",
+                            "template_data": [{
+                                    "label": "Pickup_After",
+                                    "data": request.body["pickup_address"][i]["pickup_after"]
+                                },
+                                {
+                                    "label": "Pickup_Reference",
+                                    "data": request.body["pickup_address"][i]["pickup_reference"]
+                                },
+                                {
+                                    "label": "Business_Hours",
+                                    "data": request.body["pickup_address"][i]["pickup_email"]
+                                },
+                                {
+                                    "label": "Comment",
+                                    "data": request.body["pickup_address"][i]["pickup_email"]
+                                }
+                            ],
+                            "tracking_link": 1,
+                            "order_id": result.insertId
+                        })
+                        resolve();
+                    });
+
+                }).catch(function(rej) {
+                    console.log(rej);
+                });;
+                promiseList.push(promise);
+            }
+
+
+            // format delivery orders from customers
+            var delivery_orders = []
+            for (let i = 0; i < request.body["delivery_address"].length; i++) {
+
+                var promise = new Promise(function(resolve, reject) {
+
+                    var insert_sql = "INSERT INTO orders (order_ids) VALUES (0)";
+                    con.query(insert_sql, function(err, result) {
+
+                        if (err) reject(err);
+
+                        console.log("Order addded: " + result.insertId);
+
+                        delivery_orders.push({
+                            "address": request.body["delivery_address"][i]["street"] + " " + request.body["delivery_address"][i]["suburb"] + " " + request.body["delivery_address"][i]["state"] + " " + request.body["delivery_address"][i]["post_code"] + " " +
+                                request.body["delivery_address"][i]["country"],
+                            "time": deliveryDate + "17:00:00",
+                            "phone": request.body["delivery_address"][i]["phone"],
+                            "name": request.body["delivery_address"][i]["name"],
+                            "email": request.body["delivery_address"][i]["pickup_email"],
+                            "template_name": "Tyroola_Delivery",
+                            "template_data": [{
+                                    "label": "Authority_To_Leave",
+                                    "data": request.body["delivery_address"][i]["authority_to_leave"]
+                                },
+                                {
+                                    "label": "Delivery_Instructions",
+                                    "data": request.body["delivery_address"][i]["delivery_instructions"]
+                                }
+                            ],
+                            "tracking_link": 1,
+                            "order_id": result.insertId
+                        })
+
+                        resolve();
+                    });
+
+                }).catch(function(rej) {
+                    console.log(rej);
+                });;
+
+
+                promiseList.push(promise);
+            }
+
+            // await Promise.all(promiseList)
+            //     .then(results => {
+            //         // 1 pickup to n delivery
+            //         if (delivery_orders.length > pickup_orders.length) {
+            //             var destinationSet = []
+            //             console.log("1 pickup to n delivery");
+            //             for (let i = 0; i < delivery_orders.length; i++) {
+            //                 destinationSet.push(delivery_orders[i]["address"]);
+            //             }
+            //             sortDistance([pickup_orders[0]["address"]], destinationSet);
+            //         }
+            //         // n pickup to 1 delivery
+            //         else {
+            //             console.log("n pickup to 1 delivery");
+            //             var destinationSet = []
+            //             for (let i = 0; i < pickup_orders.length; i++) {
+            //                 destinationSet.push(pickup_orders[i]["address"]);
+            //             }
+            //             sortDistance([delivery_orders[0]["address"]], destinationSet);
+            //         }
+            //         //response.send("ok");
+            //     }).catch(error => {
+            //         console.error(error)
+            //         //response.statusCode = 401;
+            //         //response.send(error);
+            //     });
+
+
+            console.log(promiseList.length + "Waiting for orders to be processed..");
+            await Promise.all(promiseList)
+                .then(async results => {
+                    console.log("All promised completed");
+
+                    //call create_multiple_tasks tookan api 
+                    await axios
+                        .post('https://api.tookanapp.com/v2/create_multiple_tasks', {
+                            //api_key: process.env.API_KEY,
+                            api_key: request.body["tookan_api_key"],
+                            fleet_id: 19750,
+                            timezone: -660,
+                            has_pickup: 1,
+                            has_delivery: 1,
+                            layout_type: 0,
+                            geofence: 0,
+                            team_id: "",
+                            auto_assignment: 0,
+                            tags: "",
+                            pickups: pickup_orders,
+                            deliveries: delivery_orders
+                        })
+                        .then(res => {
+                            var endDate = moment();
+                            var secondsDiff = endDate.diff(startDate, "seconds")
+                            console.log(secondsDiff + " seconds");
+
+                            if (res.data["status"] == "101") {
+                                response.status(res.status);
+                                response.send(res.data["message"]);
+                            } else if (res.data["status"] == "201") {
+                                response.status(res.status);
+                                response.send(res.data["message"]);
+                            } else {
+
+                                var message = {
+                                    "order_number": request.body["order_number"],
+                                    "pickups": res.data["data"]["pickups"],
+                                    "delivery": res.data["data"]["deliveries"]
+                                }
+                                response.status(res.status);
+                                response.send(message);
+                            }
+
+                        })
+                        .catch(error => {
+                            console.error(error)
+                            response.statusCode = 401;
+                            response.send(error);
+                        })
+                });
+
+        })
+        .catch(function(err) {
+            console.log(err);
+            response.statusCode = 200;
+            response.send(err.toString());
+            return;
         });
+
 });
 
 app.use("/", router);
