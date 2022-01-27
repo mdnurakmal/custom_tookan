@@ -79,8 +79,8 @@ async function getRateCard(ratecard) {
       console.log('No matching documents.');
       return;
   }
-
-  console.log(snapshot[0].data());
+  
+  console.log(snapshot.docs[0].data());
 
   // snapshot.forEach(async doc => {
   //     console.log(doc.id, '=>', doc.data());
