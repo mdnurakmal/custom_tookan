@@ -80,7 +80,7 @@ async function getRateCard(ratecard) {
       return;
   }
   
-  console.log(snapshot.docs[0].data());
+  return snapshot.docs[0].data();
 
   // snapshot.forEach(async doc => {
   //     console.log(doc.id, '=>', doc.data());
