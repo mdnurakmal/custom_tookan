@@ -271,7 +271,7 @@ function computeDeliveryDate(rate,fixedDeadline,orderDate)
 {
     // same day delivery and delivery dateline set to 1700
     console.log(rate + " , " + fixedDeadline  + " , " + orderDate)
-    
+
     if(rate == "SDS" && fixedDeadline == 1)
     {
         //check if order is before cutoff
@@ -290,8 +290,8 @@ router.post('/new_order', async (request, response) => {
 
             // get ratecard
             var rateCode =request.body["rate_code"];
-            await customer.getRateCard(rateCode["Delivery Type"],rateCode["Fixed Delivery Deadline"],rateCode["Order Cutoff"]);
-
+            var rateCard = await customer.getRateCard(rateCode);
+            computeDeliveryDate(rateCard["Delivery Type"],rateCard["Fixed Delivery Deadline"],rateCard["Order Cutoff"])
 
             // measure latency from the moment courrio receive api request until receive respond from tookan
             var startDate = moment().tz("Australia/Sydney").set({"hour": 17, "minute": 0,"second":0});
