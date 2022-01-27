@@ -332,8 +332,7 @@ router.post('/new_order', async (request, response) => {
 
             // compute delivery date based on ratecard
             var orderDate = moment().tz("Australia/Sydney");
-            computeDeliveryDate(rateCard["Delivery Type"],rateCard["Fixed Delivery Deadline"],rateCard["Order Cutoff"],orderDate);
-      
+       
             var deliveryDate = computeDeliveryDate(rateCard["Delivery Type"],rateCard["Fixed Delivery Deadline"],rateCard["Order Cutoff"],rateCard["Delivery Deadline Home"],orderDate);
             console.log(deliveryDate);
             // format pickup orders from customers
