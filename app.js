@@ -276,7 +276,8 @@ function computeDeliveryDate(rate,fixedDeadline,orderCutOff,orderDate)
     {
         //check if order is before cutoff
         var cutoff = moment().tz("Australia/Sydney").set({"hour": 17, "minute": 0,"second":0});
-        console.log(cutoff.toString());
+        console.log("cutoff is " + cutoff.toString());
+        console.log("orderDate is " + orderDate.toString());
         var isBefore = moment(orderDate).isBefore(cutoff);
 
         if(isBefore)
@@ -311,8 +312,9 @@ router.post('/new_order', async (request, response) => {
             console.log("Received new order");
 
             // compute delivery date based on ratecard
-            computeDeliveryDate(rateCard["Delivery Type"],rateCard["Fixed Delivery Deadline"],rateCard["Order Cutoff"],startDate);
-
+            var orderDate = moment().tz("Australia/Sydney");
+            computeDeliveryDate(rateCard["Delivery Type"],rateCard["Fixed Delivery Deadline"],rateCard["Order Cutoff"],orderDate);
+      
             var deliveryDate = moment(startDate, "YYYY-MM-DD").tz("Australia/Sydney").add(1,"days").format("YYYY-MM-DD HH:mm:ss");
             console.log(deliveryDate);
             // format pickup orders from customers
