@@ -86,29 +86,29 @@ router.post('/set_webhookurl', async (request, response) => {
 // get price
 router.post('/price', async (request, response) => {
     axios
-    .post('http://34.87.232.250/price', {
-        "api_key":request.body["api_key"],
-        "delivery_code":request.body["delivery_code"],
-        "pickup_address":request.body["pickup_address"],
-        "delivery_address":request.body["delivery_address"],
-        "weight":request.body["weight"],
-        "customer_number":request.body["customer_number"],
-        "volume":request.body["volume"],
-        "rate_code":request.body["rate_code"]
-    })
-    .then(res => {
+        .post('http://34.87.232.250/price', {
+            "api_key": request.body["api_key"],
+            "delivery_code": request.body["delivery_code"],
+            "pickup_address": request.body["pickup_address"],
+            "delivery_address": request.body["delivery_address"],
+            "weight": request.body["weight"],
+            "customer_number": request.body["customer_number"],
+            "volume": request.body["volume"],
+            "rate_code": request.body["rate_code"]
+        })
+        .then(res => {
 
-     
+
             response.status(res.status);
             response.send(res.data);
-      
 
-    })
-    .catch(error => {
-        console.error(error)
-        response.statusCode = 401;
-        response.send(error);
-    })
+
+        })
+        .catch(error => {
+            console.error(error)
+            response.statusCode = 401;
+            response.send(error);
+        })
 
 });
 
@@ -297,44 +297,59 @@ router.post('/order_status', async (request, response) => {
 });
 
 
-function computeDeliveryDate(rate,fixedDeadline,orderCutOff,deliveryDeadline,orderDate)
-{
+function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline, orderDate) {
     // same day delivery and delivery dateline set to 1700
-    console.log(rate + " , " + fixedDeadline  + " , " + orderDate.format('MMMM Do YYYY, h:mm:ss a') + ", " +orderCutOff)
+    console.log(rate + " , " + fixedDeadline + " , " + orderDate.format('MMMM Do YYYY, h:mm:ss a') + ", " + orderCutOff)
     var deliveryDate;
     var cutoff;
     var timeSplit = orderCutOff.split(":")[0];
 
     //check if order is before cutoff
 
-    if(rate == "SDS" && fixedDeadline == 1)
-    {
-        cutoff = moment().tz("Australia/Sydney").set({"hour": timeSplit[0], "minute": timeSplit[1],"second":0});
-        deliveryDate = moment().tz("Australia/Sydney").set({"hour": 17, "minute": 0,"second":0});
-    }
-    else if(rate == "VIP" && fixedDeadline == 0)
-    {
+    if (rate == "SDS" && fixedDeadline == 1) {
+        cutoff = moment().tz("Australia/Sydney").set({
+            "hour": timeSplit[0],
+            "minute": timeSplit[1],
+            "second": 0
+        });
+        deliveryDate = moment().tz("Australia/Sydney").set({
+            "hour": 17,
+            "minute": 0,
+            "second": 0
+        });
+    } else if (rate == "VIP" && fixedDeadline == 0) {
 
-        cutoff = moment().tz("Australia/Sydney").set({"hour": timeSplit[0], "minute": timeSplit[1],"second":0});
-        deliveryDate = moment().tz("Australia/Sydney").set({"hour": 17, "minute": 0,"second":0});
-    }
-    else if(rate == "ND5" && fixedDeadline == 1)
-    {
+        cutoff = moment().tz("Australia/Sydney").set({
+            "hour": timeSplit[0],
+            "minute": timeSplit[1],
+            "second": 0
+        });
+        deliveryDate = moment().tz("Australia/Sydney").set({
+            "hour": 17,
+            "minute": 0,
+            "second": 0
+        });
+    } else if (rate == "ND5" && fixedDeadline == 1) {
 
-        cutoff = moment().tz("Australia/Sydney").set({"hour": timeSplit[0], "minute": timeSplit[1],"second":0});
-        deliveryDate = moment().tz("Australia/Sydney").add(1,"days");
-        deliveryDate.set({"hour": 17, "minute": 0,"second":0});
+        cutoff = moment().tz("Australia/Sydney").set({
+            "hour": timeSplit[0],
+            "minute": timeSplit[1],
+            "second": 0
+        });
+        deliveryDate = moment().tz("Australia/Sydney").add(1, "days");
+        deliveryDate.set({
+            "hour": 17,
+            "minute": 0,
+            "second": 0
+        });
     }
 
     var isBefore = moment(orderDate).isBefore(cutoff);
 
-    if(isBefore)
-    {
+    if (isBefore) {
         console.log("order is before cut off");
         return deliveryDate;
-    }
-    else
-    {
+    } else {
         console.log("order is after cut off");
         throw "Order is after cut off time";
     }
@@ -350,11 +365,15 @@ router.post('/new_order', async (request, response) => {
         .then(async results => {
 
             // get ratecard
-            var rateCode =request.body["rate_code"];
+            var rateCode = request.body["rate_code"];
             var rateCard = await customer.getRateCard(rateCode);
-      
+
             // measure latency from the moment courrio receive api request until receive respond from tookan
-            var startDate = moment().tz("Australia/Sydney").set({"hour": 17, "minute": 0,"second":0});
+            var startDate = moment().tz("Australia/Sydney").set({
+                "hour": 17,
+                "minute": 0,
+                "second": 0
+            });
             // add order date to sql
             // get customer number from api
             // add signature required to db
@@ -364,14 +383,12 @@ router.post('/new_order', async (request, response) => {
             // compute delivery date based on ratecard
             var orderDate = moment().tz("Australia/Sydney");
             var deliveryDate;
-            try{
-                deliveryDate = computeDeliveryDate(rateCard["Delivery Type"],rateCard["Fixed Delivery Deadline"],rateCard["Order Cutoff"],rateCard["Delivery Deadline Home"],orderDate);
-            }
-            catch(err)
-            {
+            try {
+                deliveryDate = computeDeliveryDate(rateCard["Delivery Type"], rateCard["Fixed Delivery Deadline"], rateCard["Order Cutoff"], rateCard["Delivery Deadline Home"], orderDate);
+            } catch (err) {
                 throw err;
             }
-        
+
 
             console.log(deliveryDate);
             // format pickup orders from customers
