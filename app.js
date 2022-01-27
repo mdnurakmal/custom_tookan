@@ -277,7 +277,12 @@ function computeDeliveryDate(rate,fixedDeadline,orderDate)
         //check if order is before cutoff
         var cutoff = moment().tz("Australia/Sydney").set({"hour": 17, "minute": 0,"second":0});
         console.log(cutoff.toString());
-        // var isafter = moment(date_time).isBefore(cutoff);
+        var isBefore = moment(orderDate).isBefore(cutoff);
+
+        if(isBefore)
+        {
+            console.log("order is before cut off");
+        }
         // return moment(orderDate, "YYYY-MM-DD").tz("Australia/Sydney").add(1,"days").format("YYYY-MM-DD HH:mm:ss");
     }
 }
