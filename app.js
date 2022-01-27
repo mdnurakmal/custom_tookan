@@ -335,7 +335,7 @@ function computeDeliveryDate(rate,fixedDeadline,orderCutOff,deliveryDeadline,ord
     }
     else
     {
-        return deliveryDate;
+        //return deliveryDate;
         throw "Order is after cut off time";
     }
 
@@ -363,9 +363,15 @@ router.post('/new_order', async (request, response) => {
 
             // compute delivery date based on ratecard
             var orderDate = moment().tz("Australia/Sydney");
-       
-            var deliveryDate = computeDeliveryDate(rateCard["Delivery Type"],rateCard["Fixed Delivery Deadline"],rateCard["Order Cutoff"],rateCard["Delivery Deadline Home"],orderDate);
-
+            var deliveryDate;
+            try{
+                deliveryDate = computeDeliveryDate(rateCard["Delivery Type"],rateCard["Fixed Delivery Deadline"],rateCard["Order Cutoff"],rateCard["Delivery Deadline Home"],orderDate);
+            }
+            catch(err)
+            {
+                throw err;
+            }
+        
 
             console.log(deliveryDate);
             // format pickup orders from customers
