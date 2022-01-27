@@ -83,86 +83,6 @@ router.post('/set_webhookurl', async (request, response) => {
 
 });
 
-// sort destination by distance closest to origin
-function sortDistance(origins, destinations) {
-    console.log(origins + destinations);
-    distance.matrix(origins, destinations, function(err, distances) {
-        var calculatedDistance = [];
-        if (err) {
-            return console.log(err);
-        }
-        if (!distances) {
-            return console.log('no distances');
-        }
-
-        if (distances.status == 'OK') {
-            for (var i = 0; i < origins.length; i++) {
-                calculatedDistance.push({
-                    "distance": 0,
-                    "address": origins[i]
-                });
-                for (var j = 0; j < destinations.length; j++) {
-                    var origin = distances.origin_addresses[i];
-                    var destination = distances.destination_addresses[j];
-
-                    if (distances.rows[0].elements[j].status == 'OK') {
-                        var distance = distances.rows[i].elements[j].distance.text;
-                        console.log('Distance from ' + origin + ' to ' + destination + ' is ' + distance);
-
-                        calculatedDistance.push({
-                            "distance": distance.split(" ")[0],
-                            "address": destinations[j]
-                        });
-                    } else {
-                        console.log(destination + ' is not reachable by land from ' + origin);
-                    }
-                }
-            }
-        }
-
-        calculatedDistance.sort(function(a, b) {
-            return a.distance - b.distance;
-        });
-
-        console.log(calculatedDistance)
-        return calculateDistance(calculatedDistance);
-    });
-}
-
-// sum up distance between all destinations
-function calculateDistance(destinations) {
-
-    var totalDistance = 0;
-    for (var j = 0; j < destinations.length - 1; j++) {
-
-        distance.matrix([destinations[j]["address"]], [destinations[j + 1]["address"]], function(err, distances) {
-
-            if (err) {
-                return console.log(err);
-            }
-            if (!distances) {
-                return console.log('no distances');
-            }
-
-            if (distances.status == 'OK') {
-                for (var i = 0; i < 1; i++) {
-                    for (var j = 0; j < 1; j++) {
-
-                        if (distances.rows[0].elements[j].status == 'OK') {
-                            var distance = distances.rows[0].elements[0].distance.text;
-                            console.log(distance);
-                            totalDistance += parseFloat(distance.split(" ")[0]);
-                        }
-                    }
-                }
-            }
-
-
-            console.log("Total distance = " + totalDistance);
-            return totalDistance;
-        });
-    }
-}
 
 // courrio rate API
 router.get('/rate', (request, response) => {
@@ -353,6 +273,9 @@ router.post('/new_order', async (request, response) => {
     await Promise.all([promise])
         .then(async results => {
 
+
+            var rateCode =request.body["rate_code"];
+            customer.getRateCard(rateCode);
             // measure latency from the moment courrio receive api request until receive respond from tookan
             var startDate = moment().tz("Australia/Sydney").set({"hour": 17, "minute": 0,"second":0});
             // add order date to sql
@@ -459,34 +382,6 @@ router.post('/new_order', async (request, response) => {
 
                 promiseList.push(promise);
             }
-
-            // await Promise.all(promiseList)
-            //     .then(results => {
-            //         // 1 pickup to n delivery
-            //         if (delivery_orders.length > pickup_orders.length) {
-            //             var destinationSet = []
-            //             console.log("1 pickup to n delivery");
-            //             for (let i = 0; i < delivery_orders.length; i++) {
-            //                 destinationSet.push(delivery_orders[i]["address"]);
-            //             }
-            //             sortDistance([pickup_orders[0]["address"]], destinationSet);
-            //         }
-            //         // n pickup to 1 delivery
-            //         else {
-            //             console.log("n pickup to 1 delivery");
-            //             var destinationSet = []
-            //             for (let i = 0; i < pickup_orders.length; i++) {
-            //                 destinationSet.push(pickup_orders[i]["address"]);
-            //             }
-            //             sortDistance([delivery_orders[0]["address"]], destinationSet);
-            //         }
-            //         //response.send("ok");
-            //     }).catch(error => {
-            //         console.error(error)
-            //         //response.statusCode = 401;
-            //         //response.send(error);
-            //     });
-
 
             console.log("Waiting for orders to be processed..");
 

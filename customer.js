@@ -72,6 +72,20 @@ async function getDetails(detailCollection) {
   });
 }
 
+async function getRateCard(ratecard) {
+  const customersRef = firestore.collection('pricing');
+  const snapshot = await customersRef.where('Rate Code', '==', ratecard.toString()).get();
+  if (snapshot.empty) {
+      console.log('No matching documents.');
+      return;
+  }
+
+  snapshot.forEach(async doc => {
+      console.log(doc.id, '=>', doc.data());
+      
+  });
+}
+
 function checkAPIKey(key) {
   var promise = new Promise(async function(resolve, reject) {
       const firestore = new Firestore();
@@ -93,5 +107,6 @@ function checkAPIKey(key) {
 module.exports = {
   createCustomer,
   getCustomer,
-  checkAPIKey
+  checkAPIKey,
+  getRateCard
 };
