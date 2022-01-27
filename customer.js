@@ -81,11 +81,6 @@ async function getRateCard(ratecard) {
   }
   
   return snapshot.docs[0].data();
-
-  // snapshot.forEach(async doc => {
-  //     console.log(doc.id, '=>', doc.data());
-      
-  // });
 }
 
 function checkAPIKey(key) {

@@ -83,6 +83,36 @@ router.post('/set_webhookurl', async (request, response) => {
 
 });
 
+// get price
+router.post('/price', async (request, response) => {
+    axios
+    .post('http://34.87.232.250/price', {
+        "api_key":request.body["api_key"],
+        "delivery_code":request.body["delivery_code"],
+        "pickup_address":request.body["pickup_address"],
+        "delivery_address":request.body["delivery_address"],
+        "weight":request.body["weight"],
+        "customer_number":request.body["customer_number"],
+        "volume":request.body["volume"],
+        "rate_code":request.body["rate_code"]
+    })
+    .then(res => {
+
+     
+            response.status(res.status);
+            response.send(res.data);
+      
+
+    })
+    .catch(error => {
+        console.error(error)
+        response.statusCode = 401;
+        response.send(error);
+    })
+
+});
+
+
 
 // courrio rate API
 router.get('/rate', (request, response) => {
@@ -334,6 +364,8 @@ router.post('/new_order', async (request, response) => {
             var orderDate = moment().tz("Australia/Sydney");
        
             var deliveryDate = computeDeliveryDate(rateCard["Delivery Type"],rateCard["Fixed Delivery Deadline"],rateCard["Order Cutoff"],rateCard["Delivery Deadline Home"],orderDate);
+
+
             console.log(deliveryDate);
             // format pickup orders from customers
             var promiseList = []
@@ -440,50 +472,50 @@ router.post('/new_order', async (request, response) => {
                     console.log("All promised completed");
 
                     //call create_multiple_tasks tookan api 
-                    await axios
-                        .post('https://api.tookanapp.com/v2/create_multiple_tasks', {
-                            //api_key: process.env.API_KEY,
-                            api_key: request.body["tookan_api_key"],
-                            fleet_id: 19750,
-                            timezone: -660,
-                            has_pickup: 1,
-                            has_delivery: 1,
-                            layout_type: 0,
-                            geofence: 0,
-                            team_id: "",
-                            auto_assignment: 0,
-                            tags: "",
-                            pickups: pickup_orders,
-                            deliveries: delivery_orders
-                        })
-                        .then(res => {
-                            var endDate = moment();
-                            var secondsDiff = endDate.diff(startDate, "seconds")
-                            console.log(secondsDiff + " seconds");
+                    // await axios
+                    //     .post('https://api.tookanapp.com/v2/create_multiple_tasks', {
+                    //         //api_key: process.env.API_KEY,
+                    //         api_key: request.body["tookan_api_key"],
+                    //         fleet_id: 19750,
+                    //         timezone: -660,
+                    //         has_pickup: 1,
+                    //         has_delivery: 1,
+                    //         layout_type: 0,
+                    //         geofence: 0,
+                    //         team_id: "",
+                    //         auto_assignment: 0,
+                    //         tags: "",
+                    //         pickups: pickup_orders,
+                    //         deliveries: delivery_orders
+                    //     })
+                    //     .then(res => {
+                    //         var endDate = moment();
+                    //         var secondsDiff = endDate.diff(startDate, "seconds")
+                    //         console.log(secondsDiff + " seconds");
 
-                            if (res.data["status"] == "101") {
-                                response.status(res.status);
-                                response.send(res.data["message"]);
-                            } else if (res.data["status"] == "201") {
-                                response.status(res.status);
-                                response.send(res.data["message"]);
-                            } else {
+                    //         if (res.data["status"] == "101") {
+                    //             response.status(res.status);
+                    //             response.send(res.data["message"]);
+                    //         } else if (res.data["status"] == "201") {
+                    //             response.status(res.status);
+                    //             response.send(res.data["message"]);
+                    //         } else {
 
-                                var message = {
-                                    "order_number": request.body["order_number"],
-                                    "pickups": res.data["data"]["pickups"],
-                                    "delivery": res.data["data"]["deliveries"]
-                                }
-                                response.status(res.status);
-                                response.send(message);
-                            }
+                    //             var message = {
+                    //                 "order_number": request.body["order_number"],
+                    //                 "pickups": res.data["data"]["pickups"],
+                    //                 "delivery": res.data["data"]["deliveries"]
+                    //             }
+                    //             response.status(res.status);
+                    //             response.send(message);
+                    //         }
 
-                        })
-                        .catch(error => {
-                            console.error(error)
-                            response.statusCode = 401;
-                            response.send(error);
-                        })
+                    //     })
+                    //     .catch(error => {
+                    //         console.error(error)
+                    //         response.statusCode = 401;
+                    //         response.send(error);
+                    //     })
 
 
                     // response.status(200);
