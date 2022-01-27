@@ -286,6 +286,7 @@ function computeDeliveryDate(rate,fixedDeadline,orderCutOff,orderDate)
         }
         else
         {
+            throw "Order is after cut off time";
             console.log("order is after cut off");
         }
         // return moment(orderDate, "YYYY-MM-DD").tz("Australia/Sydney").add(1,"days").format("YYYY-MM-DD HH:mm:ss");
@@ -475,7 +476,7 @@ router.post('/new_order', async (request, response) => {
         })
         .catch(function(err) {
             console.log(err);
-            response.statusCode = 200;
+            response.statusCode = 400;
             response.send(err.toString());
             return;
         });
