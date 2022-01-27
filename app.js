@@ -283,6 +283,10 @@ function computeDeliveryDate(rate,fixedDeadline,orderDate)
         {
             console.log("order is before cut off");
         }
+        else
+        {
+            console.log("order is after cut off");
+        }
         // return moment(orderDate, "YYYY-MM-DD").tz("Australia/Sydney").add(1,"days").format("YYYY-MM-DD HH:mm:ss");
     }
 }
