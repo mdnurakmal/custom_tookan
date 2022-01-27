@@ -267,7 +267,7 @@ router.post('/order_status', async (request, response) => {
 });
 
 
-function computeDeliveryDate(rate,fixedDeadline,orderDate)
+function computeDeliveryDate(rate,fixedDeadline,orderCutOff,orderDate)
 {
     // same day delivery and delivery dateline set to 1700
     console.log(rate + " , " + fixedDeadline  + " , " + orderDate)
@@ -301,8 +301,7 @@ router.post('/new_order', async (request, response) => {
             // get ratecard
             var rateCode =request.body["rate_code"];
             var rateCard = await customer.getRateCard(rateCode);
-            computeDeliveryDate(rateCard["Delivery Type"],rateCard["Fixed Delivery Deadline"],rateCard["Order Cutoff"])
-
+      
             // measure latency from the moment courrio receive api request until receive respond from tookan
             var startDate = moment().tz("Australia/Sydney").set({"hour": 17, "minute": 0,"second":0});
             // add order date to sql
@@ -312,6 +311,7 @@ router.post('/new_order', async (request, response) => {
             console.log("Received new order");
 
             // compute delivery date based on ratecard
+            computeDeliveryDate(rateCard["Delivery Type"],rateCard["Fixed Delivery Deadline"],rateCard["Order Cutoff"],startDate);
 
             var deliveryDate = moment(startDate, "YYYY-MM-DD").tz("Australia/Sydney").add(1,"days").format("YYYY-MM-DD HH:mm:ss");
             console.log(deliveryDate);
