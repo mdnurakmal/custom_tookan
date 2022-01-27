@@ -335,6 +335,7 @@ function computeDeliveryDate(rate,fixedDeadline,orderCutOff,deliveryDeadline,ord
     }
     else
     {
+        return deliveryDate;
         throw "Order is after cut off time";
     }
 
