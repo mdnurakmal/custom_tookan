@@ -270,7 +270,7 @@ router.post('/order_status', async (request, response) => {
 function computeDeliveryDate(rate,fixedDeadline,orderCutOff,orderDate)
 {
     // same day delivery and delivery dateline set to 1700
-    console.log(rate + " , " + fixedDeadline  + " , " + orderDate)
+    console.log(rate + " , " + fixedDeadline  + " , " + orderDate + ", " +orderCutOff)
 
     if(rate == "SDS" && fixedDeadline == 1)
     {
@@ -312,7 +312,7 @@ router.post('/new_order', async (request, response) => {
             console.log("Received new order");
 
             // compute delivery date based on ratecard
-            var orderDate = moment().tz("Australia/Sydney");
+            var orderDate = moment("YYYY-MM-DD HH:mm:ss").tz("Australia/Sydney");
             computeDeliveryDate(rateCard["Delivery Type"],rateCard["Fixed Delivery Deadline"],rateCard["Order Cutoff"],orderDate);
       
             var deliveryDate = moment(startDate, "YYYY-MM-DD").tz("Australia/Sydney").add(1,"days").format("YYYY-MM-DD HH:mm:ss");
