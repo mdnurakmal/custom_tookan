@@ -267,30 +267,48 @@ router.post('/order_status', async (request, response) => {
 });
 
 
-function computeDeliveryDate(rate,fixedDeadline,orderCutOff,orderDate)
+function computeDeliveryDate(rate,fixedDeadline,orderCutOff,deliveryDeadline,orderDate)
 {
     // same day delivery and delivery dateline set to 1700
     console.log(rate + " , " + fixedDeadline  + " , " + orderDate.format('MMMM Do YYYY, h:mm:ss a') + ", " +orderCutOff)
+    var deliveryDate;
+    var cutoff;
+    var timeSplit = orderCutOff.split(":")[0];
+
+    //check if order is before cutoff
 
     if(rate == "SDS" && fixedDeadline == 1)
     {
-        //check if order is before cutoff
-        var cutoff = moment().tz("Australia/Sydney").set({"hour": 17, "minute": 0,"second":0});
-        console.log("cutoff is " + cutoff.toString());
-        console.log("orderDate is " + orderDate.toString());
-        var isBefore = moment(orderDate).isBefore(cutoff);
-
-        if(isBefore)
-        {
-            console.log("order is before cut off");
-        }
-        else
-        {
-            throw "Order is after cut off time";
-            console.log("order is after cut off");
-        }
-        // return moment(orderDate, "YYYY-MM-DD").tz("Australia/Sydney").add(1,"days").format("YYYY-MM-DD HH:mm:ss");
+        cutoff = moment().tz("Australia/Sydney").set({"hour": timeSplit[0], "minute": timeSplit[1],"second":0});
+        deliveryDate = moment().tz("Australia/Sydney").set({"hour": 17, "minute": 0,"second":0});
     }
+    else if(rate == "VIP" && fixedDeadline == 0)
+    {
+
+        cutoff = moment().tz("Australia/Sydney").set({"hour": timeSplit[0], "minute": timeSplit[1],"second":0});
+        deliveryDate = moment().tz("Australia/Sydney").set({"hour": 17, "minute": 0,"second":0});
+    }
+    else if(rate == "ND5" && fixedDeadline == 1)
+    {
+
+        cutoff = moment().tz("Australia/Sydney").set({"hour": timeSplit[0], "minute": timeSplit[1],"second":0});
+        deliveryDate = moment().tz("Australia/Sydney").add(1,"days");
+        deliveryDate.set({"hour": 17, "minute": 0,"second":0});
+    }
+
+    var isBefore = moment(orderDate).isBefore(cutoff);
+
+    if(isBefore)
+    {
+        console.log("order is before cut off");
+        return deliveryDate;
+    }
+    else
+    {
+        throw "Order is after cut off time";
+    }
+
+    //return moment(orderDate, "YYYY-MM-DD").tz("Australia/Sydney").add(1,"days").format("YYYY-MM-DD HH:mm:ss");
 }
 
 // courrio bulk order API
@@ -316,7 +334,7 @@ router.post('/new_order', async (request, response) => {
             var orderDate = moment().tz("Australia/Sydney");
             computeDeliveryDate(rateCard["Delivery Type"],rateCard["Fixed Delivery Deadline"],rateCard["Order Cutoff"],orderDate);
       
-            var deliveryDate = moment(startDate, "YYYY-MM-DD").tz("Australia/Sydney").add(1,"days").format("YYYY-MM-DD HH:mm:ss");
+            var deliveryDate = computeDeliveryDate(rateCard["Delivery Type"],rateCard["Fixed Delivery Deadline"],rateCard["Order Cutoff"],rateCard["Delivery Deadline Home"],orderDate);
             console.log(deliveryDate);
             // format pickup orders from customers
             var promiseList = []
@@ -423,54 +441,54 @@ router.post('/new_order', async (request, response) => {
                     console.log("All promised completed");
 
                     //call create_multiple_tasks tookan api 
-                    // await axios
-                    //     .post('https://api.tookanapp.com/v2/create_multiple_tasks', {
-                    //         //api_key: process.env.API_KEY,
-                    //         api_key: request.body["tookan_api_key"],
-                    //         fleet_id: 19750,
-                    //         timezone: -660,
-                    //         has_pickup: 1,
-                    //         has_delivery: 1,
-                    //         layout_type: 0,
-                    //         geofence: 0,
-                    //         team_id: "",
-                    //         auto_assignment: 0,
-                    //         tags: "",
-                    //         pickups: pickup_orders,
-                    //         deliveries: delivery_orders
-                    //     })
-                    //     .then(res => {
-                    //         var endDate = moment();
-                    //         var secondsDiff = endDate.diff(startDate, "seconds")
-                    //         console.log(secondsDiff + " seconds");
+                    await axios
+                        .post('https://api.tookanapp.com/v2/create_multiple_tasks', {
+                            //api_key: process.env.API_KEY,
+                            api_key: request.body["tookan_api_key"],
+                            fleet_id: 19750,
+                            timezone: -660,
+                            has_pickup: 1,
+                            has_delivery: 1,
+                            layout_type: 0,
+                            geofence: 0,
+                            team_id: "",
+                            auto_assignment: 0,
+                            tags: "",
+                            pickups: pickup_orders,
+                            deliveries: delivery_orders
+                        })
+                        .then(res => {
+                            var endDate = moment();
+                            var secondsDiff = endDate.diff(startDate, "seconds")
+                            console.log(secondsDiff + " seconds");
 
-                    //         if (res.data["status"] == "101") {
-                    //             response.status(res.status);
-                    //             response.send(res.data["message"]);
-                    //         } else if (res.data["status"] == "201") {
-                    //             response.status(res.status);
-                    //             response.send(res.data["message"]);
-                    //         } else {
+                            if (res.data["status"] == "101") {
+                                response.status(res.status);
+                                response.send(res.data["message"]);
+                            } else if (res.data["status"] == "201") {
+                                response.status(res.status);
+                                response.send(res.data["message"]);
+                            } else {
 
-                    //             var message = {
-                    //                 "order_number": request.body["order_number"],
-                    //                 "pickups": res.data["data"]["pickups"],
-                    //                 "delivery": res.data["data"]["deliveries"]
-                    //             }
-                    //             response.status(res.status);
-                    //             response.send(message);
-                    //         }
+                                var message = {
+                                    "order_number": request.body["order_number"],
+                                    "pickups": res.data["data"]["pickups"],
+                                    "delivery": res.data["data"]["deliveries"]
+                                }
+                                response.status(res.status);
+                                response.send(message);
+                            }
 
-                    //     })
-                    //     .catch(error => {
-                    //         console.error(error)
-                    //         response.statusCode = 401;
-                    //         response.send(error);
-                    //     })
+                        })
+                        .catch(error => {
+                            console.error(error)
+                            response.statusCode = 401;
+                            response.send(error);
+                        })
 
 
-                    response.status(200);
-                    response.send("ok");
+                    // response.status(200);
+                    // response.send("ok");
                 });
 
         })
