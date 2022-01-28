@@ -306,7 +306,7 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 
     //check if order is before cutoff
 
-    if (rate == "SDS" && fixedDeadline == 1) {
+    if (fixedDeadline == 1) {
         cutoff = moment().tz("Australia/Sydney").set({
             "hour": timeSplit[0],
             "minute": timeSplit[1],
@@ -317,32 +317,7 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
             "minute": 0,
             "second": 0
         });
-    } else if (rate == "VIP" && fixedDeadline == 0) {
-
-        cutoff = moment().tz("Australia/Sydney").set({
-            "hour": timeSplit[0],
-            "minute": timeSplit[1],
-            "second": 0
-        });
-        deliveryDate = moment().tz("Australia/Sydney").set({
-            "hour": 17,
-            "minute": 0,
-            "second": 0
-        });
-    } else if (rate == "ND5" && fixedDeadline == 1) {
-
-        cutoff = moment().tz("Australia/Sydney").set({
-            "hour": timeSplit[0],
-            "minute": timeSplit[1],
-            "second": 0
-        });
-        deliveryDate = moment().tz("Australia/Sydney").add(1, "days");
-        deliveryDate.set({
-            "hour": 17,
-            "minute": 0,
-            "second": 0
-        });
-    }
+    } 
 
     var isBefore = moment(orderDate).isBefore(cutoff);
 
@@ -350,8 +325,11 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
         console.log("order is before cut off");
         return deliveryDate;
     } else {
-        console.log("order is after cut off");
-        throw "Order is after cut off time";
+        deliveryDate = deliveryDate.add(1,"days");
+        console.log(deliveryDate.format("YYYY-MM-DD HH:mm:ss"));
+        console.log("Order placed after cut off time : Order is placed as next day")
+        return deliveryDate.add(1,"days");
+        //throw "Order is after cut off time";
     }
 
     //return moment(orderDate, "YYYY-MM-DD").tz("Australia/Sydney").add(1,"days").format("YYYY-MM-DD HH:mm:ss");
