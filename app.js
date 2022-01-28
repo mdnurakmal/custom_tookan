@@ -328,7 +328,7 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
         deliveryDate = deliveryDate.add(1,"days");
         console.log(deliveryDate.format("YYYY-MM-DD HH:mm:ss"));
         console.log("Order placed after cut off time : Order is placed as next day")
-        return deliveryDate.add(1,"days");
+        return deliveryDate;
         //throw "Order is after cut off time";
     }
 
