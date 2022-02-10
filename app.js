@@ -300,7 +300,7 @@ router.post('/order_status', async (request, response) => {
 function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,daysToDelivery, orderDate) {
 	// same day delivery and delivery dateline set to 1700
 	console.log(rate + " , " + fixedDeadline + " , " + orderDate.format('MMMM Do YYYY, h:mm:ss a') + ", " + orderCutOff)
-	console.log("days to delivery: " + daysToDelivery);
+
 	var deliveryDate;
 	var cutoff;
 	var timeSplit = orderCutOff.split(":")[0];
@@ -324,10 +324,12 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 
 	if (isBefore) {
 		console.log("order is before cut off");
+		console.log("days to delivery: " + daysToDelivery);
 		deliveryDate = deliveryDate.add(daysToDelivery, "days");
 		return deliveryDate;
 	} else {
 		daysToDelivery+=1;
+		console.log("days to delivery: " + daysToDelivery);
 		deliveryDate = deliveryDate.add(daysToDelivery, "days");
 		console.log(deliveryDate.format("YYYY-MM-DD HH:mm:ss"));
 		console.log("Order placed after cut off time : Order is placed as next day")
