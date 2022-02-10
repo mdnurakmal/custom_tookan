@@ -367,7 +367,7 @@ router.post('/new_order', async (request, response) => {
 			var orderDate = moment().tz("Australia/Sydney");
 			var deliveryDate;
 			try {
-				deliveryDate = computeDeliveryDate(rateCard["Delivery Type"], rateCard["Fixed Delivery Deadline"], rateCard["Order Cutoff"], rateCard["Delivery Deadline Home"], int(rateCard["Days from Order to Delivery"]),orderDate);
+				deliveryDate = computeDeliveryDate(rateCard["Delivery Type"], rateCard["Fixed Delivery Deadline"], rateCard["Order Cutoff"], rateCard["Delivery Deadline Home"], parseInt(rateCard["Days from Order to Delivery"]),orderDate);
 			} catch (err) {
 				throw err;
 			}
