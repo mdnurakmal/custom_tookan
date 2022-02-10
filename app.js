@@ -545,7 +545,10 @@ router.post('/new_order', async (request, response) => {
 								var message = {
 									"order_number": request.body["order_number"],
 									"pickups": res.data["data"]["pickups"],
-									"delivery": res.data["data"]["deliveries"]
+									"delivery": res.data["data"]["deliveries"],
+									"price" : price,
+									"route_distance" : totalDist,
+									"volume": request.body["volume"]
 								}
 								response.status(res.status);
 								response.send(message);
