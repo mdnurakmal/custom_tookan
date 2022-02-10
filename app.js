@@ -492,8 +492,8 @@ router.post('/new_order', async (request, response) => {
 				})
 				.then(res => {
 					console.log(res)
-					// totalPrice = res.data["data"]["price"]
-					// totalDist = res.data["data"]["total_dist"] 
+					totalPrice = res.data["data"]["price"]
+					totalDist = res.data["data"]["total_dist"] 
 					resolve()
 				})
 				.catch(error => {
@@ -514,7 +514,7 @@ router.post('/new_order', async (request, response) => {
 				.then(async results => {
 
 					console.log("All promised completed");
-					console.log("Price is " + price);
+					console.log("Price is " + totalPrice);
 					console.log("Distance is" + totalDist);
 					//call create_multiple_tasks tookan api 
 					await axios
