@@ -324,10 +324,10 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 
 	if (isBefore) {
 		console.log("order is before cut off");
-		deliveryDate = deliveryDate.add(daysToDelivery, "days");
+		deliveryDate = deliveryDate.add(int(daysToDelivery), "days");
 		return deliveryDate;
 	} else {
-		deliveryDate = deliveryDate.add(1+daysToDelivery, "days");
+		deliveryDate = deliveryDate.add(1+int(daysToDelivery), "days");
 		console.log(deliveryDate.format("YYYY-MM-DD HH:mm:ss"));
 		console.log("Order placed after cut off time : Order is placed as next day")
 		return deliveryDate;
