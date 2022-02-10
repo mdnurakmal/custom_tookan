@@ -476,6 +476,7 @@ router.post('/new_order', async (request, response) => {
 			var totalDist;
 			var totalPrice;
 			var pricePromise = new Promise(async function(resolve, reject) {
+				console.log("getting price")
 				await axios
 				.post('http://34.87.232.250/price', {
 					//api_key: process.env.API_KEY,
@@ -488,6 +489,7 @@ router.post('/new_order', async (request, response) => {
 					rate_code: request.body["rate_code"]
 				})
 				.then(res => {
+					console.log()
 					totalPrice = res.data["data"]["price"]
 					totalDist = res.data["data"]["total_dist"] 
 					resolve()
@@ -496,7 +498,7 @@ router.post('/new_order', async (request, response) => {
 					console.error(error)
 					response.statusCode = 401;
 					response.send(error);
-					reject()
+	
 				})
 
 			}).catch(function(rej) {
