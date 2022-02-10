@@ -471,8 +471,8 @@ router.post('/new_order', async (request, response) => {
 
 			//create promise for price request
 			//todo : price is only for 1 pickup and 1 destination
-			var full_delivery_address = request.body["delivery_address"][0]["street"] + ", " + request.body["delivery_address"][0]["suburb"] + ", " + request.body["delivery_address"][0]["state"] + ", " + request.body["delivery_address"][0]["country"] + ", " + request.body["delivery_address"][0]["post_code"] 
-			var full_pickup_address = request.body["pickup_address"][0]["street"] + ", " + request.body["pickup_address"][0]["suburb"] + ", " + request.body["pickup_address"][0]["state"] + ", " + request.body["pickup_address"][0]["country"] + ", " + request.body["pickup_address"][0]["post_code"]
+			var full_delivery_address = request.body["delivery_address"][0]["street"] + ", " + request.body["delivery_address"][0]["suburb"] + ", " + request.body["delivery_address"][0]["state"] + ", " + request.body["delivery_address"][0]["country"] + " " + request.body["delivery_address"][0]["post_code"] 
+			var full_pickup_address = request.body["pickup_address"][0]["street"] + ", " + request.body["pickup_address"][0]["suburb"] + ", " + request.body["pickup_address"][0]["state"] + ", " + request.body["pickup_address"][0]["country"] + " " + request.body["pickup_address"][0]["post_code"]
 			console.log(full_pickup_address)
 			console.log(full_delivery_address)
 			var totalDist;
