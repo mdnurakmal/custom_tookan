@@ -475,7 +475,7 @@ router.post('/new_order', async (request, response) => {
 			var full_pickup_address = request.body["pickup_address"][0]["street"] + ", " + request.body["pickup_address"][0]["suburb"] + ", " + request.body["pickup_address"][0]["state"] + ", " + request.body["pickup_address"][0]["country"] + ", " + request.body["pickup_address"][0]["post_code"]
 			var totalDist;
 			var totalPrice;
-			var pricePromise = new Promise(function(resolve, reject) {
+			var pricePromise = new Promise(async function(resolve, reject) {
 				await axios
 				.post('http://localhost:80/price', {
 					//api_key: process.env.API_KEY,
