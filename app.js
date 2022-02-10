@@ -297,9 +297,10 @@ router.post('/order_status', async (request, response) => {
 });
 
 
-function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline, orderDate) {
+function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,daysToDelivery, orderDate) {
 	// same day delivery and delivery dateline set to 1700
 	console.log(rate + " , " + fixedDeadline + " , " + orderDate.format('MMMM Do YYYY, h:mm:ss a') + ", " + orderCutOff)
+	console.log("days to delivery: " + daysToDelivery);
 	var deliveryDate;
 	var cutoff;
 	var timeSplit = orderCutOff.split(":")[0];
@@ -311,6 +312,7 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 		"minute": timeSplit[1],
 		"second": 0
 	});
+	
 	deliveryDate = moment().tz("Australia/Sydney").set({
 		"hour": 17,
 		"minute": 0,
@@ -322,9 +324,10 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 
 	if (isBefore) {
 		console.log("order is before cut off");
+		deliveryDate = deliveryDate.add(daysToDelivery, "days");
 		return deliveryDate;
 	} else {
-		deliveryDate = deliveryDate.add(1, "days");
+		deliveryDate = deliveryDate.add(1+daysToDelivery, "days");
 		console.log(deliveryDate.format("YYYY-MM-DD HH:mm:ss"));
 		console.log("Order placed after cut off time : Order is placed as next day")
 		return deliveryDate;
@@ -361,7 +364,7 @@ router.post('/new_order', async (request, response) => {
 			var orderDate = moment().tz("Australia/Sydney");
 			var deliveryDate;
 			try {
-				deliveryDate = computeDeliveryDate(rateCard["Delivery Type"], rateCard["Fixed Delivery Deadline"], rateCard["Order Cutoff"], rateCard["Delivery Deadline Home"], orderDate);
+				deliveryDate = computeDeliveryDate(rateCard["Delivery Type"], rateCard["Fixed Delivery Deadline"], rateCard["Order Cutoff"], rateCard["Delivery Deadline Home"], rateCard["Days from Order to Delivery"],orderDate);
 			} catch (err) {
 				throw err;
 			}
@@ -465,13 +468,50 @@ router.post('/new_order', async (request, response) => {
 				promiseList.push(promise);
 			}
 
+
+			//create promise for price request
+			//todo : price is only for 1 pickup and 1 destination
+			var full_delivery_address = request.body["delivery_address"][0]["street"] + ", " + request.body["delivery_address"][0]["suburb"] + ", " + request.body["delivery_address"][0]["state"] + ", " + request.body["delivery_address"][0]["country"] + ", " + request.body["delivery_address"][0]["post_code"] 
+			var full_pickup_address = request.body["pickup_address"][0]["street"] + ", " + request.body["pickup_address"][0]["suburb"] + ", " + request.body["pickup_address"][0]["state"] + ", " + request.body["pickup_address"][0]["country"] + ", " + request.body["pickup_address"][0]["post_code"]
+			var totalDist;
+			var totalPrice;
+			var pricePromise = new Promise(function(resolve, reject) {
+				await axios
+				.post('http://localhost:80/price', {
+					//api_key: process.env.API_KEY,
+					api_key: request.body["tookan_api_key"],
+					delivery_code: request.body["delivery_code"],
+					pickup_address: full_pickup_address,
+					delivery_address: full_delivery_address,
+					weight: request.body["weight"],
+					volume: request.body["volume"],
+					rate_code: request.body["rate_code"]
+				})
+				.then(res => {
+					totalPrice = res.data["data"]["price"]
+					totalDist = res.data["data"]["total_dist"] 
+					resolve()
+				})
+				.catch(error => {
+					console.error(error)
+					response.statusCode = 401;
+					response.send(error);
+					reject()
+				})
+
+			}).catch(function(rej) {
+				console.log(rej);
+			});;
+			promiseList.push(pricePromise);
+
 			console.log("Waiting for orders to be processed..");
 
 			await Promise.all(promiseList)
 				.then(async results => {
 
 					console.log("All promised completed");
-
+					console.log("Price is " + price);
+					console.log("Distance is" + totalDist);
 					//call create_multiple_tasks tookan api 
 					await axios
 						.post('https://api.tookanapp.com/v2/create_multiple_tasks', {
