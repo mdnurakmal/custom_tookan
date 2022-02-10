@@ -550,7 +550,7 @@ router.post('/new_order', async (request, response) => {
 									"order_number": request.body["order_number"],
 									"pickups": res.data["data"]["pickups"],
 									"delivery": res.data["data"]["deliveries"],
-									"price" : price,
+									"price" : totalPrice,
 									"route_distance" : totalDist,
 									"volume": request.body["volume"]
 								}
