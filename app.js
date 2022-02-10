@@ -478,7 +478,7 @@ router.post('/new_order', async (request, response) => {
 			var totalDist;
 			var totalPrice;
 			var pricePromise = new Promise(async function(resolve, reject) {
-				console.log("getting price")
+				console.log("Getting price...")
 				await axios
 				.post('http://34.87.232.250/price', {
 					//api_key: process.env.API_KEY,
