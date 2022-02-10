@@ -492,8 +492,8 @@ router.post('/new_order', async (request, response) => {
 				})
 				.then(res => {
 					console.log(res)
-					totalPrice = res.data["data"]["price"]
-					totalDist = res.data["data"]["total_dist"] 
+					totalPrice = res.data["price"]
+					totalDist = res.data["total_dist"] 
 					resolve()
 				})
 				.catch(error => {
