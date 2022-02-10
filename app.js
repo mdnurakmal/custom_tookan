@@ -491,7 +491,7 @@ router.post('/new_order', async (request, response) => {
 					rate_code: request.body["rate_code"]
 				})
 				.then(res => {
-					console.log(res)
+	
 					totalPrice = res.data["price"]
 					totalDist = res.data["total_dist"] 
 					resolve()
