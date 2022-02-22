@@ -8,7 +8,7 @@ const firestore = new Firestore();
 async function createCustomer(name, customer_number) {
 
   const res = await firestore.collection('customers').add({
-      "api_key": "haSeIpOUgKAp63HZAQ2GZgu5tlGZDF3nNW9S4MhQrwlKZEI9TyvizBcD",
+      "api_key": "NA",
   });
 
   const detailRef = firestore.collection('customers');
