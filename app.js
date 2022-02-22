@@ -358,6 +358,9 @@ router.post('/new_order', async (request, response) => {
 			var rateCode = request.body["rate_code"];
 			var rateCard = await customer.getRateCard(rateCode);
 			var customer_name = await customer.getCustomerName(request.body["api_key"]);
+
+			console.log("customer name " + customer_name);
+
 			// measure latency from the moment courrio receive api request until receive respond from tookan
 			var startDate = moment().tz("Australia/Sydney").set({
 				"hour": 17,
