@@ -25,49 +25,8 @@ async function createCustomer(name, customer_number) {
   await detailRef.doc(res.id).collection('details').doc("customer_number").set({
       "val": "123456",
   });
-
-
-
-
-  // Obtain a document reference.
-  //const document = firestore.doc('customers/');
-
-  //    // Enter new data into the document.
-  //    await document.set({
-  //      title: 'Welcome to Firestore',
-  //      body: 'Hello World',
-  //    });
-  //    console.log('Entered new data into the document');
-
-  //    // Update an existing document.
-  //    await document.update({
-  //      body: 'My first Firestore app',
-  //    });
-  //    console.log('Updated an existing document');
-
-  //    // Read the document.
-  //    const doc = await document.get();
-  //    console.log('Read the document');
-
 }
 async function getCustomerName(apikey) {
-  // firestore.collection("customers").where("api_key", "==", apikey)
-  //   .get()
-  //   .then(function(querySnapshot) {
-  //       querySnapshot.forEach(async function(doc) {
-  //           // doc.data() is never undefined for query doc snapshots
-  //           console.log(doc.id, " => ", doc.data());
-  //           firestore.collection("customers/"+doc.id+"/details").get().then(async function(snapshot) {
-
-  //               console.log(snapshot.docs[0].data()["val"])
-  //               return await snapshot.docs[0].data()["val"];
-  //           });
-            
-  //       });
-  //   })
-  //   .catch(function(error) {
-  //       console.log("Error getting documents: ", error);
-  //   });
 
 
     const customersRef = firestore.collection('customers');

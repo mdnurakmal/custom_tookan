@@ -31,12 +31,12 @@ var mysql = require('mysql');
 // console.log(result);
 // customer.getCustomer("999");
 
- async function test()
-{
-	var a = await customer.getCustomerName("haSeIpOUgKAp63HZAQ2GZgu5tlGZDF3nNW9S4MhQrwlKZEI9TyvizBcD");
-	console.log("++" + a);
-}
-test();
+//  async function test()
+// {
+// 	var a = await customer.getCustomerName("haSeIpOUgKAp63HZAQ2GZgu5tlGZDF3nNW9S4MhQrwlKZEI9TyvizBcD");
+// 	console.log("++" + a);
+// }
+// test();
 
 // setup connection to Cloud SQL
 var con = mysql.createConnection({
@@ -359,8 +359,6 @@ router.post('/new_order', async (request, response) => {
 			var rateCard = await customer.getRateCard(rateCode);
 			var customer_name = await customer.getCustomerName(request.body["api_key"]);
 
-			console.log("customer name " + customer_name);
-
 			// measure latency from the moment courrio receive api request until receive respond from tookan
 			var startDate = moment().tz("Australia/Sydney").set({
 				"hour": 17,
@@ -375,6 +373,18 @@ router.post('/new_order', async (request, response) => {
 
 			// compute delivery date based on ratecard
 			var orderDate = moment().tz("Australia/Sydney");
+			console.log("orderDate>>>"+orderDate.format("YYYY-MM-DD HH:mm:ss"));
+			// simulate date
+			var simDate = moment()
+			simDate.set('year', 2022);
+			simDate.set('month', 2);  // April
+			simDate.set('date', 22);
+			simDate.set('hour', 16);
+			simDate.set('minute', 30);
+			simDate.set('second', 00);
+			simDate.set('millisecond', 000);
+			console.log("simDate>>>"+simDate.format("YYYY-MM-DD HH:mm:ss"));
+
 			var deliveryDate;
 			try {
 				deliveryDate = computeDeliveryDate(rateCard["Delivery Type"], rateCard["Fixed Delivery Deadline"], rateCard["Order Cutoff"], rateCard["Delivery Deadline Home"], parseInt(rateCard["Days from Order to Delivery"]),orderDate);
