@@ -454,6 +454,30 @@ router.post('/new_order', async (request, response) => {
 								{
 									"label": "Delivery_Instructions",
 									"data": request.body["delivery_address"][i]["delivery_instructions"]
+								},
+								{
+									"label": "Volume",
+									"data": request.body["delivery_address"][i]["delivery_instructions"]
+								},
+								{
+									"label": "Distance",
+									"data": request.body["delivery_address"][i]["delivery_instructions"]
+								},
+								{
+									"label": "Billable",
+									"data": request.body["delivery_address"][i]["delivery_instructions"]
+								},
+								{
+									"label": "Rate_Card",
+									"data": request.body["delivery_address"][i]["delivery_instructions"]
+								},
+								{
+									"label": "Courrio_Customer_Num",
+									"data": request.body["delivery_address"][i]["delivery_instructions"]
+								},
+								{
+									"label": "Courrio Cust Name",
+									"data": request.body["delivery_address"][i]["delivery_instructions"]
 								}
 							],
 							"tracking_link": 1,
@@ -516,6 +540,7 @@ router.post('/new_order', async (request, response) => {
 			await Promise.all(promiseList)
 				.then(async results => {
 
+					console.log("+++++++" + delivery_orders[0]["template_data"][2]["label"])
 					console.log("All promised completed");
 					console.log("Price is " + totalPrice);
 					console.log("Distance is" + totalDist);
