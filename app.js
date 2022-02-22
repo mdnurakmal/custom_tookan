@@ -61,13 +61,11 @@ app.use(bodyParser.json());
 
 // Listen to notification sent from Tookan and distribute to client's webhook
 router.post('/webhook', (request, response) => {
-	console.log("receive webhook" +JSON.stringify(request.body) );
+	//console.log("receive webhook" +JSON.stringify(request.body) );
 	//console.log(request.body);
 	//pub.publish(request.body);
 	axios
-	.post('http://34.116.81.190/push_webhook',{
-		"data": request.body
-	})
+	.post('http://34.116.81.190/push_webhook',JSON.stringify(request.body) )
 	.then(res => {
 		response.statusCode = 200;
 		response.send("ok");
