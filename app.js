@@ -22,15 +22,15 @@ var moment = require('moment-timezone');
 
 var mysql = require('mysql');
 
-for(var i = 0 ; i < 10; i++)
-{
-    customer.createCustomer("test"+i.toString(),i);
-}
+// for(var i = 0 ; i < 10; i++)
+// {
+//     customer.createCustomer("test"+i.toString(),i);
+// }
 
 // var result = srs({length: 56,alphanumeric: true});
 // console.log(result);
 // customer.getCustomer("999");
-
+console.log(customer.getCustomerName("haSeIpOUgKAp63HZAQ2GZgu5tlGZDF3nNW9S4MhQrwlKZEI9TyvizBcD"));
 // setup connection to Cloud SQL
 var con = mysql.createConnection({
 	host: "35.189.56.73",

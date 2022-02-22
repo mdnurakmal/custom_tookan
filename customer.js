@@ -27,6 +27,17 @@ async function createCustomer(name, customer_number) {
   });
 
 
+  async function getCustomerName(apikey) {
+    const customersRef = firestore.collection('customers');
+    const snapshot = await customersRef.where('api_key', '==', apikey).get();
+    if (snapshot.empty) {
+        console.log('No matching documents.');
+        return;
+    }
+    
+    return snapshot.docs[0].data();
+  }
+
   // Obtain a document reference.
   //const document = firestore.doc('customers/');
 
