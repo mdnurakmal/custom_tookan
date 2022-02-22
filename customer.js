@@ -5,7 +5,9 @@ const {
 // Create a new client
 const firestore = new Firestore();
 
-// webhook
+async function listenWebhook()
+{
+  // webhook
 
 const dbRef = firestore.collection('customers');
 const snapshot = await dbRef.get();
@@ -20,6 +22,7 @@ snapshot.forEach(doc => {
   
   console.log(doc.id, '=>', doc.data());
 });
+}
 
 
 async function createCustomer(name, customer_number) {
@@ -145,6 +148,7 @@ function checkAPIKey(key) {
 
 
 module.exports = {
+  listenWebhook,
   createCustomer,
   getCustomerName,
   getCustomer,

@@ -61,8 +61,11 @@ app.use(bodyParser.json());
 // refresh webhook db whenever theres a change in firestore
 function updateWebhookDB()
 {
+	listenWebhook()
 	getAllWebhooks()
 }
+
+updateWebhookDB();
 
 // Listen to notification sent from Tookan and distribute to client's webhook
 router.post('/webhook', (request, response) => {
