@@ -65,7 +65,7 @@ router.post('/webhook', (request, response) => {
 	//console.log(request.body);
 	//pub.publish(request.body);
 	axios
-	.post('http://34.116.81.190/push_webhook',JSON.stringify(request.body) )
+	.post('http://34.116.81.190/push_webhook', request.body)
 	.then(res => {
 		response.statusCode = 200;
 		response.send("ok");
