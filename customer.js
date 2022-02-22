@@ -7,14 +7,20 @@ const firestore = new Firestore();
 
 // webhook
 
-const doc = firestore.collection('customers');
+const dbRef = firestore.collection('customers');
+const snapshot = await dbRef.get();
+snapshot.forEach(doc => {
+  const observer = doc.onSnapshot(docSnapshot => {
+    console.log(docSnapshot.data());
 
-const observer = doc.onSnapshot(docSnapshot => {
-  console.log(docSnapshot.data());
-  // ...
-}, err => {
-  console.log(`Encountered error: ${err}`);
+  }, err => {
+    console.log(`Encountered error: ${err}`);
+  });
+
+  
+  console.log(doc.id, '=>', doc.data());
 });
+
 
 async function createCustomer(name, customer_number) {
 
