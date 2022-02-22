@@ -119,6 +119,7 @@ function checkAPIKey(key) {
 
 module.exports = {
   createCustomer,
+  getCustomerName,
   getCustomer,
   checkAPIKey,
   getRateCard
