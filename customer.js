@@ -59,21 +59,15 @@ async function getCustomerName(apikey) {
             console.log(doc.id, " => ", doc.data());
             firestore.collection("customers/"+doc.id+"/details").get().then(function(snapshot) {
 
-                console.log(snapshot.docs[0].data())
+                console.log(snapshot.docs[0].data()["val"])
+                return snapshot.docs[0].data()["val"];
             });
             
-     
-              return doc.data()["details"];
-          
-   
         });
     })
     .catch(function(error) {
         console.log("Error getting documents: ", error);
     });
-
-
-
 }
 
 async function getCustomer(id) {
