@@ -86,6 +86,7 @@ async function getCustomerName(apikey) {
       }
       else
       {
+        console.log(snapshot.docs[0].data()["val"])
         return snapshotDetails.docs[0].data()["val"];
       }
     } 
