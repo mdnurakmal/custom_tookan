@@ -112,11 +112,9 @@ function checkAPIKey(key) {
 
 
 module.exports = {
-  listenWebhook,
   createCustomer,
   getCustomerName,
   getCustomer,
   checkAPIKey,
   getRateCard,
-  getAllWebhooks
 };
