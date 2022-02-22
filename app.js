@@ -546,7 +546,7 @@ router.post('/new_order', async (request, response) => {
 				.then(async results => {
 
 					//TODO rework for multiple delivery destination
-					
+
 					//volume
 					delivery_orders[0]["template_data"][2]["data"]=request.body["volume"]
 					//distance
@@ -560,7 +560,7 @@ router.post('/new_order', async (request, response) => {
 					//Courrio cust name
 					delivery_orders[0]["template_data"][7]["data"]="Tyroola "
 					//Job Price Ex GST
-					delivery_orders[0]["template_data"][7]["data"]=totalPrice
+					delivery_orders[0]["template_data"][8]["data"]=totalPrice
 					
 
 					console.log("All promised completed");
