@@ -51,14 +51,25 @@ async function createCustomer(name, customer_number) {
 
 }
 async function getCustomerName(apikey) {
-  const customersRef = firestore.collection('customers');
-  const snapshot = await customersRef.where('api_key', '==', apikey).get();
-  if (snapshot.empty) {
-      console.log('No matching documents.');
-      return;
-  }
-  
-  return snapshot.docs[0].data();
+  firestore.collection("customers").where("api_key", "==", apikey)
+    .get()
+    .then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+            // doc.data() is never undefined for query doc snapshots
+            console.log(doc.id, " => ", doc.data());
+
+            firestore.collection('customers').doc(doc.id).get().then(snapshot => {
+              return snapshot;
+            })
+   
+        });
+    })
+    .catch(function(error) {
+        console.log("Error getting documents: ", error);
+    });
+
+
+
 }
 
 async function getCustomer(id) {
