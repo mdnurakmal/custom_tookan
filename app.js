@@ -34,7 +34,7 @@ var mysql = require('mysql');
 async function test()
 {
 	var name = await customer.getCustomerName("haSeIpOUgKAp63HZAQ2GZgu5tlGZDF3nNW9S4MhQrwlKZEI9TyvizBcD");
-	console.log(name);
+	console.log("?"+name);
 }
 test();
 
