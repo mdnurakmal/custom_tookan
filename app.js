@@ -62,7 +62,7 @@ app.use(bodyParser.json());
 function updateWebhookDB()
 {
 	customer.listenWebhook()
-	customer.getAllWebhooks()
+	//customer.getAllWebhooks()
 }
 
 updateWebhookDB();

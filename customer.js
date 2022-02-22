@@ -10,18 +10,13 @@ async function listenWebhook()
   // webhook
 
 const dbRef = firestore.collection('customers');
-const snapshot = await dbRef.get();
-snapshot.forEach(doc => {
-  const observer = doc.onSnapshot(docSnapshot => {
-    console.log(docSnapshot.data());
+const observer = dbRef.onSnapshot(docSnapshot => {
+  console.log(docSnapshot.data());
 
-  }, err => {
-    console.log(`Encountered error: ${err}`);
-  });
-
-  
-  console.log(doc.id, '=>', doc.data());
+}, err => {
+  console.log(`Encountered error: ${err}`);
 });
+
 }
 
 
