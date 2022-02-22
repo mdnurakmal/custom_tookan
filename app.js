@@ -316,7 +316,7 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 
 
 
-	var cutoff = moment()
+	var cutoff = orderDate
 	console.log("hour" + timeSplit[0] );
 	console.log("min" + timeSplit[1] );
 	cutoff.set('hour', timeSplit[0]);
