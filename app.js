@@ -61,7 +61,7 @@ app.use(bodyParser.json());
 
 // Listen to notification sent from Tookan and distribute to client's webhook
 router.post('/webhook', (request, response) => {
-	console.log("receive webhook" + request.body);
+	console.log("receive webhook" + request.body["data"]);
 	//console.log(request.body);
 	//pub.publish(request.body);
 	axios
