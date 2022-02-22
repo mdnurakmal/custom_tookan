@@ -310,7 +310,7 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 
 	var deliveryDate;
 	var cutoff;
-	var timeSplit = orderCutOff.split(":")[0];
+	var timeSplit = orderCutOff.split(":")
 
 	//check if order is before cutoff
 
