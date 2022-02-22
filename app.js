@@ -63,9 +63,18 @@ app.use(bodyParser.json());
 router.post('/webhook', (request, response) => {
 	console.log("receive webhook");
 	//console.log(request.body);
-	pub.publish(request.body);
-	response.status(200);
-	response.send("ok");
+	//pub.publish(request.body);
+	axios
+	.post('http://34.116.81.190/webhook')
+	.then(res => {
+		response.statusCode = 200;
+		response.send(	request.body);
+	})
+	.catch(error => {
+		console.error(error)
+		response.statusCode = 401;
+		response.send(error);
+	})
 });
 
 // courrio set webhook url API
