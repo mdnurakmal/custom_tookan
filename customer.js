@@ -58,7 +58,7 @@ async function getCustomerName(apikey) {
             // doc.data() is never undefined for query doc snapshots
             console.log(doc.id, " => ", doc.data());
 
-    
+            console.log(doc.data()["details"]);
               return doc.data()["details"];
           
    
