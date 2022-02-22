@@ -478,7 +478,12 @@ router.post('/new_order', async (request, response) => {
 								{
 									"label": "Courrio Cust Name",
 									"data": request.body["delivery_address"][i]["delivery_instructions"]
+								},
+								{
+									"label": "Job Price Ex GST",
+									"data": request.body["delivery_address"][i]["delivery_instructions"]
 								}
+							
 							],
 							"tracking_link": 1,
 							"order_id": result.insertId
@@ -540,7 +545,24 @@ router.post('/new_order', async (request, response) => {
 			await Promise.all(promiseList)
 				.then(async results => {
 
-					console.log("+++++++" + delivery_orders[0]["template_data"][2]["label"])
+					//TODO rework for multiple delivery destination
+					
+					//volume
+					delivery_orders[0]["template_data"][2]["data"]=request.body["volume"]
+					//distance
+					delivery_orders[0]["template_data"][3]["data"]=totalDist
+					//Billable
+					delivery_orders[0]["template_data"][4]["data"]=1
+					//Rate_Card
+					delivery_orders[0]["template_data"][5]["data"]=request.body["rate_code"]
+					//Courrio_Customer_Num
+					delivery_orders[0]["template_data"][6]["data"]==request.body["customer_number"]
+					//Courrio cust name
+					delivery_orders[0]["template_data"][7]["data"]="Tyroola "
+					//Job Price Ex GST
+					delivery_orders[0]["template_data"][7]["data"]=totalPrice
+					
+
 					console.log("All promised completed");
 					console.log("Price is " + totalPrice);
 					console.log("Distance is" + totalDist);
