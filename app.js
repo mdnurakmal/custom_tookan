@@ -33,7 +33,8 @@ var mysql = require('mysql');
 
  async function test()
 {
-	await customer.getCustomerName("haSeIpOUgKAp63HZAQ2GZgu5tlGZDF3nNW9S4MhQrwlKZEI9TyvizBcD");
+	var a = await customer.getCustomerName("haSeIpOUgKAp63HZAQ2GZgu5tlGZDF3nNW9S4MhQrwlKZEI9TyvizBcD");
+	console.log(a);
 }
 test();
 
