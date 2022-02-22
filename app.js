@@ -318,7 +318,7 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 
 	var cutoff = moment();
 	cutoff.set('year', orderDate.format('YYYY'));
-	cutoff.set('month', orderDate.format('MM'));  // April
+	cutoff.set('month', parseInt(orderDate.format('MM'))-1);  // April
 	cutoff.set('date', orderDate.format('DD'));
 	cutoff.set('hour', timeSplit[0]);
 	cutoff.set('minute', timeSplit[1]);
@@ -328,7 +328,7 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 
 	var deliveryDate = moment();
 	deliveryDate.set('year', orderDate.format('YYYY'));
-	deliveryDate.set('month', orderDate.format('MM'));  // April
+	deliveryDate.set('month',  parseInt(orderDate.format('MM'))-1);  // April
 	deliveryDate.set('date', orderDate.format('DD'));
 	deliveryDate.set('hour', 17);
 	deliveryDate.set('minute', 0);
