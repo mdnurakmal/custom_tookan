@@ -57,8 +57,12 @@ async function getCustomerName(apikey) {
         querySnapshot.forEach(function(doc) {
             // doc.data() is never undefined for query doc snapshots
             console.log(doc.id, " => ", doc.data());
+            firestore.collection(doc.id).get().then(function(snapshot) {
 
-            console.log(doc.data()["details"]);
+                console.log(snapshot.docs[0].data())
+            });
+            
+     
               return doc.data()["details"];
           
    
