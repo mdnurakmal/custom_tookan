@@ -308,7 +308,7 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 	// same day delivery and delivery dateline set to 1700
 	console.log(rate + " , " + fixedDeadline + " , " + orderDate.format('MMMM Do YYYY, h:mm:ss a') + ", " + orderCutOff)
 
-	var deliveryDate;
+
 	var cutoff;
 	var timeSplit = orderCutOff.split(":")
 
@@ -325,11 +325,13 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 
 	console.log("orderDate time"+ orderDate.format("YYYY-MM-DD HH:mm:ss"));
 	console.log("cutoff time"+ cutoff.format("YYYY-MM-DD HH:mm:ss"));
-	deliveryDate = moment().tz("Australia/Sydney").set({
-		"hour": 17,
-		"minute": 0,
-		"second": 0
-	});
+
+	var deliveryDate = moment();
+	deliveryDate.set('year', orderDate.format('YYYY'));
+	deliveryDate.set('month', orderDate.format('MM'));  // April
+	deliveryDate.set('date', orderDate.format('DD'));
+	deliveryDate.set('hour', 17);
+	deliveryDate.set('minute', 0);
 
 
 	var isBefore = moment(orderDate).isBefore(cutoff);
