@@ -10,7 +10,7 @@ const firestore = new Firestore();
 const doc = firestore.collection('customers');
 
 const observer = doc.onSnapshot(docSnapshot => {
-  console.log(`Received doc snapshot: ${docSnapshot}`);
+  console.log(docSnapshot.data());
   // ...
 }, err => {
   console.log(`Encountered error: ${err}`);
