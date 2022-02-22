@@ -486,11 +486,11 @@ router.post('/new_order', async (request, response) => {
 									"data": request.body["delivery_address"][i]["delivery_instructions"]
 								},
 								{
-									"label": "Courrio Cust Name",
+									"label": "Courrio_Cust_Name",
 									"data": request.body["delivery_address"][i]["delivery_instructions"]
 								},
 								{
-									"label": "Job Price Ex GST",
+									"label": "Job_Price_Ex_GST",
 									"data": request.body["delivery_address"][i]["delivery_instructions"]
 								}
 							
