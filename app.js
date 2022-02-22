@@ -36,7 +36,7 @@ async function test()
 	var name = await customer.getCustomerName("haSeIpOUgKAp63HZAQ2GZgu5tlGZDF3nNW9S4MhQrwlKZEI9TyvizBcD");
 	console.log(name);
 }
-await test();
+test();
 
 // setup connection to Cloud SQL
 var con = mysql.createConnection({
