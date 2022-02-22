@@ -51,23 +51,44 @@ async function createCustomer(name, customer_number) {
 
 }
 async function getCustomerName(apikey) {
-  firestore.collection("customers").where("api_key", "==", apikey)
-    .get()
-    .then(function(querySnapshot) {
-        querySnapshot.forEach(async function(doc) {
-            // doc.data() is never undefined for query doc snapshots
-            console.log(doc.id, " => ", doc.data());
-            firestore.collection("customers/"+doc.id+"/details").get().then(async function(snapshot) {
+  // firestore.collection("customers").where("api_key", "==", apikey)
+  //   .get()
+  //   .then(function(querySnapshot) {
+  //       querySnapshot.forEach(async function(doc) {
+  //           // doc.data() is never undefined for query doc snapshots
+  //           console.log(doc.id, " => ", doc.data());
+  //           firestore.collection("customers/"+doc.id+"/details").get().then(async function(snapshot) {
 
-                console.log(snapshot.docs[0].data()["val"])
-                return await snapshot.docs[0].data()["val"];
-            });
+  //               console.log(snapshot.docs[0].data()["val"])
+  //               return await snapshot.docs[0].data()["val"];
+  //           });
             
-        });
-    })
-    .catch(function(error) {
-        console.log("Error getting documents: ", error);
-    });
+  //       });
+  //   })
+  //   .catch(function(error) {
+  //       console.log("Error getting documents: ", error);
+  //   });
+
+
+    const customersRef = firestore.collection('customers');
+    const snapshot = await customersRef.where('api_key', '==', apikey).get();
+    if (snapshot.empty) {
+        console.log('No matching documents.');
+        return;
+    }
+    else
+    {
+      const customersRef = firestore.collection("customers/"+snapshot.docs[0].id+"/details");
+      const snapshotDetails = await customersRef.get();
+      if (snapshotDetails.empty) {
+          console.log('No matching documents.');
+          return;
+      }
+      else
+      {
+        return snapshotDetails.docs[0].data()["val"];
+      }
+    } 
 }
 
 async function getCustomer(id) {
