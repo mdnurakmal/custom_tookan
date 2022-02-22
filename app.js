@@ -319,7 +319,7 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 		"minute": timeSplit[1],
 		"second": 0
 	});
-	
+	console.log("cutoff time"+ cutoff.format("YYYY-MM-DD HH:mm:ss"));
 	deliveryDate = moment().tz("Australia/Sydney").set({
 		"hour": 17,
 		"minute": 0,
