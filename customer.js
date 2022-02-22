@@ -5,21 +5,6 @@ const {
 // Create a new client
 const firestore = new Firestore();
 
-async function listenWebhook()
-{
-  // webhook
-
-const dbRef = firestore.collection('customers');
-const observer = dbRef.onSnapshot(docSnapshot => {
-  console.log(docSnapshot.data());
-
-}, err => {
-  console.log(`Encountered error: ${err}`);
-});
-
-}
-
-
 async function createCustomer(name, customer_number) {
 
   const res = await firestore.collection('customers').add({
@@ -68,22 +53,6 @@ async function getCustomerName(apikey) {
     } 
 }
 
-async function getAllWebhooks() {
-
-  const customersRef = firestore.collection('customers');
-  const snapshot = await customersRef.get();
-  if (snapshot.empty) {
-      console.log('No matching documents.');
-      return;
-  }
-  else
-  {
-    snapshot.forEach(async doc => {
-      console.log(doc.id, '=>', doc.data()["webhook_url"]);
-      return;
-  });
-  } 
-}
 
 async function getCustomer(id) {
   const customersRef = firestore.collection('customers');

@@ -58,14 +58,6 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
-// refresh webhook db whenever theres a change in firestore
-function updateWebhookDB()
-{
-	customer.listenWebhook()
-	//customer.getAllWebhooks()
-}
-
-updateWebhookDB();
 
 // Listen to notification sent from Tookan and distribute to client's webhook
 router.post('/webhook', (request, response) => {
@@ -118,6 +110,21 @@ router.post('/price', async (request, response) => {
 			response.status(res.status);
 			response.send(res.data);
 
+
+		})
+		.catch(error => {
+			console.error(error)
+			response.statusCode = 401;
+			response.send(error);
+		})
+
+});
+
+// get price
+router.post('/push_webhook', async (request, response) => {
+	axios
+		.post('http://34.116.81.190/webhook')
+		.then(res => {
 
 		})
 		.catch(error => {
