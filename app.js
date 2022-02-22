@@ -316,7 +316,7 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 
 
 
-	var cutoff = orderDate
+	var cutoff = moment();
 	cutoff.set('year', orderDate.format('YYYY'));
 	cutoff.set('month', orderDate.format('MM'));  // April
 	cutoff.set('date', orderDate.format('DD'));
@@ -380,7 +380,7 @@ router.post('/new_order', async (request, response) => {
 			var orderDate = moment().tz("Australia/Sydney");
 
 			// simulate date
-			var simDate = moment()
+			var simDate = moment();
 			simDate.set('year', 2022);
 			simDate.set('month', 1);  // April
 			simDate.set('date', 22);
