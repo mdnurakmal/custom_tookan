@@ -322,6 +322,7 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 	cutoff.set('hour', timeSplit[0]);
 	cutoff.set('minute', timeSplit[1]);
 
+	console.log("orderDate time"+ orderDate.format("YYYY-MM-DD HH:mm:ss"));
 	console.log("cutoff time"+ cutoff.format("YYYY-MM-DD HH:mm:ss"));
 	deliveryDate = moment().tz("Australia/Sydney").set({
 		"hour": 17,
@@ -376,7 +377,7 @@ router.post('/new_order', async (request, response) => {
 
 			// compute delivery date based on ratecard
 			var orderDate = moment().tz("Australia/Sydney");
-			console.log("orderDate>>>"+orderDate.format("YYYY-MM-DD HH:mm:ss"));
+
 			// simulate date
 			var simDate = moment()
 			simDate.set('year', 2022);
@@ -386,8 +387,7 @@ router.post('/new_order', async (request, response) => {
 			simDate.set('minute', 30);
 			simDate.set('second', 00);
 			simDate.set('millisecond', 000);
-			console.log("simDate>>>"+simDate.format("YYYY-MM-DD HH:mm:ss"));
-
+	
 			var deliveryDate;
 			try {
 				deliveryDate = computeDeliveryDate(rateCard["Delivery Type"], rateCard["Fixed Delivery Deadline"], rateCard["Order Cutoff"], rateCard["Delivery Deadline Home"], parseInt(rateCard["Days from Order to Delivery"]),simDate);
