@@ -60,7 +60,7 @@ async function getCustomerName(apikey) {
             firestore.collection("customers/"+doc.id+"/details").get().then(function(snapshot) {
 
                 console.log(snapshot.docs[0].data()["val"])
-                return snapshot.docs[0].data()["val"];
+                return await snapshot.docs[0].data()["val"];
             });
             
         });

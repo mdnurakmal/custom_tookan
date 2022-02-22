@@ -31,9 +31,9 @@ var mysql = require('mysql');
 // console.log(result);
 // customer.getCustomer("999");
 
-async function test()
+ function test()
 {
-	await customer.getCustomerName("haSeIpOUgKAp63HZAQ2GZgu5tlGZDF3nNW9S4MhQrwlKZEI9TyvizBcD");
+	return customer.getCustomerName("haSeIpOUgKAp63HZAQ2GZgu5tlGZDF3nNW9S4MhQrwlKZEI9TyvizBcD");
 }
 console.log("?"+test());
 
