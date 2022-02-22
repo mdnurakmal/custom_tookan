@@ -61,8 +61,8 @@ app.use(bodyParser.json());
 // refresh webhook db whenever theres a change in firestore
 function updateWebhookDB()
 {
-	listenWebhook()
-	getAllWebhooks()
+	customer.listenWebhook()
+	customer.getAllWebhooks()
 }
 
 updateWebhookDB();
