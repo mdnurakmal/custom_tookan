@@ -313,9 +313,7 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 	var timeSplit = orderCutOff.split(":")
 
 	//check if order is before cutoff
-
-
-
+	
 	var cutoff = moment();
 	cutoff.set('year', orderDate.format('YYYY'));
 	cutoff.set('month', parseInt(orderDate.format('MM'))-1);  // April
@@ -394,7 +392,7 @@ router.post('/new_order', async (request, response) => {
 	
 			var deliveryDate;
 			try {
-				deliveryDate = computeDeliveryDate(rateCard["Delivery Type"], rateCard["Fixed Delivery Deadline"], rateCard["Order Cutoff"], rateCard["Delivery Deadline Home"], parseInt(rateCard["Days from Order to Delivery"]),simDate);
+				deliveryDate = computeDeliveryDate(rateCard["Delivery Type"], rateCard["Fixed Delivery Deadline"], rateCard["Order Cutoff"], rateCard["Delivery Deadline Home"], parseInt(rateCard["Days from Order to Delivery"]),orderDate);
 			} catch (err) {
 				throw err;
 			}
