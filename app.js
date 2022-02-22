@@ -338,6 +338,7 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 		console.log("order is before cut off");
 		console.log("days to delivery: " + daysToDelivery);
 		deliveryDate = deliveryDate.add(daysToDelivery, "days");
+		console.log(deliveryDate.format("YYYY-MM-DD HH:mm:ss"));
 		return deliveryDate;
 	} else {
 		daysToDelivery+=1;
