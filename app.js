@@ -22,10 +22,10 @@ var moment = require('moment-timezone');
 
 var mysql = require('mysql');
 
-for(var i = 0 ; i < 10; i++)
-{
-    customer.createCustomer("test"+i.toString(),i);
-}
+// for(var i = 0 ; i < 10; i++)
+// {
+//     customer.createCustomer("test"+i.toString(),i);
+// }
 
 // var result = srs({length: 56,alphanumeric: true});
 // console.log(result);
@@ -57,6 +57,12 @@ app.use(bodyParser.urlencoded({
 	extended: false
 }));
 app.use(bodyParser.json());
+
+// refresh webhook db whenever theres a change in firestore
+function updateWebhookDB()
+{
+	getAllWebhooks()
+}
 
 // Listen to notification sent from Tookan and distribute to client's webhook
 router.post('/webhook', (request, response) => {

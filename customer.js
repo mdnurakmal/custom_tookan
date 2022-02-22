@@ -5,6 +5,17 @@ const {
 // Create a new client
 const firestore = new Firestore();
 
+// webhook
+
+const doc = db.collection('customers');
+
+const observer = doc.onSnapshot(docSnapshot => {
+  console.log(`Received doc snapshot: ${docSnapshot}`);
+  // ...
+}, err => {
+  console.log(`Encountered error: ${err}`);
+});
+
 async function createCustomer(name, customer_number) {
 
   const res = await firestore.collection('customers').add({
@@ -64,8 +75,8 @@ async function getAllWebhooks() {
   else
   {
     snapshot.forEach(async doc => {
-      console.log(doc.id, '=>', doc.data());
-      await getDetails('customers/' + doc.id + "/details")
+      console.log(doc.id, '=>', doc.data()["webhook_url"]);
+      return;
   });
   } 
 }
