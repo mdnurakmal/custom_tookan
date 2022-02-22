@@ -30,7 +30,8 @@ var mysql = require('mysql');
 // var result = srs({length: 56,alphanumeric: true});
 // console.log(result);
 // customer.getCustomer("999");
-console.log(customer.getCustomerName("haSeIpOUgKAp63HZAQ2GZgu5tlGZDF3nNW9S4MhQrwlKZEI9TyvizBcD"));
+var name = await customer.getCustomerName("haSeIpOUgKAp63HZAQ2GZgu5tlGZDF3nNW9S4MhQrwlKZEI9TyvizBcD");
+console.log(name);
 // setup connection to Cloud SQL
 var con = mysql.createConnection({
 	host: "35.189.56.73",
