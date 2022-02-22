@@ -9,13 +9,14 @@ async function createCustomer(name, customer_number) {
 
   const res = await firestore.collection('customers').add({
       "api_key": "NA",
+      "webhook_url": "Webhook",
   });
 
   const detailRef = firestore.collection('customers');
 
-  await detailRef.doc(res.id).collection('details').doc("webhook").set({
-      "val": 'webhook_url' + customer_number.toString(),
-  });
+  // await detailRef.doc(res.id).collection('details').doc("webhook").set({
+  //     "val": 'webhook_url' + customer_number.toString(),
+  // });
 
   await detailRef.doc(res.id).collection('details').doc("customer_name").set({
     "val": "Customer name"
@@ -26,6 +27,7 @@ async function createCustomer(name, customer_number) {
       "val": "123456",
   });
 }
+
 async function getCustomerName(apikey) {
 
 
@@ -49,6 +51,23 @@ async function getCustomerName(apikey) {
         return snapshotDetails.docs[0].data()["val"];
       }
     } 
+}
+
+async function getAllWebhooks() {
+
+  const customersRef = firestore.collection('customers');
+  const snapshot = await customersRef.get();
+  if (snapshot.empty) {
+      console.log('No matching documents.');
+      return;
+  }
+  else
+  {
+    snapshot.forEach(async doc => {
+      console.log(doc.id, '=>', doc.data());
+      await getDetails('customers/' + doc.id + "/details")
+  });
+  } 
 }
 
 async function getCustomer(id) {
@@ -113,5 +132,6 @@ module.exports = {
   getCustomerName,
   getCustomer,
   checkAPIKey,
-  getRateCard
+  getRateCard,
+  getAllWebhooks
 };
