@@ -377,7 +377,7 @@ router.post('/new_order', async (request, response) => {
 			// simulate date
 			var simDate = moment()
 			simDate.set('year', 2022);
-			simDate.set('month', 2);  // April
+			simDate.set('month', 1);  // April
 			simDate.set('date', 22);
 			simDate.set('hour', 16);
 			simDate.set('minute', 30);
@@ -387,7 +387,7 @@ router.post('/new_order', async (request, response) => {
 
 			var deliveryDate;
 			try {
-				deliveryDate = computeDeliveryDate(rateCard["Delivery Type"], rateCard["Fixed Delivery Deadline"], rateCard["Order Cutoff"], rateCard["Delivery Deadline Home"], parseInt(rateCard["Days from Order to Delivery"]),orderDate);
+				deliveryDate = computeDeliveryDate(rateCard["Delivery Type"], rateCard["Fixed Delivery Deadline"], rateCard["Order Cutoff"], rateCard["Delivery Deadline Home"], parseInt(rateCard["Days from Order to Delivery"]),simDate);
 			} catch (err) {
 				throw err;
 			}
