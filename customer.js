@@ -7,7 +7,7 @@ const firestore = new Firestore();
 
 // webhook
 
-const doc = db.collection('customers');
+const doc = firestore.collection('customers');
 
 const observer = doc.onSnapshot(docSnapshot => {
   console.log(`Received doc snapshot: ${docSnapshot}`);
