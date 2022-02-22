@@ -317,8 +317,9 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 
 
 	var cutoff = orderDate
-	console.log("hour" + timeSplit[0] );
-	console.log("min" + timeSplit[1] );
+	cutoff.set('year', orderDate.format('YYYY'));
+	cutoff.set('month', orderDate.format('MM'));  // April
+	cutoff.set('date', orderDate.format('DD'));
 	cutoff.set('hour', timeSplit[0]);
 	cutoff.set('minute', timeSplit[1]);
 
