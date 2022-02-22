@@ -35,7 +35,7 @@ var mysql = require('mysql');
 {
 	return await customer.getCustomerName("haSeIpOUgKAp63HZAQ2GZgu5tlGZDF3nNW9S4MhQrwlKZEI9TyvizBcD");
 }
-console.log("?"+test());
+
 
 // setup connection to Cloud SQL
 var con = mysql.createConnection({
@@ -356,7 +356,7 @@ router.post('/new_order', async (request, response) => {
 			// get ratecard
 			var rateCode = request.body["rate_code"];
 			var rateCard = await customer.getRateCard(rateCode);
-
+			var customer_name = await customer.getCustomerName(request.body["api_key"]);
 			// measure latency from the moment courrio receive api request until receive respond from tookan
 			var startDate = moment().tz("Australia/Sydney").set({
 				"hour": 17,
@@ -554,19 +554,19 @@ router.post('/new_order', async (request, response) => {
 					//TODO rework for multiple delivery destination
 
 					//volume
-					delivery_orders[0]["template_data"][2]["data"]=request.body["volume"]
+					delivery_orders[0]["template_data"][2]["data"]=request.body["volume"];
 					//distance
-					delivery_orders[0]["template_data"][3]["data"]=totalDist
+					delivery_orders[0]["template_data"][3]["data"]=totalDist;
 					//Billable
-					delivery_orders[0]["template_data"][4]["data"]=1
+					delivery_orders[0]["template_data"][4]["data"]=1;
 					//Rate_Card
-					delivery_orders[0]["template_data"][5]["data"]=request.body["rate_code"]
+					delivery_orders[0]["template_data"][5]["data"]=request.body["rate_code"];
 					//Courrio_Customer_Num
-					delivery_orders[0]["template_data"][6]["data"]==request.body["customer_number"]
+					delivery_orders[0]["template_data"][6]["data"]==request.body["customer_number"];
 					//Courrio cust name
-					delivery_orders[0]["template_data"][7]["data"]="Tyroola "
+					delivery_orders[0]["template_data"][7]["data"]= customer_name;
 					//Job Price Ex GST
-					delivery_orders[0]["template_data"][8]["data"]=totalPrice
+					delivery_orders[0]["template_data"][8]["data"]=totalPrice;
 					
 
 					console.log("All promised completed");
