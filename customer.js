@@ -17,8 +17,13 @@ async function createCustomer(name, customer_number) {
       "val": 'webhook_url' + customer_number.toString(),
   });
 
+  await detailRef.doc(res.id).collection('details').doc("webhook").set({
+    "val": 'customer_name' + "Customer name",
+});
+
+
   await detailRef.doc(res.id).collection('details').doc("customer_number").set({
-      "val": "haSeIpOUgKAp63HZAQ2GZgu5tlGZDF3nNW9S4MhQrwlKZEI9TyvizBcD",
+      "val": "123456",
   });
 
 
