@@ -78,15 +78,15 @@ async function getCustomerName(apikey) {
     }
     else
     {
-      const customersRef = firestore.collection("customers/"+snapshot.docs[0].id+"/details");
-      const snapshotDetails = await customersRef.get();
+      const detailsRef = firestore.collection("customers/"+snapshot.docs[0].id+"/details");
+      const snapshotDetails = await detailsRef.get();
       if (snapshotDetails.empty) {
           console.log('No matching documents.');
           return;
       }
       else
       {
-        console.log(snapshot.docs[0].data()["val"])
+        console.log(snapshotDetails.docs[0].data()["val"])
         return snapshotDetails.docs[0].data()["val"];
       }
     } 
