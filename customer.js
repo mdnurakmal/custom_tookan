@@ -54,10 +54,10 @@ async function getCustomerName(apikey) {
   firestore.collection("customers").where("api_key", "==", apikey)
     .get()
     .then(function(querySnapshot) {
-        querySnapshot.forEach(function(doc) {
+        querySnapshot.forEach(async function(doc) {
             // doc.data() is never undefined for query doc snapshots
             console.log(doc.id, " => ", doc.data());
-            firestore.collection("customers/"+doc.id+"/details").get().then(function(snapshot) {
+            firestore.collection("customers/"+doc.id+"/details").get().then(async function(snapshot) {
 
                 console.log(snapshot.docs[0].data()["val"])
                 return await snapshot.docs[0].data()["val"];
