@@ -404,7 +404,7 @@ router.post('/new_order', async (request, response) => {
 
 			// compute delivery date based on ratecard
 			var orderDate = moment().tz("Australia/Sydney");
-
+			console.log("orderdate" + orderDate.format("YYYY-MM-DD HH:mm:ss"))
 			// simulate date
 			var simDate = moment();
 			simDate.set('year', 2022);
