@@ -363,12 +363,33 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 		console.log("order is before cut off");
 		console.log("days to delivery: " + daysToDelivery);
 		deliveryDate = deliveryDate.add(daysToDelivery, "days");
+
+		var dayOfWeek = deliveryDate.getDay();
+		var isWeekend = (dayOfWeek === 6) || (dayOfWeek  === 0); // 6 = Saturday, 0 = Sunday
+
+		if(isWeekend)
+		{
+			console.log("ori delivery date is weekend adding 2 days")
+			deliveryDate = deliveryDate.add(2, "days");
+		}
+
 		console.log(deliveryDate.format("YYYY-MM-DD HH:mm:ss"));
 		return deliveryDate;
 	} else {
 		daysToDelivery+=1;
 		console.log("days to delivery: " + daysToDelivery);
 		deliveryDate = deliveryDate.add(daysToDelivery, "days");
+
+
+		var dayOfWeek = deliveryDate.getDay();
+		var isWeekend = (dayOfWeek === 6) || (dayOfWeek  === 0); // 6 = Saturday, 0 = Sunday
+
+		if(isWeekend)
+		{
+			console.log("ori delivery date is weekend adding 2 days")
+			deliveryDate = deliveryDate.add(2, "days");
+		}
+
 		console.log(deliveryDate.format("YYYY-MM-DD HH:mm:ss"));
 		console.log("Order placed after cut off time : Order is placed as next day")
 		return deliveryDate;
