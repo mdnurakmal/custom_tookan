@@ -606,7 +606,7 @@ router.post('/new_order', async (request, response) => {
 					//Rate_Card
 					delivery_orders[0]["template_data"][5]["data"]=request.body["rate_code"];
 					//Courrio_Customer_Num
-					delivery_orders[0]["template_data"][6]["data"]==request.body["customer_number"];
+					delivery_orders[0]["template_data"][6]["data"]=request.body["customer_number"];
 					//Courrio cust name
 					delivery_orders[0]["template_data"][7]["data"]= customer_name;
 					//Job Price Ex GST
