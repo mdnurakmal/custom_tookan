@@ -365,8 +365,8 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 		deliveryDate = deliveryDate.add(daysToDelivery, "days");
 
 		var dayOfWeek = deliveryDate.format('dddd');
-		console.log(dayOfWeek + "// " + dayOfWeek%7);
-		var isWeekend = (dayOfWeek.toLowerCase() === 'sunday') || (dayOfWeek.toLowerCase()  === 'saturday'); // 6 = Saturday, 0 = Sunday
+		console.log(dayOfWeek);
+		var isWeekend = (dayOfWeek === 'Sunday') || (dayOfWeek  === 'Saturday'); // 6 = Saturday, 0 = Sunday
 
 		if(isWeekend)
 		{
@@ -382,8 +382,8 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 		deliveryDate = deliveryDate.add(daysToDelivery, "days");
 
 		var dayOfWeek = deliveryDate.format('dddd');
-		console.log(dayOfWeek + "// " + dayOfWeek%7);
-		var isWeekend = (dayOfWeek.toLowerCase() === 'sunday') || (dayOfWeek.toLowerCase()  === 'saturday'); // 6 = Saturday, 0 = Sunday
+		console.log(dayOfWeek + "// ");
+		var isWeekend = (dayOfWeek === 'Sunday') || (dayOfWeek  === 'Saturday'); // 6 = Saturday, 0 = Sunday
 
 		if(isWeekend)
 		{
