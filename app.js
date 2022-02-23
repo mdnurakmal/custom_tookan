@@ -357,7 +357,7 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 	deliveryDate.set('minute', 0);
 
 
-	var isBefore = moment(orderDate).isBefore(cutoff);
+	var isBefore = moment(orderDate.format("YYYY-MM-DD HH:mm:ss")).isBefore(cutoff);
 
 	if (isBefore) {
 		console.log("order is before cut off");
@@ -404,6 +404,7 @@ router.post('/new_order', async (request, response) => {
 
 			// compute delivery date based on ratecard
 			var orderDate = moment().tz("Australia/Sydney");
+	
 			console.log("orderdate" + orderDate.format("YYYY-MM-DD HH:mm:ss"))
 			// simulate date
 			var simDate = moment();
