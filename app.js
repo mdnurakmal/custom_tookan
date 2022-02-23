@@ -510,7 +510,7 @@ router.post('/new_order', async (request, response) => {
 									"data": request.body["delivery_address"][i]["delivery_instructions"]
 								},
 								{
-									"label": "Distance",
+									"label": "Route_Distance",
 									"data": request.body["delivery_address"][i]["delivery_instructions"]
 								},
 								{
