@@ -409,15 +409,15 @@ router.post('/new_order', async (request, response) => {
 			var simDate = moment();
 			simDate.set('year', 2022);
 			simDate.set('month', 1);  // April
-			simDate.set('date', 22);
-			simDate.set('hour', 23);
+			simDate.set('date', 23);
+			simDate.set('hour', 21);
 			simDate.set('minute', 30);
 			simDate.set('second', 00);
 			simDate.set('millisecond', 000);
 	
 			var deliveryDate;
 			try {
-				deliveryDate = computeDeliveryDate(rateCard["Delivery Type"], rateCard["Fixed Delivery Deadline"], rateCard["Order Cutoff"], rateCard["Delivery Deadline Home"], parseInt(rateCard["Days from Order to Delivery"]),orderDate);
+				deliveryDate = computeDeliveryDate(rateCard["Delivery Type"], rateCard["Fixed Delivery Deadline"], rateCard["Order Cutoff"], rateCard["Delivery Deadline Home"], parseInt(rateCard["Days from Order to Delivery"]),simDate);
 			} catch (err) {
 				throw err;
 			}
@@ -608,7 +608,7 @@ router.post('/new_order', async (request, response) => {
 					//Courrio_Customer_Num
 					delivery_orders[0]["template_data"][6]["data"]=request.body["customer_number"];
 					//Courrio cust name
-					delivery_orders[0]["template_data"][7]["data"]= customer_name;
+					delivery_orders[0]["template_data"][7]["data"]=customer_name;
 					//Job Price Ex GST
 					delivery_orders[0]["template_data"][8]["data"]=totalPrice;
 					
