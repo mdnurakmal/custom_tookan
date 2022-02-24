@@ -356,7 +356,7 @@ function checkIfNextDayIsWeekend(deliveryDate,deliveryDays)
 
 function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,daysToDelivery, orderDate) {
 	// same day delivery and delivery dateline set to 1700
-	console.log(rate + " , " + fixedDeadline + " , " + orderDate.format('MMMM Do YYYY, h:mm:ss a') + ", " + orderCutOff)
+	console.log(rate + " , " + fixedDeadline + " , " + orderDate.format('MMMM DD YYYY, h:mm:ss a') + ", " + orderCutOff)
 
 
 	var cutoff;
