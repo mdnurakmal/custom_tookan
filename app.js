@@ -380,7 +380,7 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 		deliveryDate = deliveryDate.add(daysToDelivery, "days");
 
 		var dayOfWeekAfterDeliveryDays = deliveryDate.format('dddd');
-		console.log(dayOfWeek);
+		console.log(dayOfWeekAfterDeliveryDays);
 
 		if(dayOfWeekAfterDeliveryDays === 'Friday')
 		{
@@ -411,7 +411,7 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 		deliveryDate = deliveryDate.add(daysToDelivery, "days");
 
 		var dayOfWeekAfterDeliveryDays = deliveryDate.format('dddd');
-		console.log(dayOfWeek + "// ");
+		console.log(dayOfWeekAfterDeliveryDays + "// ");
 
 		if(dayOfWeekAfterDeliveryDays === 'Friday')
 		{
