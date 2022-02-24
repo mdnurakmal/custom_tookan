@@ -21,21 +21,7 @@ var moment = require('moment-timezone');
 
 var fs = require('fs');
 
-var options = {
 
-  key: fs.readFileSync("./ssl/STAR_courrio_com_key.txt"),
-
-  cert: fs.readFileSync("./ssl/star.courrio.com.crt"),
-
-};
-
-https.createServer(options, function (req, res) {
-
-	res.writeHead(200);
-   
-	res.end("Welcome to Node.js HTTPS Servern");
-   
-   }).listen(443)
 
 var mysql = require('mysql');
 
@@ -721,6 +707,15 @@ router.post('/new_order', async (request, response) => {
 });
 
 app.use("/", router);
+var options = {
 
-//http.createServer(app).listen(80);
+	key: fs.readFileSync("./ssl/STAR_courrio_com_key.txt"),
+  
+	cert: fs.readFileSync("./ssl/star.courrio.com.crt"),
+  
+  };
+  
+
+http.createServer(app).listen(80);
+https.createServer(options,app).listen(443)
 //https.createServer(options, app).listen(443);
