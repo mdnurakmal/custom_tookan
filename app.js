@@ -380,7 +380,7 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 	deliveryDate.set('hour', 17);
 	deliveryDate.set('minute', 0);
 
-
+	console.log("Original deliveryDate " + deliveryDate.format("YYYY-MM-DD HH:mm:ss"))
 	var isBefore = moment(orderDate.format("YYYY-MM-DD HH:mm:ss")).isBefore(cutoff);
 
 	if (isBefore) {
@@ -418,7 +418,7 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 
 		// add 1 day because its next day
 		deliveryDate = deliveryDate.add(1, "days");
-
+		console.log("before additionxx" + deliveryDate.format("YYYY-MM-DD HH:mm:ss"));
 		daysToDelivery+= checkIfNextDayIsWeekend(deliveryDate,daysToDelivery);
 		console.log("days to delivery after weekend" + daysToDelivery);
 		console.log("before addition" + deliveryDate.format("YYYY-MM-DD HH:mm:ss"));
