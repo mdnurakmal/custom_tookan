@@ -420,7 +420,7 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 		deliveryDate = deliveryDate.add(1, "days");
 
 		daysToDelivery+= checkIfNextDayIsWeekend(deliveryDate,daysToDelivery);
-		
+		console.log("days to delivery after weekend" + daysToDelivery);
 
 		deliveryDate = deliveryDate.add(daysToDelivery, "days");
 
