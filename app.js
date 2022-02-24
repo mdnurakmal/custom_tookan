@@ -377,7 +377,7 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 	deliveryDate.set('year', orderDate.format('YYYY'));
 	deliveryDate.set('month',  parseInt(orderDate.format('MM'))-1);  // April
 	deliveryDate.set('date', orderDate.format('DD'));
-	deliveryDate.set('hour', 08);
+	deliveryDate.set('hour', 17);
 	deliveryDate.set('minute', 0);
 
 	console.log("Original deliveryDate " + deliveryDate.format("YYYY-MM-DD HH:mm:ss"))
@@ -438,7 +438,7 @@ router.post('/new_order', async (request, response) => {
 			simDate.set('year', 2022);
 			simDate.set('month', 1);  // April
 			simDate.set('date', 28);
-			simDate.set('hour', 22);
+			simDate.set('hour', 08);
 			simDate.set('minute', 30);
 			simDate.set('second', 00);
 			simDate.set('millisecond', 000);
