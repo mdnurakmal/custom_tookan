@@ -334,16 +334,17 @@ router.post('/order_status', async (request, response) => {
 function checkIfNextDayIsWeekend(deliveryDate,deliveryDays)
 {
 	var daysToAdd=0;
+	var tempDate = deliveryDate;
 	for (let i = 0; i < deliveryDays; i++) 
 	{
-		var dayOfWeekBeforeDeliveryDays = deliveryDate.format('dddd');
+		var dayOfWeekBeforeDeliveryDays = tempDate.format('dddd');
 
 		if(dayOfWeekBeforeDeliveryDays === 'Saturday' || dayOfWeekBeforeDeliveryDays === 'Sunday')
 		{
 			daysToAdd+=1;
 		}
 
-		deliveryDate = deliveryDate.add(1, "days");
+		tempDate = tempDate.add(1, "days");
 	}
 	
 	console.log("Additional days for weekend " + daysToAdd);
