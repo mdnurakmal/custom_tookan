@@ -462,8 +462,8 @@ router.post('/new_order', async (request, response) => {
 			var simDate = moment();
 			simDate.set('year', 2022);
 			simDate.set('month', 1);  // April
-			simDate.set('date', 23);
-			simDate.set('hour', 21);
+			simDate.set('date', 25);
+			simDate.set('hour', 22);
 			simDate.set('minute', 30);
 			simDate.set('second', 00);
 			simDate.set('millisecond', 000);
