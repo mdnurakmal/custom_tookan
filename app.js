@@ -338,7 +338,7 @@ function checkIfNextDayIsWeekend(deliveryDate,deliveryDays)
 	for (let i = 0; i < deliveryDays; i++) 
 	{
 		var dayOfWeekBeforeDeliveryDays = tempDate.format('dddd');
-
+		console.log(dayOfWeekBeforeDeliveryDays);
 		if(dayOfWeekBeforeDeliveryDays === 'Saturday' || dayOfWeekBeforeDeliveryDays === 'Sunday')
 		{
 			daysToAdd+=1;
