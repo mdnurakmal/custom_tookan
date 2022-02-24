@@ -341,7 +341,7 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 	var timeSplit = orderCutOff.split(":")
 
 	//check if order is before cutoff
-	
+	console.log("Original days to delivery " + daysToDelivery);
 	var cutoff = moment();
 	cutoff.set('year', orderDate.format('YYYY'));
 	cutoff.set('month', parseInt(orderDate.format('MM'))-1);  // April
@@ -369,12 +369,14 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 
 		var dayOfWeek = deliveryDate.format('dddd');
 		console.log(dayOfWeek);
-		var isWeekend = (dayOfWeek === 'Sunday') || (dayOfWeek  === 'Saturday'); // 6 = Saturday, 0 = Sunday
-
-		if(isWeekend)
+		
+		if(dayOfWeek === 'Friday')
 		{
-			console.log("ori delivery date is weekend adding 2 days")
 			deliveryDate = deliveryDate.add(2, "days");
+		}
+		else if(dayOfWeek === 'Saturday')
+		{
+			deliveryDate = deliveryDate.add(1, "days");
 		}
 
 		console.log(deliveryDate.format("YYYY-MM-DD HH:mm:ss"));
@@ -386,12 +388,14 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 
 		var dayOfWeek = deliveryDate.format('dddd');
 		console.log(dayOfWeek + "// ");
-		var isWeekend = (dayOfWeek === 'Sunday') || (dayOfWeek  === 'Saturday'); // 6 = Saturday, 0 = Sunday
 
-		if(isWeekend)
+		if(dayOfWeek === 'Friday')
 		{
-			console.log("ori delivery date is weekend adding 2 days")
 			deliveryDate = deliveryDate.add(2, "days");
+		}
+		else if(dayOfWeek === 'Saturday')
+		{
+			deliveryDate = deliveryDate.add(1, "days");
 		}
 
 		console.log(deliveryDate.format("YYYY-MM-DD HH:mm:ss"));
