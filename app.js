@@ -19,9 +19,6 @@ const {
 } = require('console');
 var moment = require('moment-timezone');
 
-
-var https = require('https');
-
 var fs = require('fs');
 
 var https_options = {
