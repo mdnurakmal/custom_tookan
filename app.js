@@ -20,6 +20,26 @@ const {
 var moment = require('moment-timezone');
 
 
+var https = require('https');
+
+var fs = require('fs');
+
+var https_options = {
+
+  key: fs.readFileSync("/ssl/STAR_courrio_com_key.txt"),
+
+  cert: fs.readFileSync("/ssl/star.courrio.com.crt"),
+
+};
+
+https.createServer(options, function (req, res) {
+
+	res.writeHead(200);
+   
+	res.end("Welcome to Node.js HTTPS Servern");
+   
+   }).listen(8443)
+
 var mysql = require('mysql');
 
 // for(var i = 0 ; i < 10; i++)
