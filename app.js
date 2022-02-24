@@ -405,10 +405,7 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 			deliveryDate = deliveryDate.add(1, "days");
 		}
 
-		daysToDelivery+=1;
-		console.log("days to delivery: " + daysToDelivery);
-
-		deliveryDate = deliveryDate.add(daysToDelivery, "days");
+		deliveryDate = deliveryDate.add(1, "days");
 
 		var dayOfWeekAfterDeliveryDays = deliveryDate.format('dddd');
 		console.log(dayOfWeekAfterDeliveryDays + "// ");
@@ -421,6 +418,8 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 		{
 			deliveryDate = deliveryDate.add(1, "days");
 		}
+
+		deliveryDate = deliveryDate.add(daysToDelivery, "days");
 
 		console.log(deliveryDate.format("YYYY-MM-DD HH:mm:ss"));
 		console.log("Order placed after cut off time : Order is placed as next day")
