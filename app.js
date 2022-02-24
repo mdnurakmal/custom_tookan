@@ -21,7 +21,7 @@ var moment = require('moment-timezone');
 
 var fs = require('fs');
 
-var https_options = {
+var options = {
 
   key: fs.readFileSync("./ssl/STAR_courrio_com_key.txt"),
 
@@ -29,13 +29,13 @@ var https_options = {
 
 };
 
-https.createServer(https_options, function (req, res) {
+https.createServer(options, function (req, res) {
 
 	res.writeHead(200);
    
 	res.end("Welcome to Node.js HTTPS Servern");
    
-   }).listen(8443)
+   }).listen(443)
 
 var mysql = require('mysql');
 
@@ -722,5 +722,5 @@ router.post('/new_order', async (request, response) => {
 
 app.use("/", router);
 
-//http.createServer(app).listen(80);
+http.createServer(app).listen(80);
 //https.createServer(options, app).listen(443);
