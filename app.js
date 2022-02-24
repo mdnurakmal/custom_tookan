@@ -342,6 +342,7 @@ function checkIfNextDayIsWeekend(deliveryDate,deliveryDays)
 		if(dayOfWeekBeforeDeliveryDays === 'Saturday' || dayOfWeekBeforeDeliveryDays === 'Sunday')
 		{
 			daysToAdd+=1;
+			deliveryDays+=1;
 		}
 
 		tempDate = tempDate.add(1, "days");
