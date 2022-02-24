@@ -377,7 +377,7 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 	deliveryDate.set('year', orderDate.format('YYYY'));
 	deliveryDate.set('month',  parseInt(orderDate.format('MM'))-1);  // April
 	deliveryDate.set('date', orderDate.format('DD'));
-	deliveryDate.set('hour', 17);
+	deliveryDate.set('hour', 08);
 	deliveryDate.set('minute', 0);
 
 	console.log("Original deliveryDate " + deliveryDate.format("YYYY-MM-DD HH:mm:ss"))
@@ -397,7 +397,7 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 		deliveryDate = deliveryDate.add(daysToDelivery, "days");
 		console.log(deliveryDate.format("YYYY-MM-DD HH:mm:ss"));
 		console.log("Order placed after cut off time : Order is placed as next day")
-		
+
 		return deliveryDate;
 		//throw "Order is after cut off time";
 	}
