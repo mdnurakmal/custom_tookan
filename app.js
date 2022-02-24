@@ -334,7 +334,7 @@ router.post('/order_status', async (request, response) => {
 function checkIfNextDayIsWeekend(deliveryDate,deliveryDays)
 {
 	var daysToAdd=0;
-	var tempDate = deliveryDate.moment();
+	var tempDate = deliveryDate.clone();
 	for (let i = 0; i < deliveryDays; i++) 
 	{
 		var dayOfWeekBeforeDeliveryDays = tempDate.format('dddd');
