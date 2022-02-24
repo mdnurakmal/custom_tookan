@@ -418,10 +418,9 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 
 		// add 1 day because its next day
 		deliveryDate = deliveryDate.add(1, "days");
-		console.log("before additionxx" + deliveryDate.format("YYYY-MM-DD HH:mm:ss"));
+
 		daysToDelivery+= checkIfNextDayIsWeekend(deliveryDate,daysToDelivery);
-		console.log("days to delivery after weekend" + daysToDelivery);
-		console.log("before addition" + deliveryDate.format("YYYY-MM-DD HH:mm:ss"));
+
 		deliveryDate = deliveryDate.add(daysToDelivery, "days");
 
 		console.log(deliveryDate.format("YYYY-MM-DD HH:mm:ss"));
@@ -465,7 +464,7 @@ router.post('/new_order', async (request, response) => {
 			var simDate = moment();
 			simDate.set('year', 2022);
 			simDate.set('month', 1);  // April
-			simDate.set('date', 24);
+			simDate.set('date', 25);
 			simDate.set('hour', 22);
 			simDate.set('minute', 30);
 			simDate.set('second', 00);
