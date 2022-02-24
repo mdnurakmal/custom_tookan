@@ -365,16 +365,28 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 	if (isBefore) {
 		console.log("order is before cut off");
 		console.log("days to delivery: " + daysToDelivery);
-		deliveryDate = deliveryDate.add(daysToDelivery, "days");
 
-		var dayOfWeek = deliveryDate.format('dddd');
-		console.log(dayOfWeek);
-		
-		if(dayOfWeek === 'Friday')
+		var dayOfWeekBeforeDeliveryDays = deliveryDate.format('dddd');
+
+		if(dayOfWeekBeforeDeliveryDays === 'Saturday')
 		{
 			deliveryDate = deliveryDate.add(2, "days");
 		}
-		else if(dayOfWeek === 'Saturday')
+		else if(dayOfWeekBeforeDeliveryDays === 'Sunday')
+		{
+			deliveryDate = deliveryDate.add(1, "days");
+		}
+
+		deliveryDate = deliveryDate.add(daysToDelivery, "days");
+
+		var dayOfWeekAfterDeliveryDays = deliveryDate.format('dddd');
+		console.log(dayOfWeek);
+
+		if(dayOfWeekAfterDeliveryDays === 'Friday')
+		{
+			deliveryDate = deliveryDate.add(2, "days");
+		}
+		else if(dayOfWeekAfterDeliveryDays === 'Saturday')
 		{
 			deliveryDate = deliveryDate.add(1, "days");
 		}
@@ -382,18 +394,30 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 		console.log(deliveryDate.format("YYYY-MM-DD HH:mm:ss"));
 		return deliveryDate;
 	} else {
-		daysToDelivery+=1;
-		console.log("days to delivery: " + daysToDelivery);
-		deliveryDate = deliveryDate.add(daysToDelivery, "days");
+		var dayOfWeekBeforeDeliveryDays = deliveryDate.format('dddd');
 
-		var dayOfWeek = deliveryDate.format('dddd');
-		console.log(dayOfWeek + "// ");
-
-		if(dayOfWeek === 'Friday')
+		if(dayOfWeekBeforeDeliveryDays === 'Saturday')
 		{
 			deliveryDate = deliveryDate.add(2, "days");
 		}
-		else if(dayOfWeek === 'Saturday')
+		else if(dayOfWeekBeforeDeliveryDays === 'Sunday')
+		{
+			deliveryDate = deliveryDate.add(1, "days");
+		}
+
+		daysToDelivery+=1;
+		console.log("days to delivery: " + daysToDelivery);
+
+		deliveryDate = deliveryDate.add(daysToDelivery, "days");
+
+		var dayOfWeekAfterDeliveryDays = deliveryDate.format('dddd');
+		console.log(dayOfWeek + "// ");
+
+		if(dayOfWeekAfterDeliveryDays === 'Friday')
+		{
+			deliveryDate = deliveryDate.add(2, "days");
+		}
+		else if(dayOfWeekAfterDeliveryDays === 'Saturday')
 		{
 			deliveryDate = deliveryDate.add(1, "days");
 		}
