@@ -331,6 +331,25 @@ router.post('/order_status', async (request, response) => {
 
 });
 
+function checkIfNextDayIsWeekend(deliveryDate,deliveryDays)
+{
+	var daysToAdd=0;
+	for (let i = 0; i < deliveryDays; i++) 
+	{
+		var dayOfWeekBeforeDeliveryDays = deliveryDate.format('dddd');
+
+		if(dayOfWeekBeforeDeliveryDays === 'Saturday' || dayOfWeekBeforeDeliveryDays === 'Sunday')
+		{
+			daysToAdd+=1;
+		}
+
+		deliveryDate = deliveryDate.add(1, "days");
+	}
+	
+	return daysToAdd;
+
+}
+
 
 function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,daysToDelivery, orderDate) {
 	// same day delivery and delivery dateline set to 1700
@@ -394,24 +413,12 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 		console.log(deliveryDate.format("YYYY-MM-DD HH:mm:ss"));
 		return deliveryDate;
 	} else {
-		var dayOfWeekBeforeDeliveryDays = deliveryDate.format('dddd');
 
-		if(dayOfWeekBeforeDeliveryDays === 'Thursday')
-		{
-			deliveryDate = deliveryDate.add(4, "days");
-		}
-		else if(dayOfWeekBeforeDeliveryDays === 'Friday')
-		{
-			deliveryDate = deliveryDate.add(3, "days");
-		}
-		else if(dayOfWeekBeforeDeliveryDays === 'Saturday')
-		{
-			deliveryDate = deliveryDate.add(2, "days");
-		}
-		else
-		{
-			deliveryDate = deliveryDate.add(1, "days");
-		}
+		// add 1 day because its next day
+		deliveryDate = deliveryDate.add(1, "days");
+
+		daysToDelivery+= checkIfNextDayIsWeekend(deliveryDate,daysToDelivery);
+		
 
 		deliveryDate = deliveryDate.add(daysToDelivery, "days");
 
