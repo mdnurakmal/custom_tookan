@@ -396,25 +396,15 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 	} else {
 		var dayOfWeekBeforeDeliveryDays = deliveryDate.format('dddd');
 
-		if(dayOfWeekBeforeDeliveryDays === 'Saturday')
+		if(dayOfWeekBeforeDeliveryDays === 'Friday')
+		{
+			deliveryDate = deliveryDate.add(3, "days");
+		}
+		else if(dayOfWeekBeforeDeliveryDays === 'Saturday')
 		{
 			deliveryDate = deliveryDate.add(2, "days");
 		}
-		else if(dayOfWeekBeforeDeliveryDays === 'Sunday')
-		{
-			deliveryDate = deliveryDate.add(1, "days");
-		}
-
-		deliveryDate = deliveryDate.add(1, "days");
-
-		var dayOfWeekAfterDeliveryDays = deliveryDate.format('dddd');
-		console.log(dayOfWeekAfterDeliveryDays + "// ");
-
-		if(dayOfWeekAfterDeliveryDays === 'Friday')
-		{
-			deliveryDate = deliveryDate.add(2, "days");
-		}
-		else if(dayOfWeekAfterDeliveryDays === 'Saturday')
+		else
 		{
 			deliveryDate = deliveryDate.add(1, "days");
 		}
