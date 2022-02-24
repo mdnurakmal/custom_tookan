@@ -346,6 +346,7 @@ function checkIfNextDayIsWeekend(deliveryDate,deliveryDays)
 		deliveryDate = deliveryDate.add(1, "days");
 	}
 	
+	console.log("Additional days for weekend " + daysToAdd);
 	return daysToAdd;
 
 }
