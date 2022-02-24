@@ -396,7 +396,11 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 	} else {
 		var dayOfWeekBeforeDeliveryDays = deliveryDate.format('dddd');
 
-		if(dayOfWeekBeforeDeliveryDays === 'Friday')
+		if(dayOfWeekBeforeDeliveryDays === 'Thursday')
+		{
+			deliveryDate = deliveryDate.add(4, "days");
+		}
+		else if(dayOfWeekBeforeDeliveryDays === 'Friday')
 		{
 			deliveryDate = deliveryDate.add(3, "days");
 		}
