@@ -407,6 +407,22 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 	//return moment(orderDate, "YYYY-MM-DD").tz("Australia/Sydney").add(1,"days").format("YYYY-MM-DD HH:mm:ss");
 }
 
+router.post('/test_schedule', async (request, response) => {
+	// get ratecard
+	var rateCode = request.body["rate_code"];
+	var rateCard = await customer.getRateCard(rateCode);
+
+	// compute delivery date based on ratecard
+	var orderDate = moment(request.body["order_date"],"YYYY-MM-DD HH:mm:ss")
+
+	var deliveryDate;
+	try {
+		deliveryDate = computeDeliveryDate(rateCard["Delivery Type"], rateCard["Fixed Delivery Deadline"], rateCard["Order Cutoff"], rateCard["Delivery Deadline Home"], parseInt(rateCard["Days from Order to Delivery"]),orderDate);
+	} catch (err) {
+		throw err;
+	}
+});
+
 // courrio bulk order API
 router.post('/new_order', async (request, response) => {
 	var promise = customer.checkAPIKey(request.body["api_key"]);
