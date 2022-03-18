@@ -343,15 +343,15 @@ function checkIfAfterCutOffIsWeekend(deliveryDate,satDel,sunDel)
 		console.log("a. added additional days for after hours");
 		return true;
 	}
-	else if((dayOfWeekBeforeDeliveryDays !== 'Saturday')|| (dayOfWeekBeforeDeliveryDays !== 'Sunday'))
+	else if((dayOfWeekBeforeDeliveryDays === 'Saturday' && satDel=="N" )|| (dayOfWeekBeforeDeliveryDays === 'Sunday' && sunDel=="N"))
 	{
 		console.log("b. added additional days for after hours");
-		return true;
+		return false;
 	}
 	else
 	{
 		console.log("no additional days for after hours");
-		return false;
+		return true;
 	}
 	
 }
