@@ -650,7 +650,7 @@ router.post('/new_order', async (request, response) => {
 					//Job Price Ex GST
 					delivery_orders[0]["template_data"][8]["data"]=totalPrice;
 					//Job Descro[topm]
-					delivery_orders[0]["template_data"][9]["data"]=request.body["job_description"];;\
+					delivery_orders[0]["template_data"][9]["data"]=request.body["job_description"];
 
 					console.log("All promised completed");
 					console.log("Price is " + totalPrice);
