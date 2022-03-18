@@ -416,7 +416,7 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 	if (isBefore) {
 
 		daysToDelivery+= checkIfNextDayIsWeekend(deliveryDate,daysToDelivery,satDel,sunDel);
-		deliveryDate = deliveryDate.add(daysToDelivery, "days")-1;
+		deliveryDate = deliveryDate.add(daysToDelivery-1, "days");
 		console.log(deliveryDate.format("YYYY-MM-DD HH:mm:ss"));
 		console.log("Order placed before cut off time : Order is placed as same day")
 		return deliveryDate;
@@ -428,7 +428,7 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 
 
 		daysToDelivery+= checkIfNextDayIsWeekend(deliveryDate,daysToDelivery,satDel,sunDel);
-		deliveryDate = deliveryDate.add(daysToDelivery, "days")-1;
+		deliveryDate = deliveryDate.add(daysToDelivery-1, "days");
 		console.log(deliveryDate.format("YYYY-MM-DD HH:mm:ss"));
 		console.log("Order placed after cut off time : Order is placed as next day")
 
