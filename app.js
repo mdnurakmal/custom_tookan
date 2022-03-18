@@ -491,6 +491,10 @@ router.post('/new_order', async (request, response) => {
 								{
 									"label": "Comment",
 									"data": request.body["pickup_address"][i]["pickup_email"]
+								},
+								{
+									"label": "Job_Description",
+									"data": request.body["pickup_address"][i]["pickup_email"]
 								}
 							],
 							"tracking_link": 1,
@@ -561,6 +565,10 @@ router.post('/new_order', async (request, response) => {
 								},
 								{
 									"label": "Job_Price_Ex_GST",
+									"data": request.body["delivery_address"][i]["delivery_instructions"]
+								},
+								{
+									"label": "Job_Description",
 									"data": request.body["delivery_address"][i]["delivery_instructions"]
 								}
 							
@@ -641,7 +649,8 @@ router.post('/new_order', async (request, response) => {
 					delivery_orders[0]["template_data"][7]["data"]=customer_name;
 					//Job Price Ex GST
 					delivery_orders[0]["template_data"][8]["data"]=totalPrice;
-					
+					//Job Descro[topm]
+					delivery_orders[0]["template_data"][9]["data"]=request.body["job_description"];;\
 
 					console.log("All promised completed");
 					console.log("Price is " + totalPrice);
@@ -682,7 +691,8 @@ router.post('/new_order', async (request, response) => {
 									"delivery": res.data["data"]["deliveries"],
 									"price" : totalPrice,
 									"route_distance" : totalDist,
-									"volume": request.body["volume"]
+									"volume": request.body["volume"],
+									"job_description": request.body["job_description"]
 								}
 								response.status(res.status);
 								response.send(message);
@@ -722,4 +732,3 @@ var options = {
 
 http.createServer(app).listen(80);
 https.createServer(options,app).listen(443)
-//https.createServer(options, app).listen(443);
