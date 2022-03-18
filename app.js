@@ -418,8 +418,13 @@ router.post('/test_schedule', async (request, response) => {
 	var deliveryDate;
 	try {
 		deliveryDate = computeDeliveryDate(rateCard["Delivery Type"], rateCard["Fixed Delivery Deadline"], rateCard["Order Cutoff"], rateCard["Delivery Deadline Home"], parseInt(rateCard["Days from Order to Delivery"]),orderDate);
+		response.statusCode = 200;
+		response.send("ok");
 	} catch (err) {
+		response.statusCode = 401;
+		response.send("error");
 		throw err;
+
 	}
 });
 
