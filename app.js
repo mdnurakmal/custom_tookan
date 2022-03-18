@@ -494,7 +494,7 @@ router.post('/new_order', async (request, response) => {
 								},
 								{
 									"label": "Job_Description",
-									"data": request.body["pickup_address"][i]["pickup_email"]
+									"data": request.body["job_description"]
 								}
 							],
 							"tracking_link": 1,
