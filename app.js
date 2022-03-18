@@ -331,6 +331,23 @@ router.post('/order_status', async (request, response) => {
 
 });
 
+
+function checkIfAfterCutOffIsWeekend(deliveryDate,satDel,sunDel)
+{
+	var tempDate = deliveryDate.clone();
+
+	var dayOfWeekBeforeDeliveryDays = tempDate.format('dddd');
+	console.log(dayOfWeekBeforeDeliveryDays);
+	if((dayOfWeekBeforeDeliveryDays === 'Saturday' && satDel=="Y" )|| (dayOfWeekBeforeDeliveryDays === 'Sunday' && sunDel=="Y"))
+	{
+		return true;
+	}
+	else if((dayOfWeekBeforeDeliveryDays !== 'Saturday')|| (dayOfWeekBeforeDeliveryDays !== 'Sunday'))
+	{
+		return true;
+	}
+}
+
 function checkIfNextDayIsWeekend(deliveryDate,deliveryDays,satDel,sunDel)
 {
 	var daysToAdd=0;
@@ -395,8 +412,12 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 	} else {
 
 		// add 1 day because its next day
-		deliveryDate = deliveryDate.add(2, "days");
-		daysToDelivery+= checkIfNextDayIsWeekend(deliveryDate,daysToDelivery)-1;
+		if(checkIfAfterCutOffIsWeekend(deliveryDate,satDel,sunDel))
+			deliveryDate = deliveryDate.add(2, "days");
+		else
+			deliveryDate = deliveryDate.add(1, "days");
+
+		daysToDelivery+= checkIfNextDayIsWeekend(deliveryDate,daysToDelivery,satDel,sunDel)-1;
 		deliveryDate = deliveryDate.add(daysToDelivery, "days");
 		console.log(deliveryDate.format("YYYY-MM-DD HH:mm:ss"));
 		console.log("Order placed after cut off time : Order is placed as next day")
