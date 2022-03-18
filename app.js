@@ -360,6 +360,7 @@ function checkIfNextDayIsWeekend(deliveryDate,deliveryDays,satDel,sunDel)
 {
 	var daysToAdd=0;
 	var tempDate = deliveryDate.clone();
+	console.log("delivery days " + deliveryDays);
 	for (let i = 0; i < deliveryDays; i++) 
 	{
 		var dayOfWeekBeforeDeliveryDays = tempDate.format('dddd');
