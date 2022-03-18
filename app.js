@@ -331,7 +331,7 @@ router.post('/order_status', async (request, response) => {
 
 });
 
-function checkIfNextDayIsWeekend(deliveryDate,deliveryDays)
+function checkIfNextDayIsWeekend(deliveryDate,deliveryDays,satDel,sunDel)
 {
 	var daysToAdd=0;
 	var tempDate = deliveryDate.clone();
@@ -339,7 +339,7 @@ function checkIfNextDayIsWeekend(deliveryDate,deliveryDays)
 	{
 		var dayOfWeekBeforeDeliveryDays = tempDate.format('dddd');
 		console.log(dayOfWeekBeforeDeliveryDays);
-		if(dayOfWeekBeforeDeliveryDays === 'Saturday' || dayOfWeekBeforeDeliveryDays === 'Sunday')
+		if((dayOfWeekBeforeDeliveryDays === 'Saturday' && satDel=="Y" )|| (dayOfWeekBeforeDeliveryDays === 'Sunday' && sunDel=="Y"))
 		{
 			daysToAdd+=1;
 			deliveryDays+=1;
@@ -354,7 +354,7 @@ function checkIfNextDayIsWeekend(deliveryDate,deliveryDays)
 }
 
 
-function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,daysToDelivery, orderDate) {
+function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,daysToDelivery, orderDate,satDel,sunDel) {
 	// same day delivery and delivery dateline set to 1700
 	console.log(rate + " , " + fixedDeadline + " , " + orderDate.format('MMMM DD YYYY, h:mm:ss a') + ", " + orderCutOff)
 
@@ -381,13 +381,13 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 	deliveryDate.set('hour', 17);
 	deliveryDate.set('minute', 0);
 	deliveryDate.set('second', 0);
-	
+
 	console.log("Original deliveryDate " + deliveryDate.format("YYYY-MM-DD HH:mm:ss"))
 	var isBefore = moment(orderDate.format("YYYY-MM-DD HH:mm:ss")).isBefore(cutoff);
 
 	if (isBefore) {
 		deliveryDate = deliveryDate.add(1, "days");
-		daysToDelivery+= checkIfNextDayIsWeekend(deliveryDate,daysToDelivery)-1;
+		daysToDelivery+= checkIfNextDayIsWeekend(deliveryDate,daysToDelivery,satDel,sunDel)-1;
 		deliveryDate = deliveryDate.add(daysToDelivery, "days");
 		console.log(deliveryDate.format("YYYY-MM-DD HH:mm:ss"));
 		console.log("Order placed before cut off time : Order is placed as next day")
@@ -418,7 +418,7 @@ router.post('/test_schedule', async (request, response) => {
 
 	var deliveryDate;
 	try {
-		deliveryDate = computeDeliveryDate(rateCard["Delivery Type"], rateCard["Fixed Delivery Deadline"], rateCard["Order Cutoff"], rateCard["Delivery Deadline Home"], parseInt(rateCard["Days from Order to Delivery"]),orderDate);
+		deliveryDate = computeDeliveryDate(rateCard["Delivery Type"], rateCard["Fixed Delivery Deadline"], rateCard["Order Cutoff"], rateCard["Delivery Deadline Home"], parseInt(rateCard["Days from Order to Delivery"]),orderDate,rateCard["Saturday Deliveries"],rateCard["Sunday Deliveries"]);
 		response.statusCode = 200;
 		response.send({"delivery_date": deliveryDate});
 	} catch (err) {
@@ -469,7 +469,7 @@ router.post('/new_order', async (request, response) => {
 	
 			var deliveryDate;
 			try {
-				deliveryDate = computeDeliveryDate(rateCard["Delivery Type"], rateCard["Fixed Delivery Deadline"], rateCard["Order Cutoff"], rateCard["Delivery Deadline Home"], parseInt(rateCard["Days from Order to Delivery"]),orderDate);
+				deliveryDate = computeDeliveryDate(rateCard["Delivery Type"], rateCard["Fixed Delivery Deadline"], rateCard["Order Cutoff"], rateCard["Delivery Deadline Home"], parseInt(rateCard["Days from Order to Delivery"]),orderDate,rateCard["Saturday Deliveries"],rateCard["Sunday Deliveries"]);
 			} catch (err) {
 				throw err;
 			}
