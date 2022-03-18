@@ -337,7 +337,7 @@ function checkIfAfterCutOffIsWeekend(deliveryDate,satDel,sunDel)
 	var tempDate = deliveryDate.clone();
 
 	var dayOfWeekBeforeDeliveryDays = tempDate.format('dddd');
-	console.log("order date: " + dayOfWeekBeforeDeliveryDays);
+	console.log("order date: " + dayOfWeekBeforeDeliveryDays + " , " + satDel + ' , ' + sunDel);
 	if((dayOfWeekBeforeDeliveryDays === 'Saturday' && satDel=="Y" )|| (dayOfWeekBeforeDeliveryDays === 'Sunday' && sunDel=="Y"))
 	{
 		console.log("added additional days for after hours");
