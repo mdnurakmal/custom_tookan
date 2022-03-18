@@ -68,16 +68,16 @@ router.post('/webhook', (request, response) => {
 	//console.log(request.body);
 	//pub.publish(request.body);
 	axios
-	.post('http://34.116.81.190/push_webhook', request.body)
-	.then(res => {
-		response.statusCode = 200;
-		response.send("ok");
-	})
-	.catch(error => {
-		console.error(error)
-		response.statusCode = 401;
-		response.send(error);
-	})
+		.post('http://34.116.81.190/push_webhook', request.body)
+		.then(res => {
+			response.statusCode = 200;
+			response.send("ok");
+		})
+		.catch(error => {
+			console.error(error)
+			response.statusCode = 401;
+			response.send(error);
+		})
 });
 
 // courrio set webhook url API
@@ -332,54 +332,45 @@ router.post('/order_status', async (request, response) => {
 });
 
 
-function checkIfAfterCutOffIsWeekend(deliveryDate,satDel,sunDel)
-{
+function checkIfAfterCutOffIsWeekend(deliveryDate, satDel, sunDel) {
 	var tempDate = deliveryDate.clone();
 
 	var dayOfWeekBeforeDeliveryDays = tempDate.format('dddd');
 	console.log("order date: " + dayOfWeekBeforeDeliveryDays + " , " + satDel + ' , ' + sunDel);
-	if((dayOfWeekBeforeDeliveryDays === 'Saturday' && satDel=="Y" )|| (dayOfWeekBeforeDeliveryDays === 'Sunday' && sunDel=="Y"))
-	{
+	if ((dayOfWeekBeforeDeliveryDays === 'Saturday' && satDel == "Y") || (dayOfWeekBeforeDeliveryDays === 'Sunday' && sunDel == "Y")) {
 		console.log("a. added additional days for after hours");
 		return true;
-	}
-	else if((dayOfWeekBeforeDeliveryDays === 'Saturday' && satDel=="N" )|| (dayOfWeekBeforeDeliveryDays === 'Sunday' && sunDel=="N"))
-	{
+	} else if ((dayOfWeekBeforeDeliveryDays === 'Saturday' && satDel == "N") || (dayOfWeekBeforeDeliveryDays === 'Sunday' && sunDel == "N")) {
 		console.log("b. added additional days for after hours");
 		return false;
-	}
-	else
-	{
+	} else {
 		console.log("no additional days for after hours");
 		return true;
 	}
-	
+
 }
 
-function checkIfNextDayIsWeekend(deliveryDate,deliveryDays,satDel,sunDel)
-{
-	var daysToAdd=0;
+function checkIfNextDayIsWeekend(deliveryDate, deliveryDays, satDel, sunDel) {
+	var daysToAdd = 0;
 	var tempDate = deliveryDate.clone();
-	for (let i = 0; i < deliveryDays; i++) 
-	{
+	for (let i = 0; i < deliveryDays; i++) {
 		var dayOfWeekBeforeDeliveryDays = tempDate.format('dddd');
 		console.log(dayOfWeekBeforeDeliveryDays);
-		if((dayOfWeekBeforeDeliveryDays === 'Saturday' && satDel=="N" )|| (dayOfWeekBeforeDeliveryDays === 'Sunday' && sunDel=="N"))
-		{
-			daysToAdd+=1;
-			deliveryDays+=1;
+		if ((dayOfWeekBeforeDeliveryDays === 'Saturday' && satDel == "N") || (dayOfWeekBeforeDeliveryDays === 'Sunday' && sunDel == "N")) {
+			daysToAdd += 1;
+			deliveryDays += 1;
 		}
 
 		tempDate = tempDate.add(1, "days");
 	}
-	
+
 	console.log("Additional days for weekend " + daysToAdd);
 	return daysToAdd;
 
 }
 
 
-function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,daysToDelivery, orderDate,satDel,sunDel) {
+function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline, daysToDelivery, orderDate, satDel, sunDel) {
 	// same day delivery and delivery dateline set to 1700
 	console.log(rate + " , " + fixedDeadline + " , " + orderDate.format('MMMM DD YYYY, h:mm:ss a') + ", " + orderCutOff)
 
@@ -391,17 +382,17 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 	console.log("Original days to delivery " + daysToDelivery);
 	var cutoff = moment();
 	cutoff.set('year', orderDate.format('YYYY'));
-	cutoff.set('month', parseInt(orderDate.format('MM'))-1);  // April
+	cutoff.set('month', parseInt(orderDate.format('MM')) - 1); // April
 	cutoff.set('date', orderDate.format('DD'));
 	cutoff.set('hour', timeSplit[0]);
 	cutoff.set('minute', timeSplit[1]);
 
-	console.log("orderDate time"+ orderDate.format("YYYY-MM-DD HH:mm:ss"));
-	console.log("cutoff time"+ cutoff.format("YYYY-MM-DD HH:mm:ss"));
+	console.log("orderDate time" + orderDate.format("YYYY-MM-DD HH:mm:ss"));
+	console.log("cutoff time" + cutoff.format("YYYY-MM-DD HH:mm:ss"));
 
 	var deliveryDate = moment();
 	deliveryDate.set('year', orderDate.format('YYYY'));
-	deliveryDate.set('month',  parseInt(orderDate.format('MM'))-1);  // April
+	deliveryDate.set('month', parseInt(orderDate.format('MM')) - 1); // April
 	deliveryDate.set('date', orderDate.format('DD'));
 	deliveryDate.set('hour', 17);
 	deliveryDate.set('minute', 0);
@@ -410,25 +401,25 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 	console.log("Original deliveryDate " + deliveryDate.format("YYYY-MM-DD HH:mm:ss"))
 	var isBefore = moment(orderDate.format("YYYY-MM-DD HH:mm:ss")).isBefore(cutoff);
 
-	if(daysToDelivery>=0)
+	if (daysToDelivery >= 0)
 		daysToDelivery++;
 
 	if (isBefore) {
 
-		daysToDelivery+= checkIfNextDayIsWeekend(deliveryDate,daysToDelivery,satDel,sunDel);
-		deliveryDate = deliveryDate.add(daysToDelivery-1, "days");
+		daysToDelivery += checkIfNextDayIsWeekend(deliveryDate, daysToDelivery, satDel, sunDel);
+		deliveryDate = deliveryDate.add(daysToDelivery - 1, "days");
 		console.log(deliveryDate.format("YYYY-MM-DD HH:mm:ss"));
 		console.log("Order placed before cut off time : Order is placed as same day")
 		return deliveryDate;
 	} else {
 
 		// add 1 day because its next day
-		if(checkIfAfterCutOffIsWeekend(deliveryDate,satDel,sunDel))
+		if (checkIfAfterCutOffIsWeekend(deliveryDate, satDel, sunDel))
 			deliveryDate = deliveryDate.add(1, "days");
 
 
-		daysToDelivery+= checkIfNextDayIsWeekend(deliveryDate,daysToDelivery,satDel,sunDel);
-		deliveryDate = deliveryDate.add(daysToDelivery-1, "days");
+		daysToDelivery += checkIfNextDayIsWeekend(deliveryDate, daysToDelivery, satDel, sunDel);
+		deliveryDate = deliveryDate.add(daysToDelivery - 1, "days");
 		console.log(deliveryDate.format("YYYY-MM-DD HH:mm:ss"));
 		console.log("Order placed after cut off time : Order is placed as next day")
 
@@ -445,13 +436,15 @@ router.post('/computeDeliveryDate', async (request, response) => {
 	var rateCard = await customer.getRateCard(rateCode);
 
 	// compute delivery date based on ratecard
-	var orderDate = moment(request.body["order_date"],"YYYY-MM-DD HH:mm:ss")
+	var orderDate = moment(request.body["order_date"], "YYYY-MM-DD HH:mm:ss")
 
 	var deliveryDate;
 	try {
-		deliveryDate = computeDeliveryDate(rateCard["Delivery Type"], rateCard["Fixed Delivery Deadline"], rateCard["Order Cutoff"], rateCard["Delivery Deadline Home"], parseInt(rateCard["Days from Order to Delivery"]),orderDate,rateCard["Saturday Deliveries"],rateCard["Sunday Deliveries"]);
+		deliveryDate = computeDeliveryDate(rateCard["Delivery Type"], rateCard["Fixed Delivery Deadline"], rateCard["Order Cutoff"], rateCard["Delivery Deadline Home"], parseInt(rateCard["Days from Order to Delivery"]), orderDate, rateCard["Saturday Deliveries"], rateCard["Sunday Deliveries"]);
 		response.statusCode = 200;
-		response.send({"delivery_date": deliveryDate});
+		response.send({
+			"delivery_date": deliveryDate
+		});
 	} catch (err) {
 		response.statusCode = 401;
 		response.send("error");
@@ -487,21 +480,21 @@ router.post('/new_order', async (request, response) => {
 
 			// compute delivery date based on ratecard
 			var orderDate = moment().tz("Australia/Sydney");
-	
+
 			console.log("orderdate" + orderDate.format("YYYY-MM-DD HH:mm:ss"))
 			// simulate date
 			var simDate = moment();
 			simDate.set('year', 2022);
-			simDate.set('month', 1);  // April
+			simDate.set('month', 1); // April
 			simDate.set('date', 24);
 			simDate.set('hour', 23);
 			simDate.set('minute', 30);
 			simDate.set('second', 00);
 			simDate.set('millisecond', 000);
-	
+
 			var deliveryDate;
 			try {
-				deliveryDate = computeDeliveryDate(rateCard["Delivery Type"], rateCard["Fixed Delivery Deadline"], rateCard["Order Cutoff"], rateCard["Delivery Deadline Home"], parseInt(rateCard["Days from Order to Delivery"]),orderDate,rateCard["Saturday Deliveries"],rateCard["Sunday Deliveries"]);
+				deliveryDate = computeDeliveryDate(rateCard["Delivery Type"], rateCard["Fixed Delivery Deadline"], rateCard["Order Cutoff"], rateCard["Delivery Deadline Home"], parseInt(rateCard["Days from Order to Delivery"]), orderDate, rateCard["Saturday Deliveries"], rateCard["Sunday Deliveries"]);
 			} catch (err) {
 				throw err;
 			}
@@ -625,7 +618,7 @@ router.post('/new_order', async (request, response) => {
 									"label": "Job_Description",
 									"data": request.body["delivery_address"][i]["delivery_instructions"]
 								}
-							
+
 							],
 							"tracking_link": 1,
 							"order_id": result.insertId
@@ -645,7 +638,7 @@ router.post('/new_order', async (request, response) => {
 
 			//create promise for price request
 			//todo : price is only for 1 pickup and 1 destination
-			var full_delivery_address = request.body["delivery_address"][0]["street"] + ", " + request.body["delivery_address"][0]["suburb"] + ", " + request.body["delivery_address"][0]["state"] + ", " + request.body["delivery_address"][0]["country"] + " " + request.body["delivery_address"][0]["post_code"] 
+			var full_delivery_address = request.body["delivery_address"][0]["street"] + ", " + request.body["delivery_address"][0]["suburb"] + ", " + request.body["delivery_address"][0]["state"] + ", " + request.body["delivery_address"][0]["country"] + " " + request.body["delivery_address"][0]["post_code"]
 			var full_pickup_address = request.body["pickup_address"][0]["street"] + ", " + request.body["pickup_address"][0]["suburb"] + ", " + request.body["pickup_address"][0]["state"] + ", " + request.body["pickup_address"][0]["country"] + " " + request.body["pickup_address"][0]["post_code"]
 			console.log(full_pickup_address)
 			console.log(full_delivery_address)
@@ -654,28 +647,28 @@ router.post('/new_order', async (request, response) => {
 			var pricePromise = new Promise(async function(resolve, reject) {
 				console.log("Getting price...")
 				await axios
-				.post('http://34.87.232.250/price', {
-					//api_key: process.env.API_KEY,
-					api_key: request.body["api_key"],
-					delivery_code: request.body["delivery_code"],
-					pickup_address: full_pickup_address,
-					delivery_address: full_delivery_address,
-					weight: request.body["weight"],
-					volume: request.body["volume"],
-					rate_code: request.body["rate_code"]
-				})
-				.then(res => {
-	
-					totalPrice = res.data["price"]
-					totalDist = res.data["total_dist"] 
-					resolve()
-				})
-				.catch(error => {
-					console.error(error)
-					response.statusCode = 401;
-					response.send(error);
-	
-				})
+					.post('http://34.87.232.250/price', {
+						//api_key: process.env.API_KEY,
+						api_key: request.body["api_key"],
+						delivery_code: request.body["delivery_code"],
+						pickup_address: full_pickup_address,
+						delivery_address: full_delivery_address,
+						weight: request.body["weight"],
+						volume: request.body["volume"],
+						rate_code: request.body["rate_code"]
+					})
+					.then(res => {
+
+						totalPrice = res.data["price"]
+						totalDist = res.data["total_dist"]
+						resolve()
+					})
+					.catch(error => {
+						console.error(error)
+						response.statusCode = 401;
+						response.send(error);
+
+					})
 
 			}).catch(function(rej) {
 				console.log(rej);
@@ -690,21 +683,21 @@ router.post('/new_order', async (request, response) => {
 					//TODO rework for multiple delivery destination
 
 					//volume
-					delivery_orders[0]["template_data"][2]["data"]=request.body["volume"];
+					delivery_orders[0]["template_data"][2]["data"] = request.body["volume"];
 					//distance
-					delivery_orders[0]["template_data"][3]["data"]=totalDist;
+					delivery_orders[0]["template_data"][3]["data"] = totalDist;
 					//Billable
-					delivery_orders[0]["template_data"][4]["data"]=1;
+					delivery_orders[0]["template_data"][4]["data"] = 1;
 					//Rate_Card
-					delivery_orders[0]["template_data"][5]["data"]=request.body["rate_code"];
+					delivery_orders[0]["template_data"][5]["data"] = request.body["rate_code"];
 					//Courrio_Customer_Num
-					delivery_orders[0]["template_data"][6]["data"]=request.body["customer_number"];
+					delivery_orders[0]["template_data"][6]["data"] = request.body["customer_number"];
 					//Courrio cust name
-					delivery_orders[0]["template_data"][7]["data"]=customer_name;
+					delivery_orders[0]["template_data"][7]["data"] = customer_name;
 					//Job Price Ex GST
-					delivery_orders[0]["template_data"][8]["data"]=totalPrice;
+					delivery_orders[0]["template_data"][8]["data"] = totalPrice;
 					//Job Descro[topm]
-					delivery_orders[0]["template_data"][9]["data"]=request.body["job_description"];
+					delivery_orders[0]["template_data"][9]["data"] = request.body["job_description"];
 
 					console.log("All promised completed");
 					console.log("Price is " + totalPrice);
@@ -743,8 +736,8 @@ router.post('/new_order', async (request, response) => {
 									"order_number": request.body["order_number"],
 									"pickups": res.data["data"]["pickups"],
 									"delivery": res.data["data"]["deliveries"],
-									"price" : totalPrice,
-									"route_distance" : totalDist,
+									"price": totalPrice,
+									"route_distance": totalDist,
 									"volume": request.body["volume"],
 									"job_description": request.body["job_description"]
 								}
@@ -778,11 +771,11 @@ app.use("/", router);
 var options = {
 
 	key: fs.readFileSync("./ssl/STAR_courrio_com_key.txt"),
-  
+
 	cert: fs.readFileSync("./ssl/star.courrio.com.crt"),
-  
-  };
-  
+
+};
+
 
 http.createServer(app).listen(80);
-https.createServer(options,app).listen(443)
+https.createServer(options, app).listen(443)
