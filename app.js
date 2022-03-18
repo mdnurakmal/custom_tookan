@@ -410,7 +410,7 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 	console.log("Original deliveryDate " + deliveryDate.format("YYYY-MM-DD HH:mm:ss"))
 	var isBefore = moment(orderDate.format("YYYY-MM-DD HH:mm:ss")).isBefore(cutoff);
 
-	if(daysToDelivery>0)
+	if(daysToDelivery>=0)
 		daysToDelivery++;
 
 	if (isBefore) {
