@@ -408,8 +408,12 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 	deliveryDate.set('month', parseInt(orderDate.format('MM')) - 1); // April
 	deliveryDate.set('date', orderDate.format('DD'));
 	deliveryDate.set('second', 0);
+
+	//earliest hour or order hour
 	deliveryDate.set('hour', timeSplit[0]);
 	deliveryDate.set('minute', timeSplit[1]);
+
+	console.log("Order hour is: " +  timeSplit[0]);
 	console.log("Before deliveryDate " + deliveryDate.format("YYYY-MM-DD HH:mm:ss"))
 
 	if(parseInt(fixedDeadline)==1)
