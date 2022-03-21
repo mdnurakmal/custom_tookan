@@ -370,7 +370,7 @@ function checkIfNextDayIsWeekend(deliveryDate, deliveryDays, satDel, sunDel) {
 }
 
 
-function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline, daysToDelivery, orderDate, satDel, sunDel,homeTime,businessTime,samedayTime,business_or_residential) {
+function computeDeliveryDate(rate, fixedDeadline,windowStart, orderCutOff, deliveryDeadline, daysToDelivery, orderDate, satDel, sunDel,homeTime,businessTime,samedayTime,business_or_residential) {
 	// same day delivery and delivery dateline set to 1700
 	console.log(rate + " , " + fixedDeadline + " , " + orderDate.format('MMMM DD YYYY, h:mm:ss a') + ", " + orderCutOff)
 
@@ -410,8 +410,13 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 	deliveryDate.set('second', 0);
 
 	//earliest hour or order hour
-	deliveryDate.set('hour', timeSplit[0]);
-	deliveryDate.set('minute', timeSplit[1]);
+	var openingHour = parseInt(windowStart.split(":")[0])
+	if(parseInt(orderDate.format('HH') < openingHour))
+		deliveryDate.set('hour',openingHour);
+	else
+		deliveryDate.set('hour',orderDate.format('HH'));
+		
+	deliveryDate.set('minute', orderDate.format('mm'));
 
 	console.log("Order hour is: " +  timeSplit[0]);
 	console.log("Before deliveryDate " + deliveryDate.format("YYYY-MM-DD HH:mm:ss"))
@@ -470,7 +475,7 @@ router.post('/computeDeliveryDate', async (request, response) => {
 
 	var deliveryDate;
 	try {
-		deliveryDate = computeDeliveryDate(rateCard["Delivery Type"], rateCard["Fixed Delivery Deadline"], rateCard["Order Cutoff"], rateCard["Delivery Deadline Home"], parseInt(rateCard["Days from Order to Delivery"]), orderDate, rateCard["Saturday Deliveries"], rateCard["Sunday Deliveries"],rateCard["Delivery Deadline Home"],rateCard["Delivery Deadline Business"],rateCard["Same Day Mins Delivery Deadline"],request.body["business_or_residential"]);
+		deliveryDate = computeDeliveryDate(rateCard["Delivery Type"], rateCard["Fixed Delivery Deadline"],rateCard["Order window start"], rateCard["Order Cutoff"], rateCard["Delivery Deadline Home"], parseInt(rateCard["Days from Order to Delivery"]), orderDate, rateCard["Saturday Deliveries"], rateCard["Sunday Deliveries"],rateCard["Delivery Deadline Home"],rateCard["Delivery Deadline Business"],rateCard["Same Day Mins Delivery Deadline"],request.body["business_or_residential"]);
 		response.statusCode = 200;
 		response.send({
 			"delivery_date": deliveryDate
@@ -525,7 +530,7 @@ router.post('/new_order', async (request, response) => {
 			var deliveryDate;
 
 			try {
-				deliveryDate = computeDeliveryDate(rateCard["Delivery Type"], rateCard["Fixed Delivery Deadline"], rateCard["Order Cutoff"], rateCard["Delivery Deadline Home"], parseInt(rateCard["Days from Order to Delivery"]), orderDate, rateCard["Saturday Deliveries"], rateCard["Sunday Deliveries"],rateCard["Delivery Deadline Home"],rateCard["Delivery Deadline Business"],rateCard["Same Day Mins Delivery Deadline"],request.body["business_or_residential"]);
+				deliveryDate = computeDeliveryDate(rateCard["Delivery Type"], rateCard["Fixed Delivery Deadline"],rateCard["Order window start"], rateCard["Order Cutoff"], rateCard["Delivery Deadline Home"], parseInt(rateCard["Days from Order to Delivery"]), orderDate, rateCard["Saturday Deliveries"], rateCard["Sunday Deliveries"],rateCard["Delivery Deadline Home"],rateCard["Delivery Deadline Business"],rateCard["Same Day Mins Delivery Deadline"],request.body["business_or_residential"]);
 			} catch (err) {
 				throw err;
 			}
