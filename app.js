@@ -506,9 +506,9 @@ router.post('/new_order', async (request, response) => {
 			var deliveryTime;
 			if(parseInt(rateCard["Fixed Delivery Deadline"])==1)
 			{
-				if(request.body["rate_code"].toLowerCase() == "residential")
+				if(request.body["business_or_residential"].toLowerCase() == "residential")
 					deliveryTime = rateCard["Delivery Deadline Home"];
-				else (request.body["rate_code"].toLowerCase() == "business")
+				else (request.body["business_or_residential"].toLowerCase() == "business")
 					deliveryTime = rateCard["Delivery Deadline Business"];
 			}
 			else
