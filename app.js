@@ -413,7 +413,7 @@ function computeDeliveryDate(rate, fixedDeadline,windowStart, orderCutOff, deliv
 
 	//earliest hour or order hour
 	var openingHour = parseInt(windowStart.split(":")[0])
-	if(parseInt(orderDate.format('HH') < openingHour || !isBefore))
+	if(!isBefore)
 		deliveryDate.set('hour',openingHour);
 	else
 		deliveryDate.set('hour',orderDate.format('HH'));
