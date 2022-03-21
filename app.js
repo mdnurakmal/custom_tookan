@@ -408,7 +408,8 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 	deliveryDate.set('month', parseInt(orderDate.format('MM')) - 1); // April
 	deliveryDate.set('date', orderDate.format('DD'));
 	deliveryDate.set('second', 0);
-
+	console.log("Before deliveryDate " + deliveryDate.format("YYYY-MM-DD HH:mm:ss"))
+	
 	if(parseInt(fixedDeadline)==1)
 	{
 		var deliveryTimeSplit = deliveryTime.split(":")
