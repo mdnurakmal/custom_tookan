@@ -21,8 +21,6 @@ var moment = require('moment-timezone');
 
 var fs = require('fs');
 
-
-
 var mysql = require('mysql');
 
 // for(var i = 0 ; i < 10; i++)
@@ -463,10 +461,9 @@ function computeDeliveryDate(rate, fixedDeadline,windowStart, orderCutOff, deliv
 		return deliveryDate;
 		//throw "Order is after cut off time";
 	}
-
-	//return moment(orderDate, "YYYY-MM-DD").tz("Australia/Sydney").add(1,"days").format("YYYY-MM-DD HH:mm:ss");
 }
 
+// invoke from rate card microservices and for testing
 router.post('/computeDeliveryDate', async (request, response) => {
 	// get ratecard
 	var rateCode = request.body["rate_code"];
@@ -509,6 +506,7 @@ router.post('/new_order', async (request, response) => {
 				"minute": 0,
 				"second": 0
 			});
+
 			// add order date to sql
 			// get customer number from api
 			// add signature required to db
@@ -519,15 +517,6 @@ router.post('/new_order', async (request, response) => {
 			var orderDate = moment().tz("Australia/Sydney");
 
 			console.log("orderdate" + orderDate.format("YYYY-MM-DD HH:mm:ss"))
-			// simulate date
-			var simDate = moment();
-			simDate.set('year', 2022);
-			simDate.set('month', 1); // April
-			simDate.set('date', 24);
-			simDate.set('hour', 23);
-			simDate.set('minute', 30);
-			simDate.set('second', 00);
-			simDate.set('millisecond', 000);
 
 			var deliveryDate;
 
@@ -674,6 +663,7 @@ router.post('/new_order', async (request, response) => {
 
 			//create promise for price request
 			//todo : price is only for 1 pickup and 1 destination
+			//todo: https for rate card microservice
 			var full_delivery_address = request.body["delivery_address"][0]["street"] + ", " + request.body["delivery_address"][0]["suburb"] + ", " + request.body["delivery_address"][0]["state"] + ", " + request.body["delivery_address"][0]["country"] + " " + request.body["delivery_address"][0]["post_code"]
 			var full_pickup_address = request.body["pickup_address"][0]["street"] + ", " + request.body["pickup_address"][0]["suburb"] + ", " + request.body["pickup_address"][0]["state"] + ", " + request.body["pickup_address"][0]["country"] + " " + request.body["pickup_address"][0]["post_code"]
 			console.log(full_pickup_address)
@@ -684,7 +674,6 @@ router.post('/new_order', async (request, response) => {
 				console.log("Getting price...")
 				await axios
 					.post('http://34.87.232.250/price', {
-						//api_key: process.env.API_KEY,
 						api_key: request.body["api_key"],
 						delivery_code: request.body["delivery_code"],
 						pickup_address: full_pickup_address,
@@ -717,7 +706,6 @@ router.post('/new_order', async (request, response) => {
 				.then(async results => {
 
 					//TODO rework for multiple delivery destination
-
 					//volume
 					delivery_orders[0]["template_data"][2]["data"] = request.body["volume"];
 					//distance
@@ -812,6 +800,6 @@ var options = {
 
 };
 
-
+//todo: remove http
 http.createServer(app).listen(80);
 https.createServer(options, app).listen(443)
