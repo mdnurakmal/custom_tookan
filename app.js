@@ -397,15 +397,15 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 	deliveryDate.set('date', orderDate.format('DD'));
 	deliveryDate.set('second', 0);
 
-	if(int.parseInt(fixedDeadline)==1)
+	if(parseInt(fixedDeadline)==1)
 	{
 		var deliveryTimeSplit = deliveryTime.split(":")
-		deliveryDate.set('hour', int.parseInt(deliveryTimeSplit[0]));
-		deliveryDate.set('minute', int.parseInt(deliveryTimeSplit[1]));
+		deliveryDate.set('hour', parseInt(deliveryTimeSplit[0]));
+		deliveryDate.set('minute', parseInt(deliveryTimeSplit[1]));
 	}
 	else
 	{
-		deliveryDate.add(int.parseInt(deliveryTime), "minute");
+		deliveryDate.add(parseInt(deliveryTime), "minute");
 	}
 
 	console.log("Original deliveryDate " + deliveryDate.format("YYYY-MM-DD HH:mm:ss"))
@@ -504,11 +504,11 @@ router.post('/new_order', async (request, response) => {
 
 			var deliveryDate;
 			var deliveryTime;
-			if(int.parseInt(rateCard["Fixed Delivery Deadline"])==1)
+			if(parseInt(rateCard["Fixed Delivery Deadline"])==1)
 			{
-				if(request.body["rate_code"]. toLowerCase() == "residential")
+				if(request.body["rate_code"].toLowerCase() == "residential")
 					deliveryTime = rateCard["Delivery Deadline Home"];
-				else (request.body["rate_code"]. toLowerCase() == "business")
+				else (request.body["rate_code"].toLowerCase() == "business")
 					deliveryTime = rateCard["Delivery Deadline Business"];
 			}
 			else
