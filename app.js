@@ -409,13 +409,15 @@ function computeDeliveryDate(rate, fixedDeadline,windowStart, orderCutOff, deliv
 	deliveryDate.set('date', orderDate.format('DD'));
 	deliveryDate.set('second', 0);
 
+	var isBefore = moment(orderDate.format("YYYY-MM-DD HH:mm:ss")).isBefore(cutoff);
+
 	//earliest hour or order hour
 	var openingHour = parseInt(windowStart.split(":")[0])
-	if(parseInt(orderDate.format('HH') < openingHour))
+	if(parseInt(orderDate.format('HH') < openingHour || !isBefore))
 		deliveryDate.set('hour',openingHour);
 	else
 		deliveryDate.set('hour',orderDate.format('HH'));
-		
+
 	deliveryDate.set('minute', orderDate.format('mm'));
 
 	console.log("Order hour is: " +  timeSplit[0]);
@@ -434,7 +436,7 @@ function computeDeliveryDate(rate, fixedDeadline,windowStart, orderCutOff, deliv
 	}
 
 	console.log("Original deliveryDate " + deliveryDate.format("YYYY-MM-DD HH:mm:ss"))
-	var isBefore = moment(orderDate.format("YYYY-MM-DD HH:mm:ss")).isBefore(cutoff);
+
 
 	if (daysToDelivery >= 0)
 		daysToDelivery++;
