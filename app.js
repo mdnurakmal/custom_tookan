@@ -522,8 +522,6 @@ router.post('/new_order', async (request, response) => {
 				throw err;
 			}
 
-
-			console.log(deliveryDate + " //// " + deliveryTime);
 			// format pickup orders from customers
 			var promiseList = []
 			var pickup_orders = []
