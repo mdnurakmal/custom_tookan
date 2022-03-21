@@ -370,10 +370,22 @@ function checkIfNextDayIsWeekend(deliveryDate, deliveryDays, satDel, sunDel) {
 }
 
 
-function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline, daysToDelivery, orderDate, satDel, sunDel,deliveryTime) {
+function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline, daysToDelivery, orderDate, satDel, sunDel,homeTime,businessTime,samedayTime,business_or_residential) {
 	// same day delivery and delivery dateline set to 1700
 	console.log(rate + " , " + fixedDeadline + " , " + orderDate.format('MMMM DD YYYY, h:mm:ss a') + ", " + orderCutOff)
 
+	var deliveryTime;
+	if(parseInt(fixedDeadline)==1)
+	{
+		if(business_or_residential == "residential")
+			deliveryTime = homeTime;
+		else 
+			deliveryTime = businessTime;
+	}
+	else
+	{
+		deliveryTime = samedayTime;
+	}
 
 
 	var cutoff;
@@ -450,7 +462,7 @@ router.post('/computeDeliveryDate', async (request, response) => {
 
 	var deliveryDate;
 	try {
-		deliveryDate = computeDeliveryDate(rateCard["Delivery Type"], rateCard["Fixed Delivery Deadline"], rateCard["Order Cutoff"], rateCard["Delivery Deadline Home"], parseInt(rateCard["Days from Order to Delivery"]), orderDate, rateCard["Saturday Deliveries"], rateCard["Sunday Deliveries"]);
+		deliveryDate = computeDeliveryDate(rateCard["Delivery Type"], rateCard["Fixed Delivery Deadline"], rateCard["Order Cutoff"], rateCard["Delivery Deadline Home"], parseInt(rateCard["Days from Order to Delivery"]), orderDate, rateCard["Saturday Deliveries"], rateCard["Sunday Deliveries"],rateCard["Delivery Deadline Home"],rateCard["Delivery Deadline Business"],rateCard["Same Day Mins Delivery Deadline"],request.body["business_or_residential"]);
 		response.statusCode = 200;
 		response.send({
 			"delivery_date": deliveryDate
@@ -503,22 +515,9 @@ router.post('/new_order', async (request, response) => {
 			simDate.set('millisecond', 000);
 
 			var deliveryDate;
-			var deliveryTime;
-			if(parseInt(rateCard["Fixed Delivery Deadline"])==1)
-			{
-				console.log(">>" + request.body["business_or_residential"].toLowerCase());
-				if(request.body["business_or_residential"].toLowerCase() == "residential")
-					deliveryTime = rateCard["Delivery Deadline Home"];
-				else (request.body["business_or_residential"].toLowerCase() == "business")
-					deliveryTime = rateCard["Delivery Deadline Business"];
-			}
-			else
-			{
-				deliveryTime = rateCard["Same Day Mins Delivery Deadline"];
-			}
 
 			try {
-				deliveryDate = computeDeliveryDate(rateCard["Delivery Type"], rateCard["Fixed Delivery Deadline"], rateCard["Order Cutoff"], rateCard["Delivery Deadline Home"], parseInt(rateCard["Days from Order to Delivery"]), orderDate, rateCard["Saturday Deliveries"], rateCard["Sunday Deliveries"],deliveryTime);
+				deliveryDate = computeDeliveryDate(rateCard["Delivery Type"], rateCard["Fixed Delivery Deadline"], rateCard["Order Cutoff"], rateCard["Delivery Deadline Home"], parseInt(rateCard["Days from Order to Delivery"]), orderDate, rateCard["Saturday Deliveries"], rateCard["Sunday Deliveries"],rateCard["Delivery Deadline Home"],rateCard["Delivery Deadline Business"],rateCard["Same Day Mins Delivery Deadline"],request.body["business_or_residential"]);
 			} catch (err) {
 				throw err;
 			}
