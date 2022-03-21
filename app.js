@@ -370,9 +370,10 @@ function checkIfNextDayIsWeekend(deliveryDate, deliveryDays, satDel, sunDel) {
 }
 
 
-function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline, daysToDelivery, orderDate, satDel, sunDel) {
+function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline, daysToDelivery, orderDate, satDel, sunDel,deliveryTime) {
 	// same day delivery and delivery dateline set to 1700
 	console.log(rate + " , " + fixedDeadline + " , " + orderDate.format('MMMM DD YYYY, h:mm:ss a') + ", " + orderCutOff)
+
 
 
 	var cutoff;
@@ -394,9 +395,18 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 	deliveryDate.set('year', orderDate.format('YYYY'));
 	deliveryDate.set('month', parseInt(orderDate.format('MM')) - 1); // April
 	deliveryDate.set('date', orderDate.format('DD'));
-	deliveryDate.set('hour', 17);
-	deliveryDate.set('minute', 0);
 	deliveryDate.set('second', 0);
+
+	if(int.parseInt(fixedDeadline)==1)
+	{
+		var deliveryTimeSplit = deliveryTime.split(":")
+		deliveryDate.set('hour', int.parseInt(deliveryTimeSplit[0]));
+		deliveryDate.set('minute', int.parseInt(deliveryTimeSplit[1]));
+	}
+	else
+	{
+		deliveryDate.add(int.parseInt(deliveryTime), "minute");
+	}
 
 	console.log("Original deliveryDate " + deliveryDate.format("YYYY-MM-DD HH:mm:ss"))
 	var isBefore = moment(orderDate.format("YYYY-MM-DD HH:mm:ss")).isBefore(cutoff);
@@ -493,8 +503,21 @@ router.post('/new_order', async (request, response) => {
 			simDate.set('millisecond', 000);
 
 			var deliveryDate;
+			var deliveryTime;
+			if(int.parseInt(rateCard["Fixed Delivery Deadline"])==1)
+			{
+				if(request.body["rate_code"]. toLowerCase() == "residential")
+					deliveryTime = rateCard["Delivery Deadline Home"];
+				else (request.body["rate_code"]. toLowerCase() == "business")
+					deliveryTime = rateCard["Delivery Deadline Business"];
+			}
+			else
+			{
+				deliveryTime = rateCard["Same Day Mins Delivery Deadline"];
+			}
+
 			try {
-				deliveryDate = computeDeliveryDate(rateCard["Delivery Type"], rateCard["Fixed Delivery Deadline"], rateCard["Order Cutoff"], rateCard["Delivery Deadline Home"], parseInt(rateCard["Days from Order to Delivery"]), orderDate, rateCard["Saturday Deliveries"], rateCard["Sunday Deliveries"]);
+				deliveryDate = computeDeliveryDate(rateCard["Delivery Type"], rateCard["Fixed Delivery Deadline"], rateCard["Order Cutoff"], rateCard["Delivery Deadline Home"], parseInt(rateCard["Days from Order to Delivery"]), orderDate, rateCard["Saturday Deliveries"], rateCard["Sunday Deliveries"],deliveryTime);
 			} catch (err) {
 				throw err;
 			}
