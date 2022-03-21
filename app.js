@@ -417,6 +417,7 @@ function computeDeliveryDate(rate, fixedDeadline, orderCutOff, deliveryDeadline,
 	}
 	else
 	{
+		console.log("delviery time vip" + deliveryTime);
 		deliveryDate.add(parseInt(deliveryTime), "minute");
 	}
 
