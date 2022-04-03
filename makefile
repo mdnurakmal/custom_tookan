@@ -1,7 +1,7 @@
-
+SHELL = /bin/sh
 
 start:
-	ifeq (, $(shell which node))
+	ifeq (, $(SHELL which node))
 	$(error "No node in $(PATH), consider doing apt-get install node")
 	endif
 	sudo chmod +x ./stop.sh
